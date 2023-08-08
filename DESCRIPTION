@@ -14,7 +14,9 @@ Imports:
     lubridate,
     httr2,
     cli,
-    nomnomlgraph
+    nomnomlgraph,
+    shiny,
+    golem
 Suggests: 
     knitr,
     rmarkdown,
