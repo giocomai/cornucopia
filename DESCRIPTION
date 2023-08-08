@@ -1,0 +1,30 @@
+Package: cornucopia
+Title: A cornucopia is like a funnel that keeps on giving
+Version: 0.0.0.9000
+Authors@R: 
+    person("Giorgio", "Comai", , "g@giorgiocomai.eu",
+    role = c("aut", "cre", "cph"),
+           comment = c(ORCID = "0000-0002-0515-9542"))
+Description: Facilitate reporting on sponsored and organic activities on Facebook, Instagram, and LinkedIn (currently), estimate and visualise the result of marketing funnels (long term)
+License: MIT + file LICENSE
+Imports: 
+    dplyr,
+    purrr,
+    fs,
+    lubridate,
+    httr2
+Suggests: 
+    knitr,
+    rmarkdown,
+    spelling,
+    testthat (>= 3.0.0),
+    nomnomlgraph,
+    fbRads
+Config/testthat/edition: 3
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+RoxygenNote: 7.2.3
+VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)
