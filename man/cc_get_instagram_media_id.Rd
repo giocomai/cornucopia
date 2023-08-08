@@ -8,7 +8,8 @@ cc_get_instagram_media_id(
   ig_user_id = NULL,
   api_version = "v17.0",
   token = NULL,
-  max_pages = NULL
+  max_pages = NULL,
+  cache = TRUE
 )
 }
 \arguments{

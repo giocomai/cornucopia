@@ -134,7 +134,7 @@ cc_get_instagram_media_id()
 
 Be mindful that this may make many queries, as Instagram gives the
 result in batches of 25… if you have thousands of media, it may take
-some time and may be wise to cache data locally.
+some time. Data are however cached locally by default.
 
 You can then pass the resulting `ig_media_id` to
 `cc_get_instagram_media()` to get more information about a given

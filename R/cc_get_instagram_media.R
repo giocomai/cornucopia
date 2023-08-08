@@ -13,38 +13,51 @@
 #' https://developers.facebook.com/docs/instagram-api/reference/ig-media
 #'
 #' @param ig_media_id Instagram media identifier. A list of identifiers for your
-#'   account can be retrieved with `cc_get_instagram_media_id()`.
+#'   account can be retrieved with `cc_get_instagram_media_id()`. If left to
+#'   NULL, a full list is automatically retrieved.
 #' @inheritParams cc_get_instagram_media_id
 #'
 #' @return
 #' @export
 #'
 #' @examples
-cc_get_instagram_media <- function(ig_media_id,
+#' \dontrun{
+#' cc_get_instagram_media()
+#' }
+cc_get_instagram_media <- function(ig_media_id = NULL,
                                    fields = cc_valid_fields_instagram_media_v,
                                    api_version = "v17.0",
                                    ig_user_id = NULL,
                                    cache = TRUE,
                                    token = NULL) {
-
+  
   if (is.null(ig_user_id)) {
     ig_user_id <- cc_get_settings(ig_user_id = ig_user_id) |>
       purrr::pluck("ig_user_id")
   } else {
     ig_user_id <- as.character(ig_user_id)
   }
-
+  
   if (ig_user_id==""&cache == TRUE) {
     stop("`ig_user_id` must be given when `cache` is set to TRUE.")
   }
-
-
+  
+  if (is.null(ig_media_id)) {
+    ig_media_id <- cc_get_instagram_media_id(ig_user_id = ig_user_id,
+                                             api_version = api_version,
+                                             token = token,
+                                             cache = cache) |> 
+      dplyr::pull(ig_media_id)
+  }
+  
+  
   if (cache == TRUE) {
+    
     if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
       stop("Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE.")
     }
     fs::dir_create("cornucopia_db")
-
+    
     db <- DBI::dbConnect(
       drv = RSQLite::SQLite(),
       fs::path(
@@ -53,9 +66,9 @@ cc_get_instagram_media <- function(ig_media_id,
           fs::path_sanitize()
       )
     )
-
+    
     current_table <- "ig_media"
-
+    
     if (DBI::dbExistsTable(conn = db, name = current_table) == FALSE) {
       DBI::dbWriteTable(
         conn = db,
@@ -63,34 +76,34 @@ cc_get_instagram_media <- function(ig_media_id,
         value = cc_empty_instagram_media_df
       )
     }
-
+    
     ig_media_all_requested_v <- ig_media_id
-
+    
     previous_ig_media_df <- DBI::dbReadTable(
       conn = db,
       name = current_table
     ) |>
       dplyr::filter(ig_media_id %in% ig_media_all_requested_v)
-
+    
     if (nrow(previous_ig_media_df)>0) {
       previous_ig_media_df <- previous_ig_media_df |>
         dplyr::group_by(ig_media_id) |>
         dplyr::slice_max(order_by = timestamp_retrieved, n = 1, with_ties = FALSE) |>
         dplyr::ungroup()
-
+      
       previous_ig_media_id_v <- previous_ig_media_df |>
         dplyr::pull(ig_media_id)
-
+      
     } else {
       previous_ig_media_id_v <- character()
     }
-
+    
   } else {
     previous_ig_media_id_v <- character()
   }
-
+  
   ig_media_id_to_process_v <- ig_media_id[!(ig_media_id %in% previous_ig_media_id_v)]
-
+  
   all_new_df <- purrr::map(
     .progress = TRUE,
     .x = ig_media_id_to_process_v,
@@ -99,7 +112,7 @@ cc_get_instagram_media <- function(ig_media_id,
                                                      fields = cc_valid_fields_instagram_media_v,
                                                      api_version = "v17.0",
                                                      token = token)
-
+      
       if (cache == TRUE) {
         DBI::dbAppendTable(
           conn = db,
@@ -107,24 +120,24 @@ cc_get_instagram_media <- function(ig_media_id,
           value = current_media_df
         )
       }
-
+      
       current_media_df
     }
   )  |>
     purrr::list_rbind()
-
+  
   if (cache == TRUE) {
     output_df <- dplyr::bind_rows(
       previous_ig_media_df |> dplyr::collect(),
       all_new_df
-      ) |>
+    ) |>
       tibble::as_tibble()
-
+    
     DBI::dbDisconnect(db)
   } else {
     output_df <- all_new_df
   }
-
+  
   output_df
 }
 
@@ -151,44 +164,44 @@ cc_api_get_instagram_media <- function(ig_media_id,
   } else {
     fb_user_token <- as.character(token)
   }
-
+  
   if (!"id" %in% fields) {
     fields <- c("id", fields)
   }
-
+  
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
     api_version
   )
-
+  
   fields_v <- stringr::str_c(cc_valid_fields_instagram_media_v, collapse = ",")
-
+  
   api_request <- httr2::request(base_url = base_url) |>
     httr2::req_url_path_append(ig_media_id) |>
     httr2::req_url_query(
       fields = fields_v,
       access_token = fb_user_token
     )
-
+  
   req <- httr2::req_perform(req = api_request)
-
+  
   output_df <- tibble::as_tibble(httr2::resp_body_json(req)) |>
     dplyr::rename(ig_media_id = id) |>
     dplyr::mutate(timestamp_retrieved = strftime(as.POSIXlt(Sys.time(), "UTC"), "%Y-%m-%dT%H:%M:%S%z"))
-
+  
   if ("owner" %in% colnames(output_df)) {
     output_df <- output_df |>
       dplyr::mutate(owner = as.character(unlist(stringr::str_c(owner, collapse = ";"))))
   }
-
+  
   output_df <- dplyr::bind_rows(
     cc_empty_instagram_media_df,
     output_df
   )
-
+  
   fields_filter <- fields[fields != "id"]
-
+  
   final_output_df <- output_df[c("ig_media_id", fields_filter, "timestamp_retrieved")]
-
+  
   final_output_df
 }

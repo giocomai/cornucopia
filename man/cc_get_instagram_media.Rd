@@ -5,7 +5,7 @@
 \title{Get details about a given Instagram post based on its ig_media_id}
 \usage{
 cc_get_instagram_media(
-  ig_media_id,
+  ig_media_id = NULL,
   fields = cc_valid_fields_instagram_media_v,
   api_version = "v17.0",
   ig_user_id = NULL,
@@ -15,7 +15,8 @@ cc_get_instagram_media(
 }
 \arguments{
 \item{ig_media_id}{Instagram media identifier. A list of identifiers for your
-account can be retrieved with `cc_get_instagram_media_id()`.}
+account can be retrieved with `cc_get_instagram_media_id()`. If left to
+NULL, a full list is automatically retrieved.}
 
 \item{api_version}{Defaults to "v17.0".}
 
@@ -36,4 +37,9 @@ adjustments:
 
 For details, see:
 https://developers.facebook.com/docs/instagram-api/reference/ig-media
+}
+\examples{
+\dontrun{
+cc_get_instagram_media()
+}
 }
