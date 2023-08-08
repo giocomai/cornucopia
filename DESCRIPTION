@@ -28,3 +28,4 @@ RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
+URL: https://giocomai.github.io/cornucopia/
