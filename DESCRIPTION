@@ -12,7 +12,8 @@ Imports:
     purrr,
     fs,
     lubridate,
-    httr2
+    httr2,
+    cli
 Suggests: 
     knitr,
     rmarkdown,
