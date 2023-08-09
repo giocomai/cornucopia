@@ -3,6 +3,8 @@
 #'
 #' @param start_date Defaults to 91 days before today
 #' @param end_date Defaults to yesterday.
+#' @param fb_business_id Facebook business id. For details on how to find it,
+#'   see \url{https://www.facebook.com/business/help/1181250022022158}
 #'
 #' @return A list with two named elements of class "Date", `start_date` and `end_date`
 #' @export
@@ -18,6 +20,7 @@ cc_set <- function(start_date = NULL,
                    end_date = NULL,
                    fb_user_token = NULL,
                    fb_page_token = NULL,
+                   fb_business_id = NULL,
                    ig_user_id = NULL) {
   if (is.null(start_date)) {
     start_date <- Sys.getenv("cornucopia_start_date")
@@ -55,11 +58,18 @@ cc_set <- function(start_date = NULL,
     Sys.setenv(cornucopia_ig_user_id = as.character(ig_user_id))
   }
 
+  if (is.null(fb_business_id)) {
+    ig_user_id <- Sys.getenv("cornucopia_fb_business_id")
+  } else {
+    Sys.setenv(cornucopia_fb_business_id = as.character(fb_business_id))
+  }
+
   invisible(list(
     start_date = lubridate::as_date(start_date),
     end_date = lubridate::as_date(end_date),
     fb_user_token = as.character(fb_user_token),
     fb_page_token = as.character(fb_page_token),
+    fb_business_id = as.character(fb_business_id),
     ig_user_id = as.character(ig_user_id)
   ))
 }
@@ -85,6 +95,7 @@ cc_get_settings <- function(start_date = NULL,
                             end_date = NULL,
                             fb_user_token = NULL,
                             fb_page_token = NULL,
+                            fb_business_id = NULL,
                             ig_user_id = NULL) {
   if (is.null(start_date)) {
     start_date <- Sys.getenv("cornucopia_start_date")
@@ -109,6 +120,10 @@ cc_get_settings <- function(start_date = NULL,
     fb_page_token <- Sys.getenv("cornucopia_fb_page_token")
   }
 
+  if (is.null(fb_business_id)) {
+    fb_page_token <- Sys.getenv("cornucopia_fb_business_id")
+  }
+
   if (is.null(ig_user_id)) {
     ig_user_id <- Sys.getenv("cornucopia_ig_user_id")
   }
@@ -118,6 +133,7 @@ cc_get_settings <- function(start_date = NULL,
     end_date = lubridate::as_date(end_date),
     fb_user_token = as.character(fb_user_token),
     fb_page_token = as.character(fb_page_token),
+    fb_business_id = as.character(fb_business_id),
     ig_user_id = as.character(ig_user_id)
   ))
 }

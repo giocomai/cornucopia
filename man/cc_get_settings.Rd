@@ -9,6 +9,7 @@ cc_get_settings(
   end_date = NULL,
   fb_user_token = NULL,
   fb_page_token = NULL,
+  fb_business_id = NULL,
   ig_user_id = NULL
 )
 }
