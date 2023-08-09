@@ -18,7 +18,8 @@ cc_set(
 
 \item{end_date}{Defaults to yesterday.}
 
-\item{fb_business_id}{Facebook business id. For details on how to find it, see \url{https://www.facebook.com/business/help/1181250022022158}}
+\item{fb_business_id}{Facebook business id. For details on how to find it,
+see \url{https://www.facebook.com/business/help/1181250022022158}}
 }
 \value{
 A list with two named elements of class "Date", `start_date` and `end_date`

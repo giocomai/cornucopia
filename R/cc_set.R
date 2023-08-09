@@ -59,7 +59,7 @@ cc_set <- function(start_date = NULL,
   }
 
   if (is.null(fb_business_id)) {
-    ig_user_id <- Sys.getenv("cornucopia_fb_business_id")
+    fb_business_id <- Sys.getenv("cornucopia_fb_business_id")
   } else {
     Sys.setenv(cornucopia_fb_business_id = as.character(fb_business_id))
   }
@@ -121,7 +121,7 @@ cc_get_settings <- function(start_date = NULL,
   }
 
   if (is.null(fb_business_id)) {
-    fb_page_token <- Sys.getenv("cornucopia_fb_business_id")
+    fb_business_id <- Sys.getenv("cornucopia_fb_business_id")
   }
 
   if (is.null(ig_user_id)) {
