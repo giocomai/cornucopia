@@ -86,10 +86,10 @@ cc_get_instagram_media_id <- function(ig_user_id = NULL,
   out <- vector("list", max_pages %||% 1000)
 
   i <- 1L
-  cli::cli_progress_bar(name = "Retrieving Instagram media id - page")
+  cli::cli_progress_bar(name = "Retrieving Instagram media:")
 
   repeat({
-    cli::cli_progress_update()
+    cli::cli_progress_update(inc = 25)
 
     out[[i]] <- httr2::req_perform(api_request) |>
       httr2::resp_body_json()
