@@ -21,6 +21,7 @@ cc_set <- function(start_date = NULL,
                    fb_user_token = NULL,
                    fb_page_token = NULL,
                    fb_business_id = NULL,
+                   fb_product_catalog_id = NULL,
                    ig_user_id = NULL) {
   if (is.null(start_date)) {
     start_date <- Sys.getenv("cornucopia_start_date")
@@ -52,17 +53,25 @@ cc_set <- function(start_date = NULL,
     Sys.setenv(cornucopia_fb_page_token = as.character(fb_page_token))
   }
 
+  if (is.null(fb_business_id)) {
+    fb_business_id <- Sys.getenv("cornucopia_fb_business_id")
+  } else {
+    Sys.setenv(cornucopia_fb_business_id = as.character(fb_business_id))
+  }
+
+  if (is.null(fb_product_catalog_id)) {
+    fb_product_catalog_id <- Sys.getenv("cornucopia_fb_product_catalog_id")
+  } else {
+    Sys.setenv(cornucopia_fb_product_catalog_id = as.character(fb_product_catalog_id))
+  }
+
+
   if (is.null(ig_user_id)) {
     ig_user_id <- Sys.getenv("cornucopia_ig_user_id")
   } else {
     Sys.setenv(cornucopia_ig_user_id = as.character(ig_user_id))
   }
 
-  if (is.null(fb_business_id)) {
-    fb_business_id <- Sys.getenv("cornucopia_fb_business_id")
-  } else {
-    Sys.setenv(cornucopia_fb_business_id = as.character(fb_business_id))
-  }
 
   invisible(list(
     start_date = lubridate::as_date(start_date),
@@ -70,6 +79,7 @@ cc_set <- function(start_date = NULL,
     fb_user_token = as.character(fb_user_token),
     fb_page_token = as.character(fb_page_token),
     fb_business_id = as.character(fb_business_id),
+    fb_product_catalog_id = as.character(fb_product_catalog_id),
     ig_user_id = as.character(ig_user_id)
   ))
 }
@@ -96,6 +106,7 @@ cc_get_settings <- function(start_date = NULL,
                             fb_user_token = NULL,
                             fb_page_token = NULL,
                             fb_business_id = NULL,
+                            fb_product_catalog_id = NULL,
                             ig_user_id = NULL) {
   if (is.null(start_date)) {
     start_date <- Sys.getenv("cornucopia_start_date")
@@ -124,6 +135,10 @@ cc_get_settings <- function(start_date = NULL,
     fb_business_id <- Sys.getenv("cornucopia_fb_business_id")
   }
 
+  if (is.null(fb_product_catalog_id)) {
+    fb_product_catalog_id <- Sys.getenv("cornucopia_fb_product_catalog_id")
+  }
+
   if (is.null(ig_user_id)) {
     ig_user_id <- Sys.getenv("cornucopia_ig_user_id")
   }
@@ -134,6 +149,7 @@ cc_get_settings <- function(start_date = NULL,
     fb_user_token = as.character(fb_user_token),
     fb_page_token = as.character(fb_page_token),
     fb_business_id = as.character(fb_business_id),
+    fb_product_catalog_id = as.character(fb_product_catalog_id),
     ig_user_id = as.character(ig_user_id)
   ))
 }
