@@ -29,10 +29,14 @@ It retrieves the requested fields from the APIs and introduces a few
 adjustments:
 }
 \details{
-- it always include the media id, in a column named `ig_media_id`
+- it always includes the media id, in a column named `ig_media_id`
+- it always include the media type, in a column named `ig_media_type`
 - it adds a `timestamp_retrieved` column, with ISO 8601-formatted creation date in UTC
 - it ensures that the output always included all requested fields, if they are valid; e.g. `is_shared_to_feed` and `media_url` may be omitted by the API (see documentation) but this function always includes the relevant column (and returns a NA value if no value is given)
 - all valid fields for the given API endpoint are always requested and cached locally; only requested fields are effectively returned (but `ig_media_id` and `timestamp_retrieved` are always included as first and last column)
+
+N.B.: different media types have different fields: hence the `NA`s in columns
+for which data are unavailable for the given media type.
 
 For details, see:
 https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights

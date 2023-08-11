@@ -3,10 +3,14 @@
 #' It retrieves the requested fields from the APIs and introduces a few
 #' adjustments:
 #'
-#' - it always include the media id, in a column named `ig_media_id`
+#' - it always includes the media id, in a column named `ig_media_id`
+#' - it always include the media type, in a column named `ig_media_type`
 #' - it adds a `timestamp_retrieved` column, with ISO 8601-formatted creation date in UTC
 #' - it ensures that the output always included all requested fields, if they are valid; e.g. `is_shared_to_feed` and `media_url` may be omitted by the API (see documentation) but this function always includes the relevant column (and returns a NA value if no value is given)
 #' - all valid fields for the given API endpoint are always requested and cached locally; only requested fields are effectively returned (but `ig_media_id` and `timestamp_retrieved` are always included as first and last column)
+#'
+#' N.B.: different media types have different fields: hence the `NA`s in columns
+#' for which data are unavailable for the given media type.
 #'
 #' For details, see:
 #' https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights
@@ -55,8 +59,13 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
     ig_media_id = ig_media_id,
     api_version = api_version,
     ig_user_id = ig_user_id,
-    cache = cache, token = token
-  )
+    cache = cache,
+    token = token
+  ) |>
+    dplyr::mutate(media_type = stringr::str_to_lower(dplyr::if_else(condition = media_product_type == "REELS",
+      true = "REELS",
+      false = media_type
+    )))
 
   media_by_type <- media_df |>
     dplyr::group_by(media_type) |>
@@ -64,10 +73,9 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
     dplyr::ungroup()
 
 
-
   if (cache == TRUE) {
     if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
-      stop("Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE.")
+      cli::cli_abort("Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE.")
     }
     fs::dir_create("cornucopia_db")
 
@@ -79,79 +87,112 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
           fs::path_sanitize()
       )
     )
-
-    current_table <- "ig_media"
-
-    if (DBI::dbExistsTable(conn = db, name = current_table) == FALSE) {
-      DBI::dbWriteTable(
-        conn = db,
-        name = current_table,
-        value = cc_empty_instagram_media_df
-      )
-    }
-
-    ig_media_all_requested_v <- ig_media_id
-
-    previous_ig_media_df <- DBI::dbReadTable(
-      conn = db,
-      name = current_table
-    ) |>
-      dplyr::filter(ig_media_id %in% ig_media_all_requested_v)
-
-    if (nrow(previous_ig_media_df) > 0) {
-      previous_ig_media_df <- previous_ig_media_df |>
-        dplyr::group_by(ig_media_id) |>
-        dplyr::slice_max(order_by = timestamp_retrieved, n = 1, with_ties = FALSE) |>
-        dplyr::ungroup()
-
-      previous_ig_media_id_v <- previous_ig_media_df |>
-        dplyr::pull(ig_media_id)
-    } else {
-      previous_ig_media_id_v <- character()
-    }
-  } else {
-    previous_ig_media_id_v <- character()
   }
 
-  ig_media_id_to_process_v <- ig_media_id[!(ig_media_id %in% previous_ig_media_id_v)]
-
-  all_new_df <- purrr::map(
-    .progress = TRUE,
-    .x = ig_media_id_to_process_v,
-    .f = function(current_ig_media_id) {
-      current_media_df <- cc_api_get_instagram_media_insights(
-        ig_media_id = current_ig_media_id,
-        fields = cc_valid_fields_instagram_media_v,
-        api_version = "v17.0",
-        token = token
-      )
-
+  all_types_output_df <- purrr::map(
+    .x = media_by_type |> dplyr::pull(media_type) |> stringr::str_to_lower(),
+    .f = function(current_media_type) {
       if (cache == TRUE) {
-        DBI::dbAppendTable(
-          conn = db,
-          name = current_table,
-          value = current_media_df
+        current_table <- stringr::str_c(
+          "ig_media_insights",
+          "_",
+          current_media_type
         )
+
+        if (DBI::dbExistsTable(conn = db, name = current_table) == FALSE) {
+          DBI::dbWriteTable(
+            conn = db,
+            name = current_table,
+            value = cc_empty_instagram_media_insights[[current_media_type]]
+          )
+        }
+
+        current_type_ig_media_id <- media_df |>
+          dplyr::filter(media_type == current_media_type) |>
+          dplyr::pull(ig_media_id)
+
+        ig_media_all_requested_v <- current_type_ig_media_id
+
+        previous_ig_media_df <- DBI::dbReadTable(
+          conn = db,
+          name = current_table
+        ) |>
+          dplyr::filter(ig_media_id %in% ig_media_all_requested_v)
+
+
+        if (nrow(previous_ig_media_df) > 0) {
+          previous_ig_media_df <- previous_ig_media_df |>
+            dplyr::group_by(ig_media_id) |>
+            dplyr::slice_max(order_by = timestamp_retrieved, n = 1, with_ties = FALSE) |>
+            dplyr::ungroup()
+
+          previous_ig_media_id_v <- previous_ig_media_df |>
+            dplyr::pull(ig_media_id)
+        } else {
+          previous_ig_media_id_v <- character()
+        }
+      } else {
+        current_type_ig_media_id <- media_df |>
+          dplyr::filter(media_type == current_media_type) |>
+          dplyr::pull(ig_media_id)
+        
+        previous_ig_media_id_v <- character()
       }
 
-      current_media_df
+      ig_media_id_to_process_v <- current_type_ig_media_id[!(current_type_ig_media_id %in% previous_ig_media_id_v)]
+
+      all_new_df <- purrr::map(
+        .progress = stringr::str_c("Now processing media of type ",
+                                   sQuote(current_media_type)),
+        .x = ig_media_id_to_process_v,
+        .f = function(current_ig_media_id) {
+          current_media_df <- cc_api_get_instagram_media_insights(
+            ig_media_id = current_ig_media_id,
+            media_type = current_media_type,
+            api_version = "v17.0",
+            token = token
+          )
+
+          if (cache == TRUE) {
+            DBI::dbAppendTable(
+              conn = db,
+              name = current_table,
+              value = current_media_df
+            )
+          }
+
+          current_media_df
+        }
+      ) |>
+        purrr::list_rbind()
+
+      if (cache == TRUE) {
+        output_df <- dplyr::bind_rows(
+          previous_ig_media_df |> dplyr::collect(),
+          all_new_df
+        ) |>
+          tibble::as_tibble()
+      } else {
+        output_df <- all_new_df |>
+          dplyr::mutate(ig_media_type = current_media_type)
+      }
+      output_df |>
+        dplyr::mutate(ig_media_type = current_media_type)
     }
   ) |>
     purrr::list_rbind()
-
+  
   if (cache == TRUE) {
-    output_df <- dplyr::bind_rows(
-      previous_ig_media_df |> dplyr::collect(),
-      all_new_df
-    ) |>
-      tibble::as_tibble()
-
     DBI::dbDisconnect(db)
-  } else {
-    output_df <- all_new_df
   }
 
-  output_df
+  dplyr::bind_rows(
+    cc_empty_instagram_media_insights |>
+      purrr::list_rbind(),
+    all_types_output_df
+  ) |>
+    dplyr::relocate(ig_media_id, ig_media_type) |>
+    dplyr::relocate(timestamp_retrieved, .after = last_col())
 }
 
 
@@ -216,7 +257,7 @@ cc_api_get_instagram_media_insights <- function(ig_media_id,
         dplyr::pull(media_type)
     }
 
-    if (stringr::str_to_lower(current_media_df$media_product_type) == "reels") {
+    if (stringr::str_to_lower(media_type) == "reels") {
       metrics <- cc_valid_metrics_ig_media_insights$reels
     } else if (stringr::str_to_lower(media_type) == "image" | stringr::str_to_lower(media_type) == "video") {
       metrics <- cc_valid_metrics_ig_media_insights$photo_video
