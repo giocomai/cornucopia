@@ -28,6 +28,7 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
                                    fields = cc_valid_fields_instagram_media_v,
                                    api_version = "v17.0",
                                    ig_user_id = NULL,
+                                   update = TRUE,
                                    cache = TRUE,
                                    token = NULL) {
   if (is.null(ig_user_id)) {
@@ -83,7 +84,9 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
       conn = db,
       name = current_table
     ) |>
-      dplyr::filter(ig_media_id %in% ig_media_all_requested_v)
+      dplyr::filter(ig_media_id %in% ig_media_all_requested_v) |> 
+      dplyr::collect() |> 
+      tibble::as_tibble()
 
     if (nrow(previous_ig_media_df) > 0) {
       previous_ig_media_df <- previous_ig_media_df |>
@@ -91,6 +94,20 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
         dplyr::slice_max(order_by = timestamp_retrieved, n = 1, with_ties = FALSE) |>
         dplyr::ungroup()
 
+      if (update == TRUE) {
+        update_df <- cc_check_instagram_media_update(ig_media_id = unique(previous_ig_media_df$ig_media_id),
+                                                     ig_user_id = ig_user_id,
+                                                     insights = FALSE,
+                                                     token = token) |> 
+          dplyr::filter(update == TRUE)
+        
+        if (nrow(update_df)>0) {
+          previous_ig_media_df <- previous_ig_media_df |> 
+            dplyr::anti_join(y = update_df,
+                             by = "ig_media_id")
+        }
+      }
+      
       previous_ig_media_id_v <- previous_ig_media_df |>
         dplyr::pull(ig_media_id)
     } else {
@@ -131,9 +148,13 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
       previous_ig_media_df |> dplyr::collect(),
       all_new_df
     ) |>
-      tibble::as_tibble()
+      tibble::as_tibble() |> 
+      dplyr::group_by(ig_media_id) |>
+      dplyr::slice_max(order_by = timestamp_retrieved, n = 1, with_ties = FALSE) |>
+      dplyr::ungroup()
 
     DBI::dbDisconnect(db)
+    
   } else {
     output_df <- all_new_df
   }

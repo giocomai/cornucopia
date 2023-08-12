@@ -9,6 +9,7 @@ cc_get_instagram_media(
   fields = cc_valid_fields_instagram_media_v,
   api_version = "v17.0",
   ig_user_id = NULL,
+  update = TRUE,
   cache = TRUE,
   token = NULL
 )

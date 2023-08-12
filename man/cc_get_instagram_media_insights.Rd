@@ -10,6 +10,7 @@ cc_get_instagram_media_insights(
   api_version = "v17.0",
   ig_user_id = NULL,
   cache = TRUE,
+  update = TRUE,
   token = NULL
 )
 }
@@ -37,6 +38,7 @@ adjustments:
 
 N.B.: different media types have different fields: hence the `NA`s in columns
 for which data are unavailable for the given media type.
+N.B.: all media posted before 2017 are discarded by default, as Instagram API throw an error for earlier posts
 
 For details, see:
 https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights

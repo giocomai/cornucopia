@@ -2,6 +2,7 @@
 
 export(cc_api_get_instagram_media)
 export(cc_api_get_instagram_media_insights)
+export(cc_check_instagram_media_update)
 export(cc_date_to_json)
 export(cc_drive_upload_linkedin_stats_content)
 export(cc_drive_upload_linkedin_stats_followers)

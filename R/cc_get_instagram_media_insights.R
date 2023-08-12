@@ -11,6 +11,7 @@
 #'
 #' N.B.: different media types have different fields: hence the `NA`s in columns
 #' for which data are unavailable for the given media type.
+#' N.B.: all media posted before 2017 are discarded by default, as Instagram API throw an error for earlier posts
 #'
 #' For details, see:
 #' https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights
@@ -32,6 +33,7 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
                                             api_version = "v17.0",
                                             ig_user_id = NULL,
                                             cache = TRUE,
+                                            update = TRUE,
                                             token = NULL) {
   if (is.null(ig_user_id)) {
     ig_user_id <- cc_get_settings(ig_user_id = ig_user_id) |>
@@ -41,7 +43,7 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
   }
 
   if (ig_user_id == "" & cache == TRUE) {
-    stop("`ig_user_id` must be given when `cache` is set to TRUE.")
+    cli::cli_abort("`ig_user_id` must be given when `cache` is set to TRUE.")
   }
 
   if (is.null(ig_media_id)) {
@@ -65,7 +67,21 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
     dplyr::mutate(media_type = stringr::str_to_lower(dplyr::if_else(condition = media_product_type == "REELS",
       true = "REELS",
       false = media_type
-    )))
+    ))) |>
+    dplyr::mutate(date = lubridate::as_date(timestamp))
+
+  # drop early posts as not available
+  unavailable_media_df <- media_df |>
+    dplyr::filter(date < as.Date("2017-01-01"))
+
+  ig_media_id_available <- ig_media_id[!(ig_media_id %in% unavailable_media_df$ig_media_id)]
+
+  if (length(ig_media_id_available) < length(ig_media_id)) {
+    cli::cli_warn("Media posted before 2017 have been dropped as Insights are not available for earlier posts")
+    ig_media_id <- ig_media_id_available
+    media_df <- media_df |>
+      dplyr::filter(date >= as.Date("2017-01-01"))
+  }
 
   media_by_type <- media_df |>
     dplyr::group_by(media_type) |>
@@ -117,15 +133,31 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
           conn = db,
           name = current_table
         ) |>
-          dplyr::filter(ig_media_id %in% ig_media_all_requested_v)
-
+          dplyr::filter(ig_media_id %in% ig_media_all_requested_v) |> 
+          dplyr::collect() |> 
+          tibble::as_tibble()
 
         if (nrow(previous_ig_media_df) > 0) {
           previous_ig_media_df <- previous_ig_media_df |>
             dplyr::group_by(ig_media_id) |>
             dplyr::slice_max(order_by = timestamp_retrieved, n = 1, with_ties = FALSE) |>
-            dplyr::ungroup()
-
+            dplyr::ungroup() 
+          
+          if (update == TRUE) {
+          
+          update_df <- cc_check_instagram_media_update(ig_media_id = unique(previous_ig_media_df$ig_media_id),
+                                                       ig_user_id = ig_user_id,
+                                                       insights = TRUE,
+                                                       token = token) |> 
+            dplyr::filter(update == TRUE)
+          
+          if (nrow(update_df)>0) {
+            previous_ig_media_df <- previous_ig_media_df |> 
+              dplyr::anti_join(y = update_df,
+                               by = "ig_media_id")
+          }
+          
+          }
           previous_ig_media_id_v <- previous_ig_media_df |>
             dplyr::pull(ig_media_id)
         } else {
@@ -135,15 +167,17 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
         current_type_ig_media_id <- media_df |>
           dplyr::filter(media_type == current_media_type) |>
           dplyr::pull(ig_media_id)
-        
+
         previous_ig_media_id_v <- character()
       }
 
       ig_media_id_to_process_v <- current_type_ig_media_id[!(current_type_ig_media_id %in% previous_ig_media_id_v)]
 
       all_new_df <- purrr::map(
-        .progress = stringr::str_c("Now processing media of type ",
-                                   sQuote(current_media_type)),
+        .progress = stringr::str_c(
+          "Now processing media of type ",
+          sQuote(current_media_type)
+        ),
         .x = ig_media_id_to_process_v,
         .f = function(current_ig_media_id) {
           current_media_df <- cc_api_get_instagram_media_insights(
@@ -181,7 +215,7 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
     }
   ) |>
     purrr::list_rbind()
-  
+
   if (cache == TRUE) {
     DBI::dbDisconnect(db)
   }
@@ -192,7 +226,10 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
     all_types_output_df
   ) |>
     dplyr::relocate(ig_media_id, ig_media_type) |>
-    dplyr::relocate(timestamp_retrieved, .after = last_col())
+    dplyr::relocate(timestamp_retrieved, .after = last_col()) |> 
+    dplyr::group_by(ig_media_id) |> 
+    dplyr::slice_max(order_by = timestamp_retrieved, n = 1, with_ties = FALSE) |>
+    dplyr::ungroup()
 }
 
 
