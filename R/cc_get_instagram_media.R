@@ -39,7 +39,7 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
   }
 
   if (ig_user_id == "" & cache == TRUE) {
-    stop("`ig_user_id` must be given when `cache` is set to TRUE.")
+    cli::cli_abort("`ig_user_id` must be given when `cache` is set to TRUE.")
   }
 
   if (is.null(ig_media_id)) {
@@ -55,7 +55,7 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
 
   if (cache == TRUE) {
     if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
-      stop("Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE.")
+      cli::cli_abort("Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE.")
     }
     fs::dir_create("cornucopia_db")
 
