@@ -2,10 +2,13 @@
 #'
 #' Data are not cached locally.
 #'
-#' @return A data frame.
+#' @return A data frame. Some columns include nested data.
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#'   cc_get_fb_products()
+#' }
 cc_get_fb_products <- function(fb_product_catalog_id = NULL,
                                fields = cc_valid_fields_fb_product,
                                api_version = "v17.0",
@@ -25,6 +28,9 @@ cc_get_fb_products <- function(fb_product_catalog_id = NULL,
     fb_product_catalog_id <- as.character(fb_product_catalog_id)
   }
 
+  if (fb_product_catalog_id == "") {
+    cli::cli_abort("`fb_product_catalog_id` must be given.")
+  }
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",

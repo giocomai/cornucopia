@@ -13,8 +13,13 @@ cc_get_fb_products(
 )
 }
 \value{
-A data frame.
+A data frame. Some columns include nested data.
 }
 \description{
 Data are not cached locally.
+}
+\examples{
+\dontrun{
+  cc_get_fb_products()
+}
 }
