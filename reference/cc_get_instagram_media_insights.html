@@ -54,6 +54,7 @@ adjustments:</p>
 <span>  api_version <span class="op">=</span> <span class="st">"v17.0"</span>,</span>
 <span>  ig_user_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  update <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  token <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -86,7 +87,8 @@ NULL, a full list is automatically retrieved.</p></dd>
 - it ensures that the output always included all requested fields, if they are valid; e.g. `is_shared_to_feed` and `media_url` may be omitted by the API (see documentation) but this function always includes the relevant column (and returns a NA value if no value is given)
 - all valid fields for the given API endpoint are always requested and cached locally; only requested fields are effectively returned (but `ig_media_id` and `timestamp_retrieved` are always included as first and last column)</p>
 <p>N.B.: different media types have different fields: hence the `NA`s in columns
-for which data are unavailable for the given media type.</p>
+for which data are unavailable for the given media type.
+N.B.: all media posted before 2017 are discarded by default, as Instagram API throw an error for earlier posts</p>
 <p>For details, see:
 https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights</p>
     </div>
