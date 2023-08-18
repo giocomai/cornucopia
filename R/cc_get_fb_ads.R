@@ -4,6 +4,8 @@
 #' directory.
 #'
 #' See also `cc_get_fb_ads_by_date()` for customisation of fields.
+#' 
+#' For valid fields, see: \url{https://developers.facebook.com/docs/marketing-api/reference/adgroup/insights/}
 #'
 #' @param only_cached Defaults to FALSE. If TRUE, only pre-cached files within
 #'   the given date range are loaded; no new calls to the API are made and
@@ -19,7 +21,31 @@
 #' }
 cc_get_fb_ads <- function(start_date = NULL,
                           end_date = NULL,
-                          only_cached = FALSE) {
+                          only_cached = FALSE,
+                          fields = c(
+                            "campaign_name",
+                            "campaign_id",
+                            "adset_name",
+                            "adset_id",
+                            "ad_name",
+                            "ad_id",
+                            "objective",
+                            "account_currency",
+                            "spend",
+                            "actions",
+                            "action_values",
+                            "cost_per_action_type",
+                            "cost_per_unique_action_type",
+                            "conversions",
+                            "cost_per_conversion",
+                            "conversion_rate_ranking",
+                            "cpc",
+                            "cpm",
+                            "cpp",
+                            "ctr",
+                            "frequency",
+                            "reach"
+                          )) {
   dates_l <- cc_get_settings(
     start_date = start_date,
     end_date = end_date
@@ -31,6 +57,8 @@ cc_get_fb_ads <- function(start_date = NULL,
   dates <- as.Date(start_date:end_date,
     origin = as.Date("1970-01-01")
   )
+  
+  names(dates) <- dates
 
   if (only_cached == TRUE) {
     cached_v <- fs::dir_ls(
@@ -45,12 +73,11 @@ cc_get_fb_ads <- function(start_date = NULL,
     dates <- dates[dates %in% cached_v]
   }
 
-  names(dates) <- dates
-
   df <- purrr::map_dfr(
     .x = rev(dates),
     .f = function(x) {
-      cc_get_fb_ads_by_date(date = x)
+      cc_get_fb_ads_by_date(date = x,
+                            fields = fields)
     },
     .id = "date"
   ) |>

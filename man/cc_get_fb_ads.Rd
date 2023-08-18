@@ -4,7 +4,16 @@
 \alias{cc_get_fb_ads}
 \title{Get details about Facebook ads}
 \usage{
-cc_get_fb_ads(start_date = NULL, end_date = NULL, only_cached = FALSE)
+cc_get_fb_ads(
+  start_date = NULL,
+  end_date = NULL,
+  only_cached = FALSE,
+  fields = c("campaign_name", "campaign_id", "adset_name", "adset_id", "ad_name",
+    "ad_id", "objective", "account_currency", "spend", "actions", "action_values",
+    "cost_per_action_type", "cost_per_unique_action_type", "conversions",
+    "cost_per_conversion", "conversion_rate_ranking", "cpc", "cpm", "cpp", "ctr",
+    "frequency", "reach")
+)
 }
 \arguments{
 \item{only_cached}{Defaults to FALSE. If TRUE, only pre-cached files within
@@ -21,6 +30,8 @@ directory.
 }
 \details{
 See also `cc_get_fb_ads_by_date()` for customisation of fields.
+
+For valid fields, see: \url{https://developers.facebook.com/docs/marketing-api/reference/adgroup/insights/}
 }
 \examples{
 \dontrun{
