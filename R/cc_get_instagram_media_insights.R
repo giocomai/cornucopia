@@ -133,30 +133,32 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
           conn = db,
           name = current_table
         ) |>
-          dplyr::filter(ig_media_id %in% ig_media_all_requested_v) |> 
-          dplyr::collect() |> 
+          dplyr::filter(ig_media_id %in% ig_media_all_requested_v) |>
+          dplyr::collect() |>
           tibble::as_tibble()
 
         if (nrow(previous_ig_media_df) > 0) {
           previous_ig_media_df <- previous_ig_media_df |>
             dplyr::group_by(ig_media_id) |>
             dplyr::slice_max(order_by = timestamp_retrieved, n = 1, with_ties = FALSE) |>
-            dplyr::ungroup() 
-          
+            dplyr::ungroup()
+
           if (update == TRUE) {
-          
-          update_df <- cc_check_instagram_media_update(ig_media_id = unique(previous_ig_media_df$ig_media_id),
-                                                       ig_user_id = ig_user_id,
-                                                       insights = TRUE,
-                                                       token = token) |> 
-            dplyr::filter(update == TRUE)
-          
-          if (nrow(update_df)>0) {
-            previous_ig_media_df <- previous_ig_media_df |> 
-              dplyr::anti_join(y = update_df,
-                               by = "ig_media_id")
-          }
-          
+            update_df <- cc_check_instagram_media_update(
+              ig_media_id = unique(previous_ig_media_df$ig_media_id),
+              ig_user_id = ig_user_id,
+              insights = TRUE,
+              token = token
+            ) |>
+              dplyr::filter(update == TRUE)
+
+            if (nrow(update_df) > 0) {
+              previous_ig_media_df <- previous_ig_media_df |>
+                dplyr::anti_join(
+                  y = update_df,
+                  by = "ig_media_id"
+                )
+            }
           }
           previous_ig_media_id_v <- previous_ig_media_df |>
             dplyr::pull(ig_media_id)
@@ -226,8 +228,8 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
     all_types_output_df
   ) |>
     dplyr::relocate(ig_media_id, ig_media_type) |>
-    dplyr::relocate(timestamp_retrieved, .after = last_col()) |> 
-    dplyr::group_by(ig_media_id) |> 
+    dplyr::relocate(timestamp_retrieved, .after = last_col()) |>
+    dplyr::group_by(ig_media_id) |>
     dplyr::slice_max(order_by = timestamp_retrieved, n = 1, with_ties = FALSE) |>
     dplyr::ungroup()
 }

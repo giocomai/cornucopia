@@ -7,7 +7,7 @@
 #'
 #' @examples
 #' \dontrun{
-#'   cc_get_fb_products()
+#' cc_get_fb_products()
 #' }
 cc_get_fb_products <- function(fb_product_catalog_id = NULL,
                                fields = cc_valid_fields_fb_product,
@@ -52,7 +52,7 @@ cc_get_fb_products <- function(fb_product_catalog_id = NULL,
     total_count <- httr2::resp_body_json(req) |>
       purrr::pluck("summary", "total_count") |>
       as.numeric()
-    max_pages <- ceiling(total_count / 25)+1
+    max_pages <- ceiling(total_count / 25) + 1
   }
 
   fields_v <- stringr::str_c(fields, collapse = ",")

@@ -4,7 +4,7 @@
 #' directory.
 #'
 #' See also `cc_get_fb_ads_by_date()` for customisation of fields.
-#' 
+#'
 #' For valid fields, see: \url{https://developers.facebook.com/docs/marketing-api/reference/adgroup/insights/}
 #'
 #' @param only_cached Defaults to FALSE. If TRUE, only pre-cached files within
@@ -57,7 +57,7 @@ cc_get_fb_ads <- function(start_date = NULL,
   dates <- as.Date(start_date:end_date,
     origin = as.Date("1970-01-01")
   )
-  
+
   names(dates) <- dates
 
   if (only_cached == TRUE) {
@@ -76,8 +76,10 @@ cc_get_fb_ads <- function(start_date = NULL,
   df <- purrr::map_dfr(
     .x = rev(dates),
     .f = function(x) {
-      cc_get_fb_ads_by_date(date = x,
-                            fields = fields)
+      cc_get_fb_ads_by_date(
+        date = x,
+        fields = fields
+      )
     },
     .id = "date"
   ) |>
