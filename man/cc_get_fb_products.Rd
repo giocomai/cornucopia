@@ -20,6 +20,6 @@ Data are not cached locally.
 }
 \examples{
 \dontrun{
-  cc_get_fb_products()
+cc_get_fb_products()
 }
 }
