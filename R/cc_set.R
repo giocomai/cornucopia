@@ -21,6 +21,7 @@ cc_set <- function(start_date = NULL,
                    fb_user_token = NULL,
                    fb_page_token = NULL,
                    fb_business_id = NULL,
+                   fb_ad_account_id = NULL,
                    fb_product_catalog_id = NULL,
                    ig_user_id = NULL) {
   if (is.null(start_date)) {
@@ -59,12 +60,17 @@ cc_set <- function(start_date = NULL,
     Sys.setenv(cornucopia_fb_business_id = as.character(fb_business_id))
   }
 
+  if (is.null(fb_ad_account_id)) {
+    fb_ad_account_id <- Sys.getenv("cornucopia_fb_ad_account_id")
+  } else {
+    Sys.setenv(cornucopia_fb_ad_account_id = as.character(fb_ad_account_id))
+  }
+
   if (is.null(fb_product_catalog_id)) {
     fb_product_catalog_id <- Sys.getenv("cornucopia_fb_product_catalog_id")
   } else {
     Sys.setenv(cornucopia_fb_product_catalog_id = as.character(fb_product_catalog_id))
   }
-
 
   if (is.null(ig_user_id)) {
     ig_user_id <- Sys.getenv("cornucopia_ig_user_id")
@@ -79,6 +85,7 @@ cc_set <- function(start_date = NULL,
     fb_user_token = as.character(fb_user_token),
     fb_page_token = as.character(fb_page_token),
     fb_business_id = as.character(fb_business_id),
+    fb_ad_account_id = as.character(fb_ad_account_id),
     fb_product_catalog_id = as.character(fb_product_catalog_id),
     ig_user_id = as.character(ig_user_id)
   ))
@@ -106,6 +113,7 @@ cc_get_settings <- function(start_date = NULL,
                             fb_user_token = NULL,
                             fb_page_token = NULL,
                             fb_business_id = NULL,
+                            fb_ad_account_id = NULL,
                             fb_product_catalog_id = NULL,
                             ig_user_id = NULL) {
   if (is.null(start_date)) {
@@ -135,6 +143,11 @@ cc_get_settings <- function(start_date = NULL,
     fb_business_id <- Sys.getenv("cornucopia_fb_business_id")
   }
 
+
+  if (is.null(fb_ad_account_id)) {
+    fb_ad_account_id <- Sys.getenv("cornucopia_fb_ad_account_id")
+  }
+
   if (is.null(fb_product_catalog_id)) {
     fb_product_catalog_id <- Sys.getenv("cornucopia_fb_product_catalog_id")
   }
@@ -149,6 +162,7 @@ cc_get_settings <- function(start_date = NULL,
     fb_user_token = as.character(fb_user_token),
     fb_page_token = as.character(fb_page_token),
     fb_business_id = as.character(fb_business_id),
+    fb_ad_account_id = as.character(fb_ad_account_id),
     fb_product_catalog_id = as.character(fb_product_catalog_id),
     ig_user_id = as.character(ig_user_id)
   ))

@@ -27,7 +27,6 @@ cc_valid_fields_ad_insights <- list(
     "date_start",
     "date_stop"
   ),
-  
   asset_related = c(
     "ad_id",
     "title_asset",
