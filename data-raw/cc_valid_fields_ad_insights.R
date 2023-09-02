@@ -153,7 +153,6 @@ cc_valid_fields_ad_insights <- list(
     "mobile_app_purchase_roas",
     "purchase_roas",
     "website_purchase_roas",
-    "qualifying_question_qualify_answer_rate",
     "converted_product_quantity",
     "converted_product_value"
   ),
@@ -219,7 +218,8 @@ cc_valid_fields_ad_insights <- list(
     "hsid",
     "postback_sequence_index",
     "impressions_dummy",
-    "labels"
+    "labels",
+    "qualifying_question_qualify_answer_rate"
   )
 )
 
