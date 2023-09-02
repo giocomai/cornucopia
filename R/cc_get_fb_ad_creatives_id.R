@@ -3,15 +3,15 @@
 #' See: https://developers.facebook.com/docs/marketing-api/reference/adgroup/adcreatives/
 #'
 #'
-#' @return
+#' @return A data frame with three character columns: `ad_id`, `creative_id`, and `timestamp_retrieved`
 #' @export
 #'
 #' @examples
-cc_get_ad_creatives_id <- function(ad_id = NULL,
-                                   ad_account_id = NULL,
-                                   api_version = "v17.0",
-                                   cache = TRUE,
-                                   token = NULL) {
+cc_get_fb_ad_creatives_id <- function(ad_id = NULL,
+                                      ad_account_id = NULL,
+                                      api_version = "v17.0",
+                                      cache = TRUE,
+                                      token = NULL) {
   if (is.null(token)) {
     fb_user_token <- cc_get_settings(fb_user_token = token) |>
       purrr::pluck("fb_user_token")
