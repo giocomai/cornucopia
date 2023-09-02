@@ -92,6 +92,15 @@ ads_df <- cc_get_fb_ads(only_cached = TRUE)
 ```
 
 
+Notice that you can customise the fields to retrieve and that not all fields can be asked at the same time. See the embedded list `cc_valid_fields_ad_insights` for list of valid fields, divided by broad categories (this subdivision has been made by the package author, not by Facebook itself). Caching of retrieved contents by type of fields will be addedt to future versions. 
+
+
+Not all ad-related information, however, can be retrieved through this endpoint. For example, if you want details about the creatives used in an ad, you will first need to make queries to retrieve the `creative_id` associated with each ad ([see documentation of this endpoint](https://developers.facebook.com/docs/marketing-api/reference/adgroup/adcreatives/)), and only then query the [ad creative endpoint](https://developers.facebook.com/docs/marketing-api/reference/ad-creative/) to retrieve relevant information about the creative. 
+
+The first step of this process, i.e. retrieving `creative_id` can be achieved by passing a vector of `ad_id` to `cc_get_fb_ad_creatives_id()`. Data will be cached locally by default, assuming creatives will mostly be added at the time when the ad is created.  
+
+
+
 ### Instagram
 
 As for all things related to Meta's API, you will need an app, and a valid token with all the needed permissions (not having the right permissions is the most frequent problem you'll find, so when troubleshooting, take it from there).
