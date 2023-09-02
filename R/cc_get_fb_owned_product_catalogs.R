@@ -1,4 +1,4 @@
-#' Get information about your Instagram user
+#' Get information about your Facebook product catalogs
 #'
 #' See the relevant page in the documentation for available fields and more details
 #' https://developers.facebook.com/docs/marketing-api/reference/product-catalog

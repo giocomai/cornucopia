@@ -2,7 +2,7 @@
 % Please edit documentation in R/cc_get_fb_owned_product_catalogs.R
 \name{cc_get_fb_owned_product_catalogs}
 \alias{cc_get_fb_owned_product_catalogs}
-\title{Get information about your Instagram user}
+\title{Get information about your Facebook product catalogs}
 \usage{
 cc_get_fb_owned_product_catalogs(
   fb_business_id = NULL,
