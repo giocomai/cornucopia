@@ -7,13 +7,13 @@
 cc_get_fb_ad_actions_by_day(
   ad_id = NULL,
   type = "actions",
+  cache = TRUE,
   only_cached = FALSE,
   api_version = "v17.0",
-  cache = TRUE,
   ad_account_id = NULL,
   token = NULL
 )
 }
 \description{
-Draft: no caching and returns only latest 25 days, as paging in data retrieval has not been enabled
+Draft: no caching and returns only 25 days for each ad, as paging in data retrieval has not been enabled
 }

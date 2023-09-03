@@ -37,7 +37,7 @@ cc_get_fb_ad_creatives_id <- function(ad_id = NULL,
       drv = RSQLite::SQLite(),
       fs::path(
         "cornucopia_db",
-        fs::path_ext_set(stringr::str_c("fb_", fb_ad_account_id), ".sqlite") |>
+        fs::path_ext_set(stringr::str_c("fb_ad_", fb_ad_account_id), ".sqlite") |>
           fs::path_sanitize()
       )
     )
