@@ -9,11 +9,11 @@
 #' @export
 #'
 #' @examples
-cc_get_fb_ads_totals_by_day_by_objective <- function(ads_df = NULL,
-                                                     start_date = NULL,
-                                                     end_date = NULL,
-                                                     before = 3,
-                                                     after = 3) {
+cc_get_fb_ad_spend_totals_by_day_by_objective <- function(ads_df = NULL,
+                                                          start_date = NULL,
+                                                          end_date = NULL,
+                                                          before = 3,
+                                                          after = 3) {
   dates_l <- cc_get_settings(
     start_date = start_date,
     end_date = end_date
