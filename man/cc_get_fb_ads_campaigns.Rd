@@ -7,14 +7,18 @@
 cc_get_fb_ads_campaigns(
   api_version = "v17.0",
   ad_account_id = NULL,
-  token = NULL
+  max_pages = NULL,
+  token = NULL,
+  cache = FALSE
 )
 }
 \description{
-For details on valid fields, see: https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/
+For details on fields, see: https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/
 }
 \details{
-Draft: not yet caching or paging results
+It currently returns only fields that are always present for all campaigns: "id,name,created_time,updated_time,start_time,stop_time,objective,status"
+
+Draft: paging results, but not yet caching
 }
 \examples{
 \dontrun{
