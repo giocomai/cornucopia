@@ -4,20 +4,21 @@
 #'
 #' It currently returns only fields that are always present for all campaigns: "id,name,created_time,updated_time,start_time,stop_time,objective,status"
 #'
-#' Draft: paging results, but not yet caching
+#' Cache updating currently suboptimal.
 #'
 #' @return
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' cc_get_fb_ads_campaigns()
+#' cc_get_fb_ad_campaigns()
 #' }
-cc_get_fb_ads_campaigns <- function(api_version = "v17.0",
-                                    ad_account_id = NULL,
-                                    max_pages = NULL,
-                                    token = NULL,
-                                    cache = FALSE) {
+cc_get_fb_ad_campaigns <- function(api_version = "v17.0",
+                                   ad_account_id = NULL,
+                                   max_pages = NULL,
+                                   token = NULL,
+                                   cache = TRUE,
+                                   update = FALSE) {
   if (is.null(token)) {
     fb_user_token <- cc_get_settings(fb_user_token = token) |>
       purrr::pluck("fb_user_token")
@@ -30,6 +31,53 @@ cc_get_fb_ads_campaigns <- function(api_version = "v17.0",
       purrr::pluck("fb_ad_account_id")
   } else {
     fb_ad_account_id <- as.character(ad_account_id)
+  }
+
+
+
+  if (cache == TRUE) {
+    if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
+      cli::cli_abort("Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE.")
+    }
+    fs::dir_create("cornucopia_db")
+
+    db <- DBI::dbConnect(
+      drv = RSQLite::SQLite(),
+      fs::path(
+        "cornucopia_db",
+        fs::path_ext_set(stringr::str_c("fb_", fb_ad_account_id), ".sqlite") |>
+          fs::path_sanitize()
+      )
+    )
+
+    current_table <- "fb_ad_campaigns"
+
+    if (DBI::dbExistsTable(conn = db, name = current_table) == FALSE) {
+      DBI::dbWriteTable(
+        conn = db,
+        name = current_table,
+        value = cc_empty_fb_ad_campaign
+      )
+    }
+
+    previous_ad_campaign_df <- DBI::dbReadTable(
+      conn = db,
+      name = current_table
+    ) |>
+      dplyr::collect() |>
+      tibble::as_tibble() |>
+      dplyr::group_by(campaign_id) |>
+      dplyr::slice_max(timestamp_retrieved,
+        n = 1,
+        with_ties = FALSE
+      ) |>
+      dplyr::ungroup()
+
+    if (nrow(previous_ad_campaign_df) > 0) {
+      if (update == FALSE) {
+        return(previous_ad_campaign_df)
+      }
+    }
   }
 
   base_url <- stringr::str_c(
@@ -110,5 +158,6 @@ cc_get_fb_ads_campaigns <- function(api_version = "v17.0",
   cli::cli_process_done()
 
   campaigns_l |>
-    purrr::list_rbind()
+    purrr::list_rbind() |>
+    tibble::as_tibble()
 }
