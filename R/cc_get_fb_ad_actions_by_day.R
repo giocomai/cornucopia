@@ -89,7 +89,7 @@ cc_get_fb_ad_actions_by_day <- function(ad_id = NULL,
     api_version
   )
 
-  new_fb_ad_details_df <- purrr::map(
+  new_fb_ad_details_pre_df <- purrr::map(
     .x = ad_id_to_process_v,
     .progress = stringr::str_c("Retrieving ad details"),
     .f = function(current_ad_id) {
@@ -124,9 +124,14 @@ cc_get_fb_ad_actions_by_day <- function(ad_id = NULL,
         dplyr::relocate(ad_id)
     }
   ) |>
-    purrr::list_rbind() |>
-    dplyr::mutate(value = as.numeric(value))
+    purrr::list_rbind()
 
+  if (ncol(new_fb_ad_details_pre_df) < 4) {
+    new_fb_ad_details_df <- cc_empty_fb_ad_actions
+  } else {
+    new_fb_ad_details_df <- new_fb_ad_details_pre_df |>
+      dplyr::mutate(value = as.numeric(value))
+  }
 
 
   if (cache == TRUE) {
