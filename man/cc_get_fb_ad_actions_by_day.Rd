@@ -7,13 +7,15 @@
 cc_get_fb_ad_actions_by_day(
   ad_id = NULL,
   type = "actions",
-  cache = TRUE,
+  cache = FALSE,
   only_cached = FALSE,
   api_version = "v17.0",
   ad_account_id = NULL,
-  token = NULL
+  token = NULL,
+  max_pages = NULL
 )
 }
 \description{
-Draft: no caching and returns only 25 days for each ad, as paging in data retrieval has not been enabled
+Draft: caching disabled by default as only partly functional;
+Not yet fully tested with ads running longer than 25 days
 }
