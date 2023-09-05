@@ -7,6 +7,7 @@
 cc_get_fb_ad_actions_by_day(
   ad_id = NULL,
   type = "actions",
+  action_breakdowns = NULL,
   cache = FALSE,
   only_cached = FALSE,
   api_version = "v17.0",
@@ -16,6 +17,9 @@ cc_get_fb_ad_actions_by_day(
 )
 }
 \description{
+For action breakdowns, see: https://developers.facebook.com/docs/marketing-api/insights/breakdowns/
+}
+\details{
 Draft: caching disabled by default as only partly functional;
 Not yet fully tested with ads running longer than 25 days
 }

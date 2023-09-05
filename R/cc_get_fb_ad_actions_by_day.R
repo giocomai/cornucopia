@@ -1,5 +1,7 @@
 #' Takes all action results for all days when an ad is active
 #'
+#' For action breakdowns, see: https://developers.facebook.com/docs/marketing-api/insights/breakdowns/
+#'
 #' Draft: caching disabled by default as only partly functional;
 #' Not yet fully tested with ads running longer than 25 days
 #'
@@ -10,6 +12,7 @@
 #' @examples
 cc_get_fb_ad_actions_by_day <- function(ad_id = NULL,
                                         type = "actions",
+                                        action_breakdowns = NULL,
                                         cache = FALSE,
                                         only_cached = FALSE,
                                         api_version = "v17.0",
@@ -110,6 +113,7 @@ cc_get_fb_ad_actions_by_day <- function(ad_id = NULL,
         httr2::req_url_path_append("insights") |>
         httr2::req_url_query(
           fields = type,
+          action_breakdowns = action_breakdowns,
           access_token = fb_user_token,
           date_preset = "maximum",
           time_increment = 1
@@ -199,7 +203,7 @@ cc_get_fb_ad_actions_by_day <- function(ad_id = NULL,
       previous_fb_ad_details_df
     ) |>
       tibble::as_tibble() |>
-      dplyr::distinct(ad_id, date, action_type, .keep_all = TRUE)
+      dplyr::distinct()
 
     DBI::dbDisconnect(db)
   } else {
@@ -207,5 +211,5 @@ cc_get_fb_ad_actions_by_day <- function(ad_id = NULL,
   }
 
   output_df |>
-    dplyr::distinct(ad_id, date, action_type, .keep_all = TRUE)
+    dplyr::distinct()
 }
