@@ -63,6 +63,11 @@ dates_l
 You can get your token from your app page:
 <https://developers.facebook.com/apps/>
 
+Be mindful that the APIs never, ever, return meaningful error messages,
+and the documentation has only few examples… as some queries work or not
+depending on the type of ad involved (its creatives/its format/etc.),
+there’s often some trial and error involved.
+
 ### Sponsored
 
 For the time being, `cornucopia` relies on
@@ -104,9 +109,13 @@ Facebook itself). Caching of retrieved contents by type of fields will
 be addedt to future versions.
 
 Not all ad-related information, however, can be retrieved through this
-endpoint. For example, if you want details about the creatives used in
-an ad, you will first need to make queries to retrieve the `creative_id`
-associated with each ad ([see documentation of this
+endpoint.
+
+### Creatives
+
+For example, if you want details about the creatives used in an ad, you
+will first need to make queries to retrieve the `creative_id` associated
+with each ad ([see documentation of this
 endpoint](https://developers.facebook.com/docs/marketing-api/reference/adgroup/adcreatives/)),
 and only then query the [ad creative
 endpoint](https://developers.facebook.com/docs/marketing-api/reference/ad-creative/)
@@ -117,6 +126,37 @@ achieved by passing a vector of `ad_id` to
 `cc_get_fb_ad_creatives_id()`. Data will be cached locally by default,
 assuming creatives will mostly be added at the time when the ad is
 created.
+
+### Action breakdowns
+
+Here’s more interesting information, but also where caching gets
+trickier. But say, you are interested in `actions` by day and by ad, you
+can use `cc_get_fb_ad_actions_by_day`, passing to it a vector of `ad_id`
+(or `adset_id`, for that matter, the APIs don’t seem to mind), and
+you’ll get a daily breakdown.
+
+You can get even more details: for example, do you want to know how many
+of those viewing your video ads had the sound on:
+
+``` r
+cc_get_fb_ad_actions_by_day(ad_id = example_id,
+                            type = "actions",
+                            action_breakdowns = "action_video_sound") |> 
+  dplyr::filter(is.na(action_video_sound)==FALSE) 
+```
+
+For many such breakdowns, including this one, you get a meaningful
+breakdown only if your ad is relevant. For example, if the `example_id`
+above is of an ad that does not have any video, no information is
+returned. If you ask for `product_id` for an ad that is not based on
+catalogue, you won’t get anything. And so on.
+
+See the [official
+documentation](https://developers.facebook.com/docs/marketing-api/insights/breakdowns/)
+for details.
+
+Caching does not really work with this function at this stage, as no
+consistent approach for updating cached data has been implemented, yet.
 
 ### Instagram
 
@@ -165,6 +205,13 @@ Instagram post.
 ``` r
 cc_get_instagram_media()
 ```
+
+Responses to `cc_get_instagram_media()` are cached by default, and
+updated with decreasing frequency as posts get older (data are refreshed
+every day for the last week, once a week for the last month, once a
+month for the last year, once a year for previous years). As a
+consequence, you should mostly be able to keep this in scripts and rely
+on it to autoaupdate data without much delay.
 
 ### Facebook pages
 
