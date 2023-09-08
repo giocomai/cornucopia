@@ -102,6 +102,7 @@
 <span></span>
 <span><span class="va">dates_l</span></span></code></pre></div>
 <p>You can get your token from your app page: <a href="https://developers.facebook.com/apps/" class="external-link uri">https://developers.facebook.com/apps/</a></p>
+<p>Be mindful that the APIs never, ever, return meaningful error messages, and the documentation has only few examples… as some queries work or not depending on the type of ad involved (its creatives/its format/etc.), there’s often some trial and error involved.</p>
 </div>
 <div class="section level3">
 <h3 id="sponsored">Sponsored<a class="anchor" aria-label="anchor" href="#sponsored"></a>
@@ -123,32 +124,52 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ads_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cc_get_fb_ads.html">cc_get_fb_ads</a></span><span class="op">(</span>only_cached <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Notice that you can customise the fields to retrieve and that not all fields can be asked at the same time. See the embedded list <code>cc_valid_fields_ad_insights</code> for list of valid fields, divided by broad categories (this subdivision has been made by the package author, not by Facebook itself). Caching of retrieved contents by type of fields will be addedt to future versions.</p>
-<p>Not all ad-related information, however, can be retrieved through this endpoint. For example, if you want details about the creatives used in an ad, you will first need to make queries to retrieve the <code>creative_id</code> associated with each ad (<a href="https://developers.facebook.com/docs/marketing-api/reference/adgroup/adcreatives/" class="external-link">see documentation of this endpoint</a>), and only then query the <a href="https://developers.facebook.com/docs/marketing-api/reference/ad-creative/" class="external-link">ad creative endpoint</a> to retrieve relevant information about the creative.</p>
+<p>Not all ad-related information, however, can be retrieved through this endpoint.</p>
+</div>
+<div class="section level3">
+<h3 id="creatives">Creatives<a class="anchor" aria-label="anchor" href="#creatives"></a>
+</h3>
+<p>For example, if you want details about the creatives used in an ad, you will first need to make queries to retrieve the <code>creative_id</code> associated with each ad (<a href="https://developers.facebook.com/docs/marketing-api/reference/adgroup/adcreatives/" class="external-link">see documentation of this endpoint</a>), and only then query the <a href="https://developers.facebook.com/docs/marketing-api/reference/ad-creative/" class="external-link">ad creative endpoint</a> to retrieve relevant information about the creative.</p>
 <p>The first step of this process, i.e. retrieving <code>creative_id</code> can be achieved by passing a vector of <code>ad_id</code> to <code><a href="reference/cc_get_fb_ad_creatives_id.html">cc_get_fb_ad_creatives_id()</a></code>. Data will be cached locally by default, assuming creatives will mostly be added at the time when the ad is created.</p>
+</div>
+<div class="section level3">
+<h3 id="action-breakdowns">Action breakdowns<a class="anchor" aria-label="anchor" href="#action-breakdowns"></a>
+</h3>
+<p>Here’s more interesting information, but also where caching gets trickier. But say, you are interested in <code>actions</code> by day and by ad, you can use <code>cc_get_fb_ad_actions_by_day</code>, passing to it a vector of <code>ad_id</code> (or <code>adset_id</code>, for that matter, the APIs don’t seem to mind), and you’ll get a daily breakdown.</p>
+<p>You can get even more details: for example, do you want to know how many of those viewing your video ads had the sound on:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_fb_ad_actions_by_day.html">cc_get_fb_ad_actions_by_day</a></span><span class="op">(</span>ad_id <span class="op">=</span> <span class="va">example_id</span>,</span>
+<span>                            type <span class="op">=</span> <span class="st">"actions"</span>,</span>
+<span>                            action_breakdowns <span class="op">=</span> <span class="st">"action_video_sound"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">action_video_sound</span><span class="op">)</span><span class="op">==</span><span class="cn">FALSE</span><span class="op">)</span> </span></code></pre></div>
+<p>For many such breakdowns, including this one, you get a meaningful breakdown only if your ad is relevant. For example, if the <code>example_id</code> above is of an ad that does not have any video, no information is returned. If you ask for <code>product_id</code> for an ad that is not based on catalogue, you won’t get anything. And so on.</p>
+<p>See the <a href="https://developers.facebook.com/docs/marketing-api/insights/breakdowns/" class="external-link">official documentation</a> for details.</p>
+<p>Caching does not really work with this function at this stage, as no consistent approach for updating cached data has been implemented, yet.</p>
 </div>
 <div class="section level3">
 <h3 id="instagram">Instagram<a class="anchor" aria-label="anchor" href="#instagram"></a>
 </h3>
 <p>As for all things related to Meta’s API, you will need an app, and a valid token with all the needed permissions (not having the right permissions is the most frequent problem you’ll find, so when troubleshooting, take it from there).</p>
 <p>So first set your <code>ig_user_id</code> and your token.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_set.html">cc_set</a></span><span class="op">(</span></span>
 <span>  ig_user_id <span class="op">=</span> <span class="st">"00000000000000000"</span>, <span class="co"># probably about 17 digits, not the legacy Instagram id</span></span>
 <span>  fb_user_token <span class="op">=</span> <span class="st">"loooong_string"</span></span>
 <span><span class="op">)</span> <span class="co"># the regular token, not the "page token"</span></span></code></pre></div>
 <p>And you can get some basic information about your profile:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_instagram_user.html">cc_get_instagram_user</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Or just some specific fields:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_instagram_user.html">cc_get_instagram_user</a></span><span class="op">(</span>fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"username"</span>, <span class="st">"followers_count"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>In order to get detailed information about each of your posts, you first need to know their <code>ig_media_id</code>. You can get this id for all of your posts with the following command:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_instagram_media_id.html">cc_get_instagram_media_id</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Be mindful that this may make many queries, as Instagram gives the result in batches of 25… if you have thousands of media, it may take some time. Data are however cached locally by default.</p>
 <p>You can then pass the resulting <code>ig_media_id</code> to <code><a href="reference/cc_get_instagram_media.html">cc_get_instagram_media()</a></code> to get more information about a given Instagram post.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_instagram_media.html">cc_get_instagram_media</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Responses to <code><a href="reference/cc_get_instagram_media.html">cc_get_instagram_media()</a></code> are cached by default, and updated with decreasing frequency as posts get older (data are refreshed every day for the last week, once a week for the last month, once a month for the last year, once a year for previous years). As a consequence, you should mostly be able to keep this in scripts and rely on it to autoaupdate data without much delay.</p>
 </div>
 <div class="section level3">
 <h3 id="facebook-pages">Facebook pages<a class="anchor" aria-label="anchor" href="#facebook-pages"></a>
@@ -170,19 +191,19 @@
 <p>The user just needs to download relevant files and store them in a folder, without paying attention to anything else, really. Files for more than one page can be included in the same folder and no special attention needs to be dedicated to the time period included: <code>cornucopia</code> will always strive to include data for the longest possible period, always preferring the most recent data available. For this reason, it is usually easiest to export data about the last 365 days, and let this package deal with the rest.</p>
 <p>Export files for all sorts of a statics from your LinkedIn page. They will have file names such as “pagename_followers_1684688073420.xls”. Throw all of them in a folder, that we’ll call “LinkedIn_stats”.</p>
 <p>You can then retrieve some basic information about these files using:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_linkedin_stats_files.html">cc_get_linkedin_stats_files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"LinkedIn_stats"</span><span class="op">)</span></span></code></pre></div>
 <p>This allows to see when a file was exported, what is the name of the page, and what type of statistics it includes: all of this information can be gathered from the file name.</p>
 <p>Each of the statistics types exported from LinkedIn has its own data format, and indeed there is little consistency in these files, if not for the ridiculous insistence on including dates in the ridiculous US date format (month-day-year), no matter where you are in the world.</p>
 <p>Anyway… we can now move on to the specific functions for each type of statistics. The following functions parse all relevant files and merge the data preferring the most recently downloaded data over older files (this may be irrelevant in many cases, but may well have some impact in statistics associated with a given post).</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">followers_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cc_get_linkedin_stats_followers.html">cc_get_linkedin_stats_followers</a></span><span class="op">(</span></span>
 <span>  path <span class="op">=</span> <span class="st">"LinkedIn_stats"</span>,</span>
 <span>  page <span class="op">=</span> <span class="st">"example-page"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Once we have these data, we can of course process them as we usually would. But for the sake of this post, we are imagining a workflow that requires us to upload these files to a Google Sheet, in order to facilitate data retrieval through Google Looker Studio.</p>
 <p>We can do this manually, but, of course, we’d much rather use a set of convenience functions that will process data and upload them automatically to the same Google Sheet, updating the dataset if one was previously uploaded.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_drive_upload_linkedin_stats_followers.html">cc_drive_upload_linkedin_stats_followers</a></span><span class="op">(</span></span>
 <span>  path <span class="op">=</span> <span class="st">"LinkedIn_stats"</span>,</span>
 <span>  page_name <span class="op">=</span> <span class="st">"example-page"</span></span>
