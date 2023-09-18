@@ -169,6 +169,22 @@ Responses to `cc_get_instagram_media()` are cached by default, and updated with 
 
 ### Facebook pages
 
+Data about Facebook pages need to be accessed with a separate Facebook *page* token, not the Facebook *user* token.
+
+The first step is then to retrieve one's own Facebook user id:
+
+```{r}
+cc_get_fb_user()
+```
+
+And then use the Facebook user id to request all pages managed by that Facebook user, including the relevant Facebook page token: 
+
+```{r}
+cc_get_fb_managed_pages()
+```
+
+It is this page token that can then be used to retrieve information about a given page.
+
 [to do]
 
 ## LinkedIn

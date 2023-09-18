@@ -12,6 +12,7 @@ cc_get_settings(
   fb_business_id = NULL,
   fb_ad_account_id = NULL,
   fb_product_catalog_id = NULL,
+  fb_user_id = NULL,
   ig_user_id = NULL
 )
 }

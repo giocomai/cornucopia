@@ -23,6 +23,7 @@ cc_set <- function(start_date = NULL,
                    fb_business_id = NULL,
                    fb_ad_account_id = NULL,
                    fb_product_catalog_id = NULL,
+                   fb_user_id = NULL,
                    ig_user_id = NULL) {
   if (is.null(start_date)) {
     start_date <- Sys.getenv("cornucopia_start_date")
@@ -72,11 +73,20 @@ cc_set <- function(start_date = NULL,
     Sys.setenv(cornucopia_fb_product_catalog_id = as.character(fb_product_catalog_id))
   }
 
+  if (is.null(fb_user_id)) {
+    fb_user_id <- Sys.getenv("cornucopia_fb_user_id")
+  } else {
+    Sys.setenv(cornucopia_fb_user_id = as.character(fb_user_id))
+  }
+
   if (is.null(ig_user_id)) {
     ig_user_id <- Sys.getenv("cornucopia_ig_user_id")
   } else {
     Sys.setenv(cornucopia_ig_user_id = as.character(ig_user_id))
   }
+
+
+
 
 
   invisible(list(
@@ -87,6 +97,7 @@ cc_set <- function(start_date = NULL,
     fb_business_id = as.character(fb_business_id),
     fb_ad_account_id = as.character(fb_ad_account_id),
     fb_product_catalog_id = as.character(fb_product_catalog_id),
+    fb_user_id = as.character(fb_user_id),
     ig_user_id = as.character(ig_user_id)
   ))
 }
@@ -115,6 +126,7 @@ cc_get_settings <- function(start_date = NULL,
                             fb_business_id = NULL,
                             fb_ad_account_id = NULL,
                             fb_product_catalog_id = NULL,
+                            fb_user_id = NULL,
                             ig_user_id = NULL) {
   if (is.null(start_date)) {
     start_date <- Sys.getenv("cornucopia_start_date")
@@ -152,6 +164,10 @@ cc_get_settings <- function(start_date = NULL,
     fb_product_catalog_id <- Sys.getenv("cornucopia_fb_product_catalog_id")
   }
 
+  if (is.null(fb_user_id)) {
+    fb_user_id <- Sys.getenv("cornucopia_fb_user_id")
+  }
+
   if (is.null(ig_user_id)) {
     ig_user_id <- Sys.getenv("cornucopia_ig_user_id")
   }
@@ -164,6 +180,7 @@ cc_get_settings <- function(start_date = NULL,
     fb_business_id = as.character(fb_business_id),
     fb_ad_account_id = as.character(fb_ad_account_id),
     fb_product_catalog_id = as.character(fb_product_catalog_id),
+    fb_user_id = as.character(fb_user_id),
     ig_user_id = as.character(ig_user_id)
   ))
 }
