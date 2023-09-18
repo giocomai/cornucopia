@@ -112,10 +112,12 @@ Here's more interesting information, but also where caching gets trickier. But s
 You can get even more details: for example, do you want to know how many of those viewing your video ads had the sound on:
 
 ```{r eval=FALSE}
-cc_get_fb_ad_actions_by_day(ad_id = example_id,
-                            type = "actions",
-                            action_breakdowns = "action_video_sound") |> 
-  dplyr::filter(is.na(action_video_sound)==FALSE) 
+cc_get_fb_ad_actions_by_day(
+  ad_id = example_id,
+  type = "actions",
+  action_breakdowns = "action_video_sound"
+) |>
+  dplyr::filter(is.na(action_video_sound) == FALSE)
 ```
 
 For many such breakdowns, including this one, you get a meaningful breakdown only if your ad is relevant. For example, if the `example_id` above is of an ad that does not have any video, no information is returned. If you ask for `product_id` for an ad that is not based on catalogue, you won't get anything. And so on. 

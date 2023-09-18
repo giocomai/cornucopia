@@ -7,7 +7,7 @@
 cc_get_instagram_media(
   ig_media_id = NULL,
   fields = cc_valid_fields_instagram_media_v,
-  api_version = "v17.0",
+  api_version = "v18.0",
   ig_user_id = NULL,
   update = TRUE,
   cache = TRUE,
@@ -19,7 +19,7 @@ cc_get_instagram_media(
 account can be retrieved with `cc_get_instagram_media_id()`. If left to
 NULL, a full list is automatically retrieved.}
 
-\item{api_version}{Defaults to "v17.0".}
+\item{api_version}{Defaults to "v18.0".}
 
 \item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to be confused with legacy Instragram account id.}
 

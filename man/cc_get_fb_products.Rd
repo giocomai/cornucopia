@@ -7,7 +7,7 @@
 cc_get_fb_products(
   fb_product_catalog_id = NULL,
   fields = cc_valid_fields_fb_product,
-  api_version = "v17.0",
+  api_version = "v18.0",
   max_pages = NULL,
   token = NULL
 )

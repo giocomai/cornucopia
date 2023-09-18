@@ -5,7 +5,7 @@
 \title{Get all campaigns for the current ad account}
 \usage{
 cc_get_fb_ad_campaigns(
-  api_version = "v17.0",
+  api_version = "v18.0",
   ad_account_id = NULL,
   max_pages = NULL,
   token = NULL,

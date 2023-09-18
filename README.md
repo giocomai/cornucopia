@@ -139,10 +139,12 @@ You can get even more details: for example, do you want to know how many
 of those viewing your video ads had the sound on:
 
 ``` r
-cc_get_fb_ad_actions_by_day(ad_id = example_id,
-                            type = "actions",
-                            action_breakdowns = "action_video_sound") |> 
-  dplyr::filter(is.na(action_video_sound)==FALSE) 
+cc_get_fb_ad_actions_by_day(
+  ad_id = example_id,
+  type = "actions",
+  action_breakdowns = "action_video_sound"
+) |>
+  dplyr::filter(is.na(action_video_sound) == FALSE)
 ```
 
 For many such breakdowns, including this one, you get a meaningful

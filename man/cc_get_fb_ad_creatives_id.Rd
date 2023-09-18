@@ -7,7 +7,7 @@
 cc_get_fb_ad_creatives_id(
   ad_id = NULL,
   ad_account_id = NULL,
-  api_version = "v17.0",
+  api_version = "v18.0",
   cache = TRUE,
   token = NULL
 )

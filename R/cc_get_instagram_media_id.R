@@ -8,7 +8,7 @@
 #'
 #' @examples
 cc_get_instagram_media_id <- function(ig_user_id = NULL,
-                                      api_version = "v17.0",
+                                      api_version = "v18.0",
                                       token = NULL,
                                       max_pages = NULL,
                                       cache = TRUE) {

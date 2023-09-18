@@ -13,7 +13,7 @@
 #' \dontrun{
 #' cc_get_fb_ad_campaigns()
 #' }
-cc_get_fb_ad_campaigns <- function(api_version = "v17.0",
+cc_get_fb_ad_campaigns <- function(api_version = "v18.0",
                                    ad_account_id = NULL,
                                    max_pages = NULL,
                                    token = NULL,
@@ -75,6 +75,9 @@ cc_get_fb_ad_campaigns <- function(api_version = "v17.0",
 
     if (nrow(previous_ad_campaign_df) > 0) {
       if (update == FALSE) {
+        output_df <- previous_ad_campaign_df |>
+          dplyr::collect()
+        DBI::dbDisconnect(db)
         return(previous_ad_campaign_df)
       }
     }
