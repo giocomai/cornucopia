@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="index.html">cornucopia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -138,10 +138,12 @@
 <p>Here’s more interesting information, but also where caching gets trickier. But say, you are interested in <code>actions</code> by day and by ad, you can use <code>cc_get_fb_ad_actions_by_day</code>, passing to it a vector of <code>ad_id</code> (or <code>adset_id</code>, for that matter, the APIs don’t seem to mind), and you’ll get a daily breakdown.</p>
 <p>You can get even more details: for example, do you want to know how many of those viewing your video ads had the sound on:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_fb_ad_actions_by_day.html">cc_get_fb_ad_actions_by_day</a></span><span class="op">(</span>ad_id <span class="op">=</span> <span class="va">example_id</span>,</span>
-<span>                            type <span class="op">=</span> <span class="st">"actions"</span>,</span>
-<span>                            action_breakdowns <span class="op">=</span> <span class="st">"action_video_sound"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">action_video_sound</span><span class="op">)</span><span class="op">==</span><span class="cn">FALSE</span><span class="op">)</span> </span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_fb_ad_actions_by_day.html">cc_get_fb_ad_actions_by_day</a></span><span class="op">(</span></span>
+<span>  ad_id <span class="op">=</span> <span class="va">example_id</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"actions"</span>,</span>
+<span>  action_breakdowns <span class="op">=</span> <span class="st">"action_video_sound"</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">action_video_sound</span><span class="op">)</span> <span class="op">==</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>For many such breakdowns, including this one, you get a meaningful breakdown only if your ad is relevant. For example, if the <code>example_id</code> above is of an ad that does not have any video, no information is returned. If you ask for <code>product_id</code> for an ad that is not based on catalogue, you won’t get anything. And so on.</p>
 <p>See the <a href="https://developers.facebook.com/docs/marketing-api/insights/breakdowns/" class="external-link">official documentation</a> for details.</p>
 <p>Caching does not really work with this function at this stage, as no consistent approach for updating cached data has been implemented, yet.</p>
@@ -174,6 +176,14 @@
 <div class="section level3">
 <h3 id="facebook-pages">Facebook pages<a class="anchor" aria-label="anchor" href="#facebook-pages"></a>
 </h3>
+<p>Data about Facebook pages need to be accessed with a separate Facebook <em>page</em> token, not the Facebook <em>user</em> token.</p>
+<p>The first step is then to retrieve one’s own Facebook user id:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_fb_user.html">cc_get_fb_user</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>And then use the Facebook user id to request all pages managed by that Facebook user, including the relevant Facebook page token:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_fb_managed_pages.html">cc_get_fb_managed_pages</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>It is this page token that can then be used to retrieve information about a given page.</p>
 <p>[to do]</p>
 </div>
 </div>
@@ -191,19 +201,19 @@
 <p>The user just needs to download relevant files and store them in a folder, without paying attention to anything else, really. Files for more than one page can be included in the same folder and no special attention needs to be dedicated to the time period included: <code>cornucopia</code> will always strive to include data for the longest possible period, always preferring the most recent data available. For this reason, it is usually easiest to export data about the last 365 days, and let this package deal with the rest.</p>
 <p>Export files for all sorts of a statics from your LinkedIn page. They will have file names such as “pagename_followers_1684688073420.xls”. Throw all of them in a folder, that we’ll call “LinkedIn_stats”.</p>
 <p>You can then retrieve some basic information about these files using:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_linkedin_stats_files.html">cc_get_linkedin_stats_files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"LinkedIn_stats"</span><span class="op">)</span></span></code></pre></div>
 <p>This allows to see when a file was exported, what is the name of the page, and what type of statistics it includes: all of this information can be gathered from the file name.</p>
 <p>Each of the statistics types exported from LinkedIn has its own data format, and indeed there is little consistency in these files, if not for the ridiculous insistence on including dates in the ridiculous US date format (month-day-year), no matter where you are in the world.</p>
 <p>Anyway… we can now move on to the specific functions for each type of statistics. The following functions parse all relevant files and merge the data preferring the most recently downloaded data over older files (this may be irrelevant in many cases, but may well have some impact in statistics associated with a given post).</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">followers_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cc_get_linkedin_stats_followers.html">cc_get_linkedin_stats_followers</a></span><span class="op">(</span></span>
 <span>  path <span class="op">=</span> <span class="st">"LinkedIn_stats"</span>,</span>
 <span>  page <span class="op">=</span> <span class="st">"example-page"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Once we have these data, we can of course process them as we usually would. But for the sake of this post, we are imagining a workflow that requires us to upload these files to a Google Sheet, in order to facilitate data retrieval through Google Looker Studio.</p>
 <p>We can do this manually, but, of course, we’d much rather use a set of convenience functions that will process data and upload them automatically to the same Google Sheet, updating the dataset if one was previously uploaded.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_drive_upload_linkedin_stats_followers.html">cc_drive_upload_linkedin_stats_followers</a></span><span class="op">(</span></span>
 <span>  path <span class="op">=</span> <span class="st">"LinkedIn_stats"</span>,</span>
 <span>  page_name <span class="op">=</span> <span class="st">"example-page"</span></span>

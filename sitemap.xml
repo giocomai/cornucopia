@@ -67,10 +67,16 @@
     <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ads_totals_by_day.html</loc>
   </url>
   <url>
+    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_managed_pages.html</loc>
+  </url>
+  <url>
     <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_owned_product_catalogs.html</loc>
   </url>
   <url>
     <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_products.html</loc>
+  </url>
+  <url>
+    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_user.html</loc>
   </url>
   <url>
     <loc>https://giocomai.github.io/cornucopia/reference/cc_get_instagram_media.html</loc>
