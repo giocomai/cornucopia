@@ -12,10 +12,6 @@ cc_get_fb_page_insights(
 )
 }
 \arguments{
-\item{metric}{}
-
-\item{fb_page_id}{}
-
 \item{fb_page_token}{}
 }
 \description{

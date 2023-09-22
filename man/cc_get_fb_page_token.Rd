@@ -27,6 +27,8 @@ A character vector of length one with the Facebook token.
 Get Facebook page token
 }
 \examples{
-cc_get_fb_page_token(fb_user_id = cc_get_fb_user(),
-                     page_name = "My example page")
+cc_get_fb_page_token(
+  fb_user_id = cc_get_fb_user(),
+  page_name = "My example page"
+)
 }

@@ -188,8 +188,10 @@ It is this page token that can then be used to retrieve information about a give
 If you just need to get the token, you can retrieve it as follows:
 
 ```{r}
-cc_get_fb_page_token(fb_user_id = cc_get_fb_user(),
-                     page_name = "My example page")
+cc_get_fb_page_token(
+  fb_user_id = cc_get_fb_user(),
+  page_name = "My example page"
+)
 ```
 
 
