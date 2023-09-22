@@ -20,6 +20,7 @@ cc_set <- function(start_date = NULL,
                    end_date = NULL,
                    fb_user_token = NULL,
                    fb_page_token = NULL,
+                   fb_page_id = NULL,
                    fb_business_id = NULL,
                    fb_ad_account_id = NULL,
                    fb_product_catalog_id = NULL,
@@ -53,6 +54,12 @@ cc_set <- function(start_date = NULL,
     fb_page_token <- Sys.getenv("cornucopia_fb_page_token")
   } else {
     Sys.setenv(cornucopia_fb_page_token = as.character(fb_page_token))
+  }
+
+  if (is.null(fb_page_id)) {
+    fb_page_id <- Sys.getenv("cornucopia_fb_page_id")
+  } else {
+    Sys.setenv(cornucopia_fb_page_id = as.character(fb_page_id))
   }
 
   if (is.null(fb_business_id)) {
@@ -94,6 +101,7 @@ cc_set <- function(start_date = NULL,
     end_date = lubridate::as_date(end_date),
     fb_user_token = as.character(fb_user_token),
     fb_page_token = as.character(fb_page_token),
+    fb_page_id = as.character(fb_page_id),
     fb_business_id = as.character(fb_business_id),
     fb_ad_account_id = as.character(fb_ad_account_id),
     fb_product_catalog_id = as.character(fb_product_catalog_id),
@@ -123,6 +131,7 @@ cc_get_settings <- function(start_date = NULL,
                             end_date = NULL,
                             fb_user_token = NULL,
                             fb_page_token = NULL,
+                            fb_page_id = NULL,
                             fb_business_id = NULL,
                             fb_ad_account_id = NULL,
                             fb_product_catalog_id = NULL,
@@ -151,10 +160,13 @@ cc_get_settings <- function(start_date = NULL,
     fb_page_token <- Sys.getenv("cornucopia_fb_page_token")
   }
 
+  if (is.null(fb_page_id)) {
+    fb_page_id <- Sys.getenv("cornucopia_fb_page_id")
+  }
+
   if (is.null(fb_business_id)) {
     fb_business_id <- Sys.getenv("cornucopia_fb_business_id")
   }
-
 
   if (is.null(fb_ad_account_id)) {
     fb_ad_account_id <- Sys.getenv("cornucopia_fb_ad_account_id")
@@ -177,6 +189,7 @@ cc_get_settings <- function(start_date = NULL,
     end_date = lubridate::as_date(end_date),
     fb_user_token = as.character(fb_user_token),
     fb_page_token = as.character(fb_page_token),
+    fb_page_id = as.character(fb_page_id),
     fb_business_id = as.character(fb_business_id),
     fb_ad_account_id = as.character(fb_ad_account_id),
     fb_product_catalog_id = as.character(fb_product_catalog_id),
