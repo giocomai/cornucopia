@@ -184,6 +184,10 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_fb_managed_pages.html">cc_get_fb_managed_pages</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>It is this page token that can then be used to retrieve information about a given page.</p>
+<p>If you just need to get the token, you can retrieve it as follows:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_fb_page_token.html">cc_get_fb_page_token</a></span><span class="op">(</span>fb_user_id <span class="op">=</span> <span class="fu"><a href="reference/cc_get_fb_user.html">cc_get_fb_user</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                     page_name <span class="op">=</span> <span class="st">"My example page"</span><span class="op">)</span></span></code></pre></div>
 <p>[to do]</p>
 </div>
 </div>
@@ -201,19 +205,19 @@
 <p>The user just needs to download relevant files and store them in a folder, without paying attention to anything else, really. Files for more than one page can be included in the same folder and no special attention needs to be dedicated to the time period included: <code>cornucopia</code> will always strive to include data for the longest possible period, always preferring the most recent data available. For this reason, it is usually easiest to export data about the last 365 days, and let this package deal with the rest.</p>
 <p>Export files for all sorts of a statics from your LinkedIn page. They will have file names such as “pagename_followers_1684688073420.xls”. Throw all of them in a folder, that we’ll call “LinkedIn_stats”.</p>
 <p>You can then retrieve some basic information about these files using:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_linkedin_stats_files.html">cc_get_linkedin_stats_files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"LinkedIn_stats"</span><span class="op">)</span></span></code></pre></div>
 <p>This allows to see when a file was exported, what is the name of the page, and what type of statistics it includes: all of this information can be gathered from the file name.</p>
 <p>Each of the statistics types exported from LinkedIn has its own data format, and indeed there is little consistency in these files, if not for the ridiculous insistence on including dates in the ridiculous US date format (month-day-year), no matter where you are in the world.</p>
 <p>Anyway… we can now move on to the specific functions for each type of statistics. The following functions parse all relevant files and merge the data preferring the most recently downloaded data over older files (this may be irrelevant in many cases, but may well have some impact in statistics associated with a given post).</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">followers_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cc_get_linkedin_stats_followers.html">cc_get_linkedin_stats_followers</a></span><span class="op">(</span></span>
 <span>  path <span class="op">=</span> <span class="st">"LinkedIn_stats"</span>,</span>
 <span>  page <span class="op">=</span> <span class="st">"example-page"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Once we have these data, we can of course process them as we usually would. But for the sake of this post, we are imagining a workflow that requires us to upload these files to a Google Sheet, in order to facilitate data retrieval through Google Looker Studio.</p>
 <p>We can do this manually, but, of course, we’d much rather use a set of convenience functions that will process data and upload them automatically to the same Google Sheet, updating the dataset if one was previously uploaded.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_drive_upload_linkedin_stats_followers.html">cc_drive_upload_linkedin_stats_followers</a></span><span class="op">(</span></span>
 <span>  path <span class="op">=</span> <span class="st">"LinkedIn_stats"</span>,</span>
 <span>  page_name <span class="op">=</span> <span class="st">"example-page"</span></span>
