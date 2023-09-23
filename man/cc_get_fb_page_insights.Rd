@@ -2,11 +2,14 @@
 % Please edit documentation in R/cc_get_fb_page_insights.R
 \name{cc_get_fb_page_insights}
 \alias{cc_get_fb_page_insights}
-\title{Title}
+\title{Get Facebook page insights}
 \usage{
 cc_get_fb_page_insights(
-  metric = c("page_impressions", "page_engaged_users"),
+  metric = c("page_impressions"),
+  start_date = NULL,
+  end_date = NULL,
   api_version = "v18.0",
+  cache = TRUE,
   fb_page_id = NULL,
   fb_page_token = NULL
 )
