@@ -81,7 +81,7 @@ cc_get_fb_page_insights <- function(metric = c(
     }
 
     active_metrics <- metric
-    
+
     previous_fb_page_insights_df <- DBI::dbReadTable(
       conn = db,
       name = current_table
