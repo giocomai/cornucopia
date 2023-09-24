@@ -1,4 +1,7 @@
 ## code to prepare `cc_empty_fb_page_post_df` dataset goes here
+
+# https://developers.facebook.com/docs/graph-api/reference/v18.0/page/feed
+
 cc_empty_fb_page_post_df <- tibble::tibble(
   created_time = character(),
   id = character(),
