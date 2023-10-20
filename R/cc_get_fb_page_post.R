@@ -59,8 +59,8 @@ cc_get_fb_page_post <- function(api_version = "v18.0",
       conn = db,
       name = current_table
     ) |>
-      dplyr::collect() |> 
-      dplyr::mutate(dplyr::across(dplyr::everything(),as.character)) |> 
+      dplyr::collect() |>
+      dplyr::mutate(dplyr::across(dplyr::everything(), as.character)) |>
       tibble::as_tibble()
   }
 
@@ -101,8 +101,8 @@ cc_get_fb_page_post <- function(api_version = "v18.0",
         tibble::as_tibble(y)
       }
     ) |>
-      purrr::list_rbind() |> 
-      dplyr::mutate(dplyr::across(dplyr::everything(),as.character))
+      purrr::list_rbind() |>
+      dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
 
     if (cache == TRUE) {
       really_new_post_df <- new_post_df |>
@@ -147,8 +147,8 @@ cc_get_fb_page_post <- function(api_version = "v18.0",
       purrr::map(
         .x = purrr::pluck(x, "data"),
         .f = function(y) {
-          tibble::as_tibble(y) |> 
-            dplyr::mutate(dplyr::across(dplyr::everything(),as.character))
+          tibble::as_tibble(y) |>
+            dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
         }
       ) |>
         purrr::list_rbind()

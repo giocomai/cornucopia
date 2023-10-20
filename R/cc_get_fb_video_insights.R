@@ -1,9 +1,9 @@
-#' Get Facebook page posts insights
+#' Get Facebook video insights
 #'
-#' For reference, see: https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts
-#' defaults to Lifetime period for each post.
+#' For reference, see: https://developers.facebook.com/docs/graph-api/reference/video/video_insights/
+#' defaults to Lifetime period for each video
 #'
-#' @param fb_post_id
+#' @param fb_video_id
 #' @param metrics
 #' @param cache
 #' @param update
@@ -15,13 +15,13 @@
 #' @export
 #'
 #' @examples
-cc_get_fb_page_post_insights <- function(fb_post_id,
-                                         metrics = cc_valid_fields_fb_post_insights,
-                                         cache = TRUE,
-                                         update = TRUE,
-                                         api_version = "v18.0",
-                                         fb_page_id = NULL,
-                                         fb_page_token = NULL) {
+cc_get_fb_video_insights <- function(fb_video_id,
+                                     metrics = cc_valid_fields_fb_video_insights,
+                                     cache = TRUE,
+                                     update = TRUE,
+                                     api_version = "v18.0",
+                                     fb_page_id = NULL,
+                                     fb_page_token = NULL) {
   if (is.null(fb_page_token)) {
     fb_page_token <- cc_get_settings(fb_page_token = fb_page_token) |>
       purrr::pluck("fb_page_token")
@@ -37,11 +37,11 @@ cc_get_fb_page_post_insights <- function(fb_post_id,
   }
 
   purrr::map(
-    .x = fb_post_id,
+    .x = fb_video_id,
     .progress = TRUE,
     .f = function(x) {
-      cc_api_get_fb_page_post_insights(
-        fb_post_id = x,
+      cc_api_get_fb_video_insights(
+        fb_video_id = x,
         metrics = metrics,
         cache = cache,
         update = update,
@@ -56,33 +56,33 @@ cc_get_fb_page_post_insights <- function(fb_post_id,
 
 
 
-#' Get information about a single media directly from the API. Mostly used
+#' Get information about a single Facebook video directly from the API. Mostly used
 #' internally.
 #'
 #' See the official documentation for reference:
-#' \url{ https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts}
+#' \url{https://developers.facebook.com/docs/graph-api/reference/video/video_insights/}
 #'
-#' @param fb_post_id Instagram media identifier, must be a vector of length 1.
+#' @param fb_video_id Instagram media identifier, must be a vector of length 1.
 #'   A list of identifiers for your account can be retrieved with
-#'   `cc_get_fb_page_post()`.
+#'   `cc_get_fb_page_video()`.
 #' @param metrics Metrics to be retrieved. Consider that depending on the media
 #'   type, different media types are effectively available. Requesting the wrong
 #'   metrics will cause an error. Defaults to NULL. If left to NULL, metrics will be chosen based on the media type. See the official documentation for reference:
 #'   \url{ https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts}
 #'
-#' @inheritParams cc_get_fb_page_post
+#' @inheritParams cc_get_fb_page_video
 #'
 #' @return
 #' @export
 #'
 #' @examples
-cc_api_get_fb_page_post_insights <- function(fb_post_id,
-                                             metrics = cc_valid_fields_fb_post_insights,
-                                             cache = TRUE,
-                                             update = TRUE,
-                                             api_version = "v18.0",
-                                             fb_page_id = NULL,
-                                             fb_page_token = NULL) {
+cc_api_get_fb_video_insights <- function(fb_video_id,
+                                         metrics = cc_valid_fields_fb_video_insights,
+                                         cache = TRUE,
+                                         update = TRUE,
+                                         api_version = "v18.0",
+                                         fb_page_id = NULL,
+                                         fb_page_token = NULL) {
   if (is.null(fb_page_token)) {
     fb_page_token <- cc_get_settings(fb_page_token = fb_page_token) |>
       purrr::pluck("fb_page_token")
@@ -106,8 +106,8 @@ cc_api_get_fb_page_post_insights <- function(fb_post_id,
   metrics_v <- stringr::str_c(metrics, collapse = ",")
 
   api_request <- httr2::request(base_url = base_url) |>
-    httr2::req_url_path_append(fb_post_id) |>
-    httr2::req_url_path_append("insights") |>
+    httr2::req_url_path_append(fb_video_id) |>
+    httr2::req_url_path_append("video_insights") |>
     httr2::req_url_query(
       metric = metrics_v,
       period = "lifetime",
@@ -124,13 +124,14 @@ cc_api_get_fb_page_post_insights <- function(fb_post_id,
       tibble::tibble(
         metric_title = x |> purrr::pluck("title"),
         metric_name = x |> purrr::pluck("name"),
+        metric_value_name = x |> purrr::pluck("values", 1, "value") |> names(),
         metric_value = x |> purrr::pluck("values", 1, "value") |> as.numeric()
       )
     }
   ) |>
     purrr::list_rbind() |>
-    dplyr::mutate(fb_post_id = fb_post_id) |>
-    dplyr::relocate(fb_post_id) |>
+    dplyr::mutate(fb_video_id = fb_video_id) |>
+    dplyr::relocate(fb_video_id) |>
     dplyr::mutate(timestamp_retrieved = strftime(as.POSIXlt(Sys.time(), "UTC"), "%Y-%m-%dT%H:%M:%S%z"))
 
   output_df

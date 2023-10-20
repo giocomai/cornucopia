@@ -9,7 +9,7 @@ cc_valid_fields_fb_video_insights <- c(
   "post_video_likes_by_reaction_type",
   "post_video_social_actions",
   "post_video_view_time",
-  
+
   # video
   "total_video_views",
   "total_video_views_unique",

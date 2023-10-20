@@ -28,9 +28,9 @@ cc_valid_fields_fb_post_insights <- c(
   "post_reactions_anger_total",
   "post_negative_feedback",
   "post_negative_feedback_unique",
-  
+
   ## Video
-  
+
   "post_video_avg_time_watched",
   "post_video_complete_views_organic",
   "post_video_complete_views_organic_unique",
@@ -68,7 +68,7 @@ video_detailed_graph <- c(
   "post_video_views_by_distribution_type",
   "post_video_view_time_by_distribution_type",
   "post_video_view_time_by_country_id"
-  )
+)
 
 
 usethis::use_data(cc_valid_fields_fb_post_insights, overwrite = TRUE)
