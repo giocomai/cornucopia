@@ -22,6 +22,9 @@
     <loc>https://giocomai.github.io/cornucopia/reference/cc_api_get_fb_page_post_insights.html</loc>
   </url>
   <url>
+    <loc>https://giocomai.github.io/cornucopia/reference/cc_api_get_fb_video_insights.html</loc>
+  </url>
+  <url>
     <loc>https://giocomai.github.io/cornucopia/reference/cc_api_get_instagram_media.html</loc>
   </url>
   <url>
@@ -95,6 +98,9 @@
   </url>
   <url>
     <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_user.html</loc>
+  </url>
+  <url>
+    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_video_insights.html</loc>
   </url>
   <url>
     <loc>https://giocomai.github.io/cornucopia/reference/cc_get_instagram_media.html</loc>
