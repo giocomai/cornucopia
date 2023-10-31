@@ -45,7 +45,7 @@ cc_get_fb_ads_by_date <- function(date,
   if (fs::file_exists(path = local_rds) == TRUE) {
     return(readr::read_rds(file = local_rds))
   } else {
-    df_l <- fb_insights(
+    df_l <- fbRads::fb_insights(
       level = "ad",
       time_range = cc_date_to_json(start_date = date),
       fields = fields
