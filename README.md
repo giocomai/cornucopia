@@ -22,13 +22,43 @@ plenty](https://en.wikipedia.org/wiki/Cornucopia)”, it’s basically
 really your wildest dream: a funnel that endlessly overflows with
 abundance.
 
-Why is this package called `cornucopia`? Because…
+Hence, the marketing slogan of `cornucopia` is:
 
-**This package will automagically turn your every funnel into a
-cornucopia!**\*
+***turn your every funnel into a cornucopia!***
 
-\*Of course not, but I couldn’t resist including an impossibly bold
-claim in this marketing-focused package.
+The premise of `cornucopia` is that there’s plenty of small and big
+platforms that can be used to interact with the API of big “social
+networks”/advertising platforms, but there’s really just a few open
+source packages in the `r` ecosystem openly available in this space.
+Some of these packages are of excellent quality, but overall there’s a
+steep learning curve when joining this space, and few tools enabling the
+beginner-intermediate users to look at these interrelated processes in
+an orderly fashion, or to facilitate some routine work for more advanced
+users.
+
+Long term, this is the purpose of `cornucopia`, which is currently at an
+early stage of development.
+
+As these so called “social networks” are all, at their core, marketing
+tools, throughout the package documentation I will use the language
+found on each platform’s website and use marketing terms by default.
+Needless to say, this can be used for reporting of non-profit websites,
+or for optimising conversions that are not purchases, etc.
+
+Please enjoy `cornucopia` responsibly.
+
+## Experimental package warning
+
+Again, keep in mind that this is an incomplete and not fully tested
+package. It currently uses only API calls that *read* data, so it should
+be safe to use. But:
+
+- it tries to cache data for efficency and speed, but the caching
+  mechanisms may not always work, so make sure the extracted data are
+  fit for purpose (more testing will be introduced)
+
+Also, the usual disclaimer: this free software comes with absolutely no
+warranty.
 
 ## Installation
 
@@ -239,8 +269,10 @@ about a given page.
 If you just need to get the token, you can retrieve it as follows:
 
 ``` r
-cc_get_fb_page_token(fb_user_id = cc_get_fb_user(),
-                     page_name = "My example page")
+cc_get_fb_page_token(
+  fb_user_id = cc_get_fb_user(),
+  page_name = "My example page"
+)
 ```
 
 \[to do\]
