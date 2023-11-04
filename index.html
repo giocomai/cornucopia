@@ -73,9 +73,21 @@
 <h2 id="why-cornucopia">Why <code>cornucopia</code>?<a class="anchor" aria-label="anchor" href="#why-cornucopia"></a>
 </h2>
 <p>For you all marketing folks, a cornucopia is like a funnel that keeps on giving. Also known as the “<a href="https://en.wikipedia.org/wiki/Cornucopia" class="external-link">horn of plenty</a>”, it’s basically really your wildest dream: a funnel that endlessly overflows with abundance.</p>
-<p>Why is this package called <code>cornucopia</code>? Because…</p>
-<p><strong>This package will automagically turn your every funnel into a cornucopia!</strong>*</p>
-<p>*Of course not, but I couldn’t resist including an impossibly bold claim in this marketing-focused package.</p>
+<p>Hence, the marketing slogan of <code>cornucopia</code> is:</p>
+<p><strong><em>turn your every funnel into a cornucopia!</em></strong></p>
+<p>The premise of <code>cornucopia</code> is that there’s plenty of small and big platforms that can be used to interact with the API of big “social networks”/advertising platforms, but there’s really just a few open source packages in the <code>r</code> ecosystem openly available in this space. Some of these packages are of excellent quality, but overall there’s a steep learning curve when joining this space, and few tools enabling the beginner-intermediate users to look at these interrelated processes in an orderly fashion, or to facilitate some routine work for more advanced users.</p>
+<p>Long term, this is the purpose of <code>cornucopia</code>, which is currently at an early stage of development.</p>
+<p>As these so called “social networks” are all, at their core, marketing tools, throughout the package documentation I will use the language found on each platform’s website and use marketing terms by default. Needless to say, this can be used for reporting of non-profit websites, or for optimising conversions that are not purchases, etc.</p>
+<p>Please enjoy <code>cornucopia</code> responsibly.</p>
+</div>
+<div class="section level2">
+<h2 id="experimental-package-warning">Experimental package warning<a class="anchor" aria-label="anchor" href="#experimental-package-warning"></a>
+</h2>
+<p>Again, keep in mind that this is an incomplete and not fully tested package. It currently uses only API calls that <em>read</em> data, so it should be safe to use. But:</p>
+<ul>
+<li>it tries to cache data for efficency and speed, but the caching mechanisms may not always work, so make sure the extracted data are fit for purpose (more testing will be introduced)</li>
+</ul>
+<p>Also, the usual disclaimer: this free software comes with absolutely no warranty.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -186,8 +198,10 @@
 <p>It is this page token that can then be used to retrieve information about a given page.</p>
 <p>If you just need to get the token, you can retrieve it as follows:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_fb_page_token.html">cc_get_fb_page_token</a></span><span class="op">(</span>fb_user_id <span class="op">=</span> <span class="fu"><a href="reference/cc_get_fb_user.html">cc_get_fb_user</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>                     page_name <span class="op">=</span> <span class="st">"My example page"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_fb_page_token.html">cc_get_fb_page_token</a></span><span class="op">(</span></span>
+<span>  fb_user_id <span class="op">=</span> <span class="fu"><a href="reference/cc_get_fb_user.html">cc_get_fb_user</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  page_name <span class="op">=</span> <span class="st">"My example page"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>[to do]</p>
 </div>
 </div>
