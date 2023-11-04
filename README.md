@@ -68,41 +68,52 @@ You can install the development version of cornucopia with:
 remotes::install_github("giocomai/cornucopia")
 ```
 
-## Meta / Facebook / Instagram
+## Settings
 
-In order to get data out of the Meta ecosystem through APIs, you will
-need to create an app in their
-
-### Settings
-
-You can you use `cc_set()` to set start and end dates to be used
-throughout the analysis, as well as tokens that will then be loaded
-automatically as needed by all other `cornucopia` functions.
+You can you use `cc_set()` to set start and end dates to be used by all
+other functions, as well as tokens, user identifiers, and caching
+preferences. You can provide as many or as few settings as you like. You
+can also pass the same as parameters to individual functions, without
+using `cc_set()` at all.
 
 ``` r
+library("cornucopia")
 dates_l <- cc_set(
   start_date = "2023-01-01",
   end_date = Sys.Date() - 1,
-  fb_user_token = "looong_string"
 )
 
-
-dates_l
+dates_l$start_date
+#> [1] "2023-01-01"
 ```
 
-You can get your token from your app page:
+Here is a full list of parameters that can be set with `cc_set()`:
+
+`start_date`, `end_date`, `fb_user_token`, `fb_page_token`,
+`fb_page_id`, `fb_business_id`, `fb_ad_account_id`,
+`fb_product_catalog_id`, `fb_user_id`, `ig_user_id`
+
+## Meta / Facebook / Instagram
+
+In order to get data out of the Meta ecosystem through APIs, you will
+need to create an app following the [procedure on their Developer
+platform](https://developers.facebook.com/apps/create/).
+
+You can then get your token from your app page:
 <https://developers.facebook.com/apps/>
 
-Be mindful that the APIs never, ever, return meaningful error messages,
-and the documentation has only few examples… as some queries work or not
-depending on the type of ad involved (its creatives/its format/etc.),
+Be mindful that the Meta APIs never, ever, return meaningful error
+messages, and the documentation has only few examples… as some queries
+work or not depending on the type of ad (its creatives/its format/etc.)
+or the type of organic post (is it a video? if so, is it a reel? etc.),
 there’s often some trial and error involved.
 
-### Sponsored
+### Meta ads
 
-For the time being, `cornucopia` relies on
+For the time being, `cornucopia` partly relies on
 [`fbRads`](https://github.com/daroczig/fbRads) to get data about
-sponsored campaigns and store them locally.
+sponsored campaigns and store them locally (long terms, all API calls
+will be done directly by `cornucopia` for consistency).
 
 ``` r
 token <- "looooooooooong_string"
@@ -123,9 +134,10 @@ complains about `fields`. Just wait and try again after a few hours: all
 downloaded data are by default stored in a local folder and nothing will
 lost, queries will be made only for missing data.
 
-If you’re hitting the API limits, you can set the `only_cached`
-parameter to TRUE, so you can proceed with your analysis with the data
-you have until you’ll be able to download more data.
+If you’re hitting the API limits but what to proceed with writing your
+code as you wait, you can set the `only_cached` parameter to TRUE, so
+you can proceed with your analysis with the data you have until you’ll
+be able to download more data.
 
 ``` r
 ads_df <- cc_get_fb_ads(only_cached = TRUE)
