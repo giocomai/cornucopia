@@ -97,29 +97,31 @@
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"giocomai/cornucopia"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="meta--facebook--instagram">Meta / Facebook / Instagram<a class="anchor" aria-label="anchor" href="#meta--facebook--instagram"></a>
+<h2 id="settings">Settings<a class="anchor" aria-label="anchor" href="#settings"></a>
 </h2>
-<p>In order to get data out of the Meta ecosystem through APIs, you will need to create an app in their</p>
-<div class="section level3">
-<h3 id="settings">Settings<a class="anchor" aria-label="anchor" href="#settings"></a>
-</h3>
-<p>You can you use <code><a href="reference/cc_set.html">cc_set()</a></code> to set start and end dates to be used throughout the analysis, as well as tokens that will then be loaded automatically as needed by all other <code>cornucopia</code> functions.</p>
+<p>You can you use <code><a href="reference/cc_set.html">cc_set()</a></code> to set start and end dates to be used by all other functions, as well as tokens, user identifiers, and caching preferences. You can provide as many or as few settings as you like. You can also pass the same as parameters to individual functions, without using <code><a href="reference/cc_set.html">cc_set()</a></code> at all.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dates_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cc_set.html">cc_set</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://giocomai.github.io/cornucopia/">"cornucopia"</a></span><span class="op">)</span></span>
+<span><span class="va">dates_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cc_set.html">cc_set</a></span><span class="op">(</span></span>
 <span>  start_date <span class="op">=</span> <span class="st">"2023-01-01"</span>,</span>
 <span>  end_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>,</span>
-<span>  fb_user_token <span class="op">=</span> <span class="st">"looong_string"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span></span>
-<span><span class="va">dates_l</span></span></code></pre></div>
-<p>You can get your token from your app page: <a href="https://developers.facebook.com/apps/" class="external-link uri">https://developers.facebook.com/apps/</a></p>
-<p>Be mindful that the APIs never, ever, return meaningful error messages, and the documentation has only few examples… as some queries work or not depending on the type of ad involved (its creatives/its format/etc.), there’s often some trial and error involved.</p>
+<span><span class="va">dates_l</span><span class="op">$</span><span class="va">start_date</span></span>
+<span><span class="co">#&gt; [1] "2023-01-01"</span></span></code></pre></div>
+<p>Here is a full list of parameters that can be set with <code><a href="reference/cc_set.html">cc_set()</a></code>:</p>
+<p><code>start_date</code>, <code>end_date</code>, <code>fb_user_token</code>, <code>fb_page_token</code>, <code>fb_page_id</code>, <code>fb_business_id</code>, <code>fb_ad_account_id</code>, <code>fb_product_catalog_id</code>, <code>fb_user_id</code>, <code>ig_user_id</code></p>
 </div>
+<div class="section level2">
+<h2 id="meta--facebook--instagram">Meta / Facebook / Instagram<a class="anchor" aria-label="anchor" href="#meta--facebook--instagram"></a>
+</h2>
+<p>In order to get data out of the Meta ecosystem through APIs, you will need to create an app following the <a href="https://developers.facebook.com/apps/create/" class="external-link">procedure on their Developer platform</a>.</p>
+<p>You can then get your token from your app page: <a href="https://developers.facebook.com/apps/" class="external-link uri">https://developers.facebook.com/apps/</a></p>
+<p>Be mindful that the Meta APIs never, ever, return meaningful error messages, and the documentation has only few examples… as some queries work or not depending on the type of ad (its creatives/its format/etc.) or the type of organic post (is it a video? if so, is it a reel? etc.), there’s often some trial and error involved.</p>
 <div class="section level3">
-<h3 id="sponsored">Sponsored<a class="anchor" aria-label="anchor" href="#sponsored"></a>
+<h3 id="meta-ads">Meta ads<a class="anchor" aria-label="anchor" href="#meta-ads"></a>
 </h3>
-<p>For the time being, <code>cornucopia</code> relies on <a href="https://github.com/daroczig/fbRads" class="external-link"><code>fbRads</code></a> to get data about sponsored campaigns and store them locally.</p>
+<p>For the time being, <code>cornucopia</code> partly relies on <a href="https://github.com/daroczig/fbRads" class="external-link"><code>fbRads</code></a> to get data about sponsored campaigns and store them locally (long terms, all API calls will be done directly by <code>cornucopia</code> for consistency).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">token</span> <span class="op">&lt;-</span> <span class="st">"looooooooooong_string"</span></span>
 <span></span>
@@ -132,7 +134,7 @@
 <span></span>
 <span><span class="va">ads_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cc_get_fb_ads.html">cc_get_fb_ads</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Notice that if you ask for a lengthy period, you may hit the API query limit. The error message is however not helpful, as it apparently complains about <code>fields</code>. Just wait and try again after a few hours: all downloaded data are by default stored in a local folder and nothing will lost, queries will be made only for missing data.</p>
-<p>If you’re hitting the API limits, you can set the <code>only_cached</code> parameter to TRUE, so you can proceed with your analysis with the data you have until you’ll be able to download more data.</p>
+<p>If you’re hitting the API limits but what to proceed with writing your code as you wait, you can set the <code>only_cached</code> parameter to TRUE, so you can proceed with your analysis with the data you have until you’ll be able to download more data.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ads_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cc_get_fb_ads.html">cc_get_fb_ads</a></span><span class="op">(</span>only_cached <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Notice that you can customise the fields to retrieve and that not all fields can be asked at the same time. See the embedded list <code>cc_valid_fields_ad_insights</code> for list of valid fields, divided by broad categories (this subdivision has been made by the package author, not by Facebook itself). Caching of retrieved contents by type of fields will be addedt to future versions.</p>
