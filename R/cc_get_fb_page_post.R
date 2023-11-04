@@ -1,20 +1,33 @@
 #' Get Facebook page post id and basic information that can be stored as strings
 #'
-#' @param api_version
-#' @param max_pages
-#' @param cache
-#' @param fb_page_id
-#' @param fb_page_token
+#' Find out what each of the fields effectively means in the official documentation: \url{https://developers.facebook.com/docs/graph-api/reference/v18.0/page/feed}
 #'
-#' @return
+#' @param max_pages Posts are returned in pages of 25 posts each. How many pages should be retrieved? By default, this will try to retrieve all posts.
+#' @param cache Defaults to TRUE.
+#' @param fields Lists of fields which return data consistently, see `names(cc_empty_fb_page_post_df)` for a full list and the official documentation for more details \url{https://developers.facebook.com/docs/graph-api/reference/v18.0/page/feed}. Expect caching to work consistently only if you leave this value unchanged. Consider disabling caching if you customise this parameter.
+#'
+#' @return A data frame, with the sale columns as `cc_empty_fb_page_post_df`; each column in the returned data frame is of class character.
 #' @export
 #'
 #' @examples
-cc_get_fb_page_post <- function(api_version = "v18.0",
-                                max_pages = NULL,
-                                cache = TRUE,
-                                fb_page_id = NULL,
-                                fb_page_token = NULL) {
+#' \dontrun{
+#' if (interactive) {
+#'   fb_page_token <- cc_get_fb_page_token(
+#'     fb_user_id = cc_get_fb_user(),
+#'     page_name = "My example page"
+#'   )
+#'
+#'   cc_set(fb_page_token = fb_page_token)
+#'   posts_df <- cc_get_fb_page_posts()
+#'   posts_df
+#' }
+#' }
+cc_get_fb_page_posts <- function(api_version = "v18.0",
+                                 max_pages = NULL,
+                                 fields = names(cc_empty_fb_page_post_df),
+                                 cache = TRUE,
+                                 fb_page_id = NULL,
+                                 fb_page_token = NULL) {
   if (is.null(fb_page_token)) {
     fb_page_token <- cc_get_settings(fb_page_token = fb_page_token) |>
       purrr::pluck("fb_page_token")
@@ -74,9 +87,8 @@ cc_get_fb_page_post <- function(api_version = "v18.0",
     httr2::req_url_path_append("feed") |>
     httr2::req_url_query(
       access_token = fb_page_token,
-      fields = stringr::str_flatten(names(cc_empty_fb_page_post_df), collapse = ",")
+      fields = stringr::str_flatten(fields, collapse = ",")
     )
-
 
   # https://github.com/r-lib/httr2/issues/8#issuecomment-866221516
 

@@ -64,13 +64,13 @@ cc_get_fb_page_post_insights <- function(fb_post_id,
 #'
 #' @param fb_post_id Instagram media identifier, must be a vector of length 1.
 #'   A list of identifiers for your account can be retrieved with
-#'   `cc_get_fb_page_post()`.
+#'   `cc_get_fb_page_posts()`.
 #' @param metrics Metrics to be retrieved. Consider that depending on the media
 #'   type, different media types are effectively available. Requesting the wrong
 #'   metrics will cause an error. Defaults to NULL. If left to NULL, metrics will be chosen based on the media type. See the official documentation for reference:
 #'   \url{ https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts}
 #'
-#' @inheritParams cc_get_fb_page_post
+#' @inheritParams cc_get_fb_page_posts
 #'
 #' @return
 #' @export

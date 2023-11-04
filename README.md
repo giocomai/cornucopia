@@ -108,6 +108,103 @@ work or not depending on the type of ad (its creatives/its format/etc.)
 or the type of organic post (is it a video? if so, is it a reel? etc.),
 there’s often some trial and error involved.
 
+### Organic - Facebook pages
+
+Data about Facebook pages need to be accessed with a Facebook *page*
+token, that is separate to the Facebook *user* token.
+
+The first step is then to retrieve one’s own Facebook user id:
+
+``` r
+cc_get_fb_user()
+```
+
+And then use the Facebook user id to request all pages managed by that
+Facebook user, including the relevant Facebook page token:
+
+``` r
+cc_get_fb_managed_pages()
+```
+
+It is this page token that can then be used to retrieve information
+about a given page.
+
+If you just need to get the token, you can retrieve it as follows:
+
+``` r
+fb_page_token <- cc_get_fb_page_token(
+  fb_user_id = cc_get_fb_user(),
+  page_name = "My example page"
+)
+```
+
+Now that you have it, you probably want to set it as the page token to
+be used throughout the current session:
+
+``` r
+cc_set(fb_page_token = fb_page_token)
+```
+
+(if you prefer, you can actively pass the token to each function call)
+
+Good, now you have your Facebook Page Token, which you can use to get
+information about your page and posts, what do you do next? (also, be
+mindful that the same token can be used also to actually post on your
+page, so treat it with due caution and make sure it remains private)
+
+Then, you probably want to get a list of all posts from your page.
+
+``` r
+posts_df <- cc_get_fb_page_posts()
+```
+
+Yes, you probably have *a lot* of posts, but this function caches result
+by default, so you will have to do it only once, and then only newer
+posts will be retrieved, so it may be worth your time. If you don’t want
+to wait and just need a few posts, then you can retrieve only the most
+recent posts with something like:
+
+``` r
+posts_df <- cc_get_fb_page_posts(
+  max_pages = 10,
+  cache = FALSE
+)
+```
+
+Which will retrieve the most recent 10 pages of posts (each page has 25
+posts, so you do the math).
+
+Besides Facebook post id, you already get some other basic information
+about each of the posts, namely:
+
+`created_time`, `id`, `permalink_url`, `message`, `full_picture`,
+`icon`, `is_hidden`, `is_expired`, `instagram_eligibility`,
+`is_eligible_for_promotion`, `promotable_id`, `is_instagram_eligible`,
+`is_popular`, `is_published`, `is_spherical`, `parent_id`,
+`status_type`, `story`, `subscribed`, `sheduled_publish_time`,
+`updated_time`
+
+But you probably want to know more. There’s a bunch of different things
+you can find out, and these vary depending on the type of post. But the
+most common next step is probably to get some more information about
+these posts with:
+
+``` r
+cc_get_fb_page_post_insights()
+```
+
+\[to do\]
+
+``` r
+cc_get_fb_page_insights()
+```
+
+``` r
+cc_get_fb_page_video()
+
+cc_get_fb_video_insights()
+```
+
 ### Meta ads
 
 For the time being, `cornucopia` partly relies on
@@ -256,38 +353,6 @@ every day for the last week, once a week for the last month, once a
 month for the last year, once a year for previous years). As a
 consequence, you should mostly be able to keep this in scripts and rely
 on it to autoaupdate data without much delay.
-
-### Facebook pages
-
-Data about Facebook pages need to be accessed with a separate Facebook
-*page* token, not the Facebook *user* token.
-
-The first step is then to retrieve one’s own Facebook user id:
-
-``` r
-cc_get_fb_user()
-```
-
-And then use the Facebook user id to request all pages managed by that
-Facebook user, including the relevant Facebook page token:
-
-``` r
-cc_get_fb_managed_pages()
-```
-
-It is this page token that can then be used to retrieve information
-about a given page.
-
-If you just need to get the token, you can retrieve it as follows:
-
-``` r
-cc_get_fb_page_token(
-  fb_user_id = cc_get_fb_user(),
-  page_name = "My example page"
-)
-```
-
-\[to do\]
 
 ## LinkedIn
 
