@@ -14,7 +14,7 @@ internally. — cc_api_get_fb_page_post_insights"><meta property="og:description
     
     <a class="navbar-brand me-2" href="../index.html">cornucopia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9005</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,7 @@ internally.</h1>
     <dl><dt>fb_post_id</dt>
 <dd><p>Instagram media identifier, must be a vector of length 1.
 A list of identifiers for your account can be retrieved with
-`cc_get_fb_page_post()`.</p></dd>
+`cc_get_fb_page_posts()`.</p></dd>
 
 
 <dt>metrics</dt>
@@ -77,8 +77,8 @@ metrics will cause an error. Defaults to NULL. If left to NULL, metrics will be 
 <a href="https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts" class="external-link"> https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts</a></p></dd>
 
 
-<dt>fb_page_token</dt>
-<dd></dd>
+<dt>cache</dt>
+<dd><p>Defaults to TRUE.</p></dd>
 
 </dl></div>
 
