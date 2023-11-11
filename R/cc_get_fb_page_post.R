@@ -64,7 +64,7 @@ cc_get_fb_page_posts <- function(api_version = "v18.0",
       DBI::dbWriteTable(
         conn = db,
         name = current_table,
-        value = cc_empty_fb_page_post_df
+        value = tibble::as_tibble(cc_empty_fb_page_post_df)
       )
     }
 

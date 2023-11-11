@@ -5,16 +5,16 @@
 \title{Get managed pages, including name, page token, and id}
 \usage{
 cc_get_fb_managed_pages(
-  fb_user_id = NULL,
   fields = c("name", "access_token"),
+  fb_user_id = NULL,
   fb_user_token = NULL
 )
 }
 \arguments{
+\item{fields}{Defaults to all available, consider reducing if you don't have all relevant permissions.}
+
 \item{fb_user_id}{Facebook user id. Defaults to NULL, can be set with
 `cc_set()`. Can be retrieved with `cc_get_fb_user()`.}
-
-\item{fields}{Defaults to all available, consider reducing if you don't have all relevant permissions.}
 }
 \description{
 Get managed pages, including name, page token, and id

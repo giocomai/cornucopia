@@ -11,8 +11,8 @@
 #' \dontrun{
 #' cc_get_fb_managed_pages()
 #' }
-cc_get_fb_managed_pages <- function(fb_user_id = NULL,
-                                    fields = c("name", "access_token"),
+cc_get_fb_managed_pages <- function(fields = c("name", "access_token"),
+                                    fb_user_id = NULL,
                                     fb_user_token = NULL) {
   if (is.null(fb_user_token)) {
     fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
