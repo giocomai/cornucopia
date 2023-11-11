@@ -13,12 +13,12 @@
 #' }
 cc_get_fb_managed_pages <- function(fb_user_id = NULL,
                                     fields = c("name", "access_token"),
-                                    token = NULL) {
-  if (is.null(token)) {
-    fb_user_token <- cc_get_settings(fb_user_token = token) |>
+                                    fb_user_token = NULL) {
+  if (is.null(fb_user_token)) {
+    fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
   } else {
-    fb_user_token <- as.character(token)
+    fb_user_token <- as.character(fb_user_token)
   }
 
   if (is.null(fb_user_id)) {

@@ -7,7 +7,7 @@
 cc_get_fb_managed_pages(
   fb_user_id = NULL,
   fields = c("name", "access_token"),
-  token = NULL
+  fb_user_token = NULL
 )
 }
 \arguments{
@@ -15,8 +15,6 @@ cc_get_fb_managed_pages(
 `cc_set()`. Can be retrieved with `cc_get_fb_user()`.}
 
 \item{fields}{Defaults to all available, consider reducing if you don't have all relevant permissions.}
-
-\item{token}{Facebook user token (not a page token).}
 }
 \description{
 Get managed pages, including name, page token, and id
