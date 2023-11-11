@@ -99,8 +99,13 @@ In order to get data out of the Meta ecosystem through APIs, you will
 need to create an app following the [procedure on their Developer
 platform](https://developers.facebook.com/apps/create/).
 
-You can then get your token from your app page:
-<https://developers.facebook.com/apps/>
+You can then get your token from your app page, after adding the
+“Marketing API”: <https://developers.facebook.com/apps/>
+
+When you retrieve your token, you can select permissions: you probably
+want to include both “ads_read” and “read_insights”, as they are
+read-only and hence safe, while you probably don’t want to tick
+“ads_management”, unless you really know what you are doing.
 
 Be mindful that the Meta APIs never, ever, return meaningful error
 messages, and the documentation has only few examples… as some queries
@@ -116,6 +121,9 @@ token, that is separate to the Facebook *user* token.
 The first step is then to retrieve one’s own Facebook user id:
 
 ``` r
+library("cornucopia")
+cc_set(fb_user_token = "actual_token_here")
+
 cc_get_fb_user()
 ```
 
@@ -123,13 +131,48 @@ And then use the Facebook user id to request all pages managed by that
 Facebook user, including the relevant Facebook page token:
 
 ``` r
+cc_set(fb_user_id = "actual_user_id_as_retrievd_with_cc_get_fb_user")
+
 cc_get_fb_managed_pages()
 ```
 
 It is this page token that can then be used to retrieve information
 about a given page.
 
-If you just need to get the token, you can retrieve it as follows:
+You may hope that things would just work and that you’d see all your
+pages when you run `cc_get_fb_managed_pages()`. Things, however, may be
+not so simple, because of granular permissions. In other words, you need
+to explicitly gran permissions to access pages. As is characteristic of
+Facebook, they like to move settings around, but you should be able to
+add this permission from the [Graph Api
+Explorer](https://developers.facebook.com/tools/explorer/) (for context,
+see also [this answer on
+Stackoverflow](https://stackoverflow.com/a/77467164/4124601)).
+
+Select your app from the drop down menu, and then from the “User or
+Page” dropdown select: “Get page access token”. You will be asked to
+re-authenticate, and then you will be able to choose between:
+
+- “Opt in to all current and future Pages”
+- or select from a list of your pages
+
+Then you will see you’ll have more permissions in the list, including
+
+- `pages_show_list`
+- `pages_read_engagement`
+- `ads_read`
+- `read_insights`
+
+If you are managing pages through business manager, this is probably not
+enough, as you will need to add also the `business_management`
+permission.
+
+Do remember to regenerate your token after adding permissions to
+actually get access.
+
+You should be now good to go. You can run `cc_get_fb_managed_pages()`
+and get the token for all of your pages, or if you know what you’re
+looking for, you can get the token for a specific page as follows:
 
 ``` r
 fb_page_token <- cc_get_fb_page_token(
@@ -139,10 +182,11 @@ fb_page_token <- cc_get_fb_page_token(
 ```
 
 Now that you have it, you probably want to set it as the page token to
-be used throughout the current session:
+be used throughout the current session, as well as the page id:
 
 ``` r
-cc_set(fb_page_token = fb_page_token)
+cc_set(fb_page_token = fb_page_token, 
+       fb_page_id = fb_page_id)
 ```
 
 (if you prefer, you can actively pass the token to each function call)
