@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="index.html">cornucopia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9005</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9006</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -116,7 +116,8 @@
 <h2 id="meta--facebook--instagram">Meta / Facebook / Instagram<a class="anchor" aria-label="anchor" href="#meta--facebook--instagram"></a>
 </h2>
 <p>In order to get data out of the Meta ecosystem through APIs, you will need to create an app following the <a href="https://developers.facebook.com/apps/create/" class="external-link">procedure on their Developer platform</a>.</p>
-<p>You can then get your token from your app page: <a href="https://developers.facebook.com/apps/" class="external-link uri">https://developers.facebook.com/apps/</a></p>
+<p>You can then get your token from your app page, after adding the “Marketing API”: <a href="https://developers.facebook.com/apps/" class="external-link uri">https://developers.facebook.com/apps/</a></p>
+<p>When you retrieve your token, you can select permissions: you probably want to include both “ads_read” and “read_insights”, as they are read-only and hence safe, while you probably don’t want to tick “ads_management”, unless you really know what you are doing.</p>
 <p>Be mindful that the Meta APIs never, ever, return meaningful error messages, and the documentation has only few examples… as some queries work or not depending on the type of ad (its creatives/its format/etc.) or the type of organic post (is it a video? if so, is it a reel? etc.), there’s often some trial and error involved.</p>
 <div class="section level3">
 <h3 id="organic---facebook-pages">Organic - Facebook pages<a class="anchor" aria-label="anchor" href="#organic---facebook-pages"></a>
@@ -124,20 +125,41 @@
 <p>Data about Facebook pages need to be accessed with a Facebook <em>page</em> token, that is separate to the Facebook <em>user</em> token.</p>
 <p>The first step is then to retrieve one’s own Facebook user id:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_fb_user.html">cc_get_fb_user</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://giocomai.github.io/cornucopia/">"cornucopia"</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/cc_set.html">cc_set</a></span><span class="op">(</span>fb_user_token <span class="op">=</span> <span class="st">"actual_token_here"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/cc_get_fb_user.html">cc_get_fb_user</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>And then use the Facebook user id to request all pages managed by that Facebook user, including the relevant Facebook page token:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_fb_managed_pages.html">cc_get_fb_managed_pages</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_set.html">cc_set</a></span><span class="op">(</span>fb_user_id <span class="op">=</span> <span class="st">"actual_user_id_as_retrievd_with_cc_get_fb_user"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/cc_get_fb_managed_pages.html">cc_get_fb_managed_pages</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>It is this page token that can then be used to retrieve information about a given page.</p>
-<p>If you just need to get the token, you can retrieve it as follows:</p>
+<p>You may hope that things would just work and that you’d see all your pages when you run <code><a href="reference/cc_get_fb_managed_pages.html">cc_get_fb_managed_pages()</a></code>. Things, however, may be not so simple, because of granular permissions. In other words, you need to explicitly gran permissions to access pages. As is characteristic of Facebook, they like to move settings around, but you should be able to add this permission from the <a href="https://developers.facebook.com/tools/explorer/" class="external-link">Graph Api Explorer</a> (for context, see also <a href="https://stackoverflow.com/a/77467164/4124601" class="external-link">this answer on Stackoverflow</a>).</p>
+<p>Select your app from the drop down menu, and then from the “User or Page” dropdown select: “Get page access token”. You will be asked to re-authenticate, and then you will be able to choose between:</p>
+<ul>
+<li>“Opt in to all current and future Pages”</li>
+<li>or select from a list of your pages</li>
+</ul>
+<p>Then you will see you’ll have more permissions in the list, including</p>
+<ul>
+<li><code>pages_show_list</code></li>
+<li><code>pages_read_engagement</code></li>
+<li><code>ads_read</code></li>
+<li><code>read_insights</code></li>
+</ul>
+<p>If you are managing pages through business manager, this is probably not enough, as you will need to add also the <code>business_management</code> permission.</p>
+<p>Do remember to regenerate your token after adding permissions to actually get access.</p>
+<p>You should be now good to go. You can run <code><a href="reference/cc_get_fb_managed_pages.html">cc_get_fb_managed_pages()</a></code> and get the token for all of your pages, or if you know what you’re looking for, you can get the token for a specific page as follows:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fb_page_token</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cc_get_fb_page_token.html">cc_get_fb_page_token</a></span><span class="op">(</span></span>
 <span>  fb_user_id <span class="op">=</span> <span class="fu"><a href="reference/cc_get_fb_user.html">cc_get_fb_user</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  page_name <span class="op">=</span> <span class="st">"My example page"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Now that you have it, you probably want to set it as the page token to be used throughout the current session:</p>
+<p>Now that you have it, you probably want to set it as the page token to be used throughout the current session, as well as the page id:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_set.html">cc_set</a></span><span class="op">(</span>fb_page_token <span class="op">=</span> <span class="va">fb_page_token</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_set.html">cc_set</a></span><span class="op">(</span>fb_page_token <span class="op">=</span> <span class="va">fb_page_token</span>, </span>
+<span>       fb_page_id <span class="op">=</span> <span class="va">fb_page_id</span><span class="op">)</span></span></code></pre></div>
 <p>(if you prefer, you can actively pass the token to each function call)</p>
 <p>Good, now you have your Facebook Page Token, which you can use to get information about your page and posts, what do you do next? (also, be mindful that the same token can be used also to actually post on your page, so treat it with due caution and make sure it remains private)</p>
 <p>Then, you probably want to get a list of all posts from your page.</p>
