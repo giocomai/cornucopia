@@ -35,14 +35,16 @@ cc_get_fb_page_post_insights <- function(fb_post_id = NULL,
   } else {
     fb_page_id <- as.character(fb_page_id)
   }
-  
+
   if (is.null(fb_post_id)) {
-    cc_get_fb_page_posts(api_version = api_version,
-                         max_pages = NULL,
-                         fields = names(cc_empty_fb_page_post_df),
-                         cache = cache,
-                         fb_page_id = fb_page_id,
-                         fb_page_token = fb_page_token) |> 
+    cc_get_fb_page_posts(
+      api_version = api_version,
+      max_pages = NULL,
+      fields = names(cc_empty_fb_page_post_df),
+      cache = cache,
+      fb_page_id = fb_page_id,
+      fb_page_token = fb_page_token
+    ) |>
       dplyr::pull(id)
   }
 
