@@ -73,6 +73,12 @@
     <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ads_totals_by_day.html</loc>
   </url>
   <url>
+    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_long_page_token.html</loc>
+  </url>
+  <url>
+    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_long_user_token.html</loc>
+  </url>
+  <url>
     <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_managed_pages.html</loc>
   </url>
   <url>
