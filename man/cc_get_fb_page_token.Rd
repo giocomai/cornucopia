@@ -8,7 +8,7 @@ cc_get_fb_page_token(
   fb_user_id = NULL,
   page_id = NULL,
   page_name = NULL,
-  token = NULL
+  fb_user_token = NULL
 )
 }
 \arguments{

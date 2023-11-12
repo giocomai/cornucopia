@@ -5,7 +5,7 @@
 \title{Get Facebook page posts insights}
 \usage{
 cc_get_fb_page_post_insights(
-  fb_post_id,
+  fb_post_id = NULL,
   metrics = cc_valid_fields_fb_post_insights,
   cache = TRUE,
   update = TRUE,
