@@ -20,9 +20,9 @@ knitr::opts_chunk$set(
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of cornucopia is to facilitate reporting on sponsored and organic activities on Facebook, Instagram, and LinkedIn (currently), as well as to estimate and visualise the result of marketing funnels (long term).
+The goal of `cornucopia` is to facilitate reporting on sponsored and organic activities across various platforms, including Facebook, Instagram, and (to a lesser extent, due to lack of usable API) LinkedIn. Other networks may be added in the future. 
 
-## Why `cornucopia`?
+## Why call it `cornucopia`?
 
 For you all marketing folks, a cornucopia is like a funnel that keeps on giving. Also known as the "[horn of plenty](https://en.wikipedia.org/wiki/Cornucopia)", it's basically really your wildest dream: a funnel that endlessly overflows with abundance.
 
@@ -30,7 +30,7 @@ Hence, the marketing slogan of `cornucopia` is:
 
 __*turn your every funnel into a cornucopia!*__
 
-The premise of `cornucopia` is that there's plenty of small and big platforms that can be used to interact with the API of big "social networks"/advertising platforms, but there's really just a few open source packages in the `r` ecosystem openly available in this space. Some of these packages are of excellent quality, but overall there's a steep learning curve when joining this space, and few tools enabling the beginner-intermediate users to look at these interrelated processes in an orderly fashion, or to facilitate some routine work for more advanced users. 
+The premise of `cornucopia` is that there's plenty of small and big platforms that can be used to interact with the API (or to connect them to other data visualisation or data processing platforms) of big "social networks"/advertising platforms, but there's really just a few open source packages in the `r` ecosystem openly available in this space. Some of these packages are of excellent quality, but overall there's a steep learning curve when joining this space, and few tools enabling the beginner-intermediate users to look at these interrelated processes in an orderly fashion, or to facilitate some routine work for more advanced users. 
 
 Long term, this is the purpose of `cornucopia`, which is currently at an early stage of development.
 
@@ -85,13 +85,17 @@ stringr::str_c("`", set_params, "`") |>
 
 In order to get data out of the Meta ecosystem through APIs, you will need to create an app following the [procedure on their Developer platform](https://developers.facebook.com/apps/create/).
 
-You can then get your token from your app page, after adding the "Marketing API": https://developers.facebook.com/apps/
+You can then get your token from your [app page](https://developers.facebook.com/apps/), after adding the "Marketing API". When you retrieve your token, you can select permissions: you probably want to include both "ads_read" and "read_insights", as they are read-only and hence safe, while you probably don't want to tick "ads_management", unless you really know what you are doing. 
 
-When you retrieve your token, you can select permissions: you probably want to include both "ads_read" and "read_insights", as they are read-only and hence safe, while you probably don't want to tick "ads_management", unless you really know what you are doing. 
+You can also get a token with a different set of options for customisation, through the [Facebook's Graph API explorer](https://developers.facebook.com/tools/explorer/). 
 
-Be mindful that the Meta APIs never, ever, return meaningful error messages, and the documentation has only few examples... as some queries work or not depending on the type of ad (its creatives/its format/etc.) or the type of organic post (is it a video? if so, is it a reel? etc.), there's often some trial and error involved.
+Things, however, are not so easy, as you'll need to go through additional steps to get long-lived tokens, Facebook page tokens, etc. - more details below.
 
-### Organic - Facebook pages
+Also, be mindful that the Meta APIs never, ever, return meaningful error messages, and the documentation has only few examples... as some queries work or not depending on the type of ad (its creatives/its format/etc.) or the type of organic post (is it a video? if so, is it a reel? etc.), there's often some trial and error involved.
+
+More broadly, whenever you get an error message, don't really look at what the error message says, but think creatively about what could be wrong: has my token expired? did I exceed query limit? did I include a field which was not available for this endpoint? did I use the wrong identifier (e.g. a post id instead of a video id, or vice versa)?
+
+### Organic - Facebook pages and access tokens
 
 Data about Facebook pages need to be accessed with a Facebook *page* token, that is separate to the Facebook *user* token.
 
@@ -133,16 +137,49 @@ If you are managing pages through business manager, this is probably not enough,
 
 Do remember to regenerate your token after adding permissions to actually get access.
 
-You should be now good to go. You can run `cc_get_fb_managed_pages()` and get the token for all of your pages, or if you know what you're looking for, you can get the token for a specific page as follows:
+You can run `cc_get_fb_managed_pages()` and get the token for all of your pages, or if you know what you're looking for, you can get the token for a specific page as follows:
 
 ```{r cc_get_fb_page_token}
+cc_get_fb_managed_pages()
+
 fb_page_token <- cc_get_fb_page_token(
   fb_user_id = cc_get_fb_user(),
   page_name = "My example page"
 )
 ```
 
-Now that you have it, you probably want to set it as the page token to be used throughout the current session, as well as the page id:
+You should be now good to go. 
+
+But depending on how you created your token, you may well still be using a short-lived token. This may be fine, but perhaps you really want to have a long-lived token, so that you don't need to constantly retrieve it again through web interfaces. 
+
+In order to get a long-lived user and page token, you need first to get a short-lived user token with the appropriate authorisations as described above, and then input your Facebook app id and secret, which you can retrieve from your [app page](https://developers.facebook.com/apps/) page.
+
+```{r eval = FALSE, echo = TRUE}
+cc_get_fb_long_user_token(
+  fb_user_token = "your_short_term_token_here",
+  fb_app_id = "your_fb_app_id_here",
+  fb_app_secret = "your_fb_app_secret_here"
+)
+```
+
+Then you can use this long-lived user token to get a long-lived Facebook page access token. With the following function you will get a data frame with access tokens to all pages to which your short-lived tokens has access (you can select just a few or include all from the web intreface when you create the short-lived access token).
+
+```{r}
+cc_get_fb_long_page_token(
+  fb_user_id = "your_fb_user_id_here",
+  fb_user_token = "your_long_term_token_here"
+)
+```
+
+#### A word of caution about access tokens
+
+Store these access tokens safely: while long-lived user access token expire after 60 days, long-lived page access tokens *do not expire*. We are solidly in password territory here: make sure you do not inlcude these tokens in scripts you share, as they can be used to retrieve data, and, especially if you're not really careful when you create them, do all sorts of other things, including posting to your page or creating ads. In theory, these permissions are super-granular, but in practice, especially for the pages you control through a Business Manager account, getting the right set of access in place is not straightforward (and maybe, not even possible). So eventually you may end up with access tokens with substantial access: treat them as you would treat secret passwords, and use them with care. 
+
+At this stage, all functions in this package use only read API, but the same access tokens may potentially be used for other APIs. So... take care. 
+
+#### Once you've got your tokens
+
+Now that you have these tokens, you probably want to set them and let them be used throughout the current session:
 
 ```{r}
 cc_set(
@@ -151,7 +188,7 @@ cc_set(
 )
 ```
 
-(if you prefer, you can actively pass the token to each function call)
+(if you prefer, you can actively pass the token to each function call, or, you may rather prefer to use some other solution to make sure access tokens are not included in scripts, shared by mistake, etc. )
 
 Good, now you have your Facebook Page Token, which you can use to get information about your page and posts, what do you do next? (also, be mindful that the same token can be used also to actually post on your page, so treat it with due caution and make sure it remains private)
 

@@ -13,10 +13,19 @@
 #'   with `cc_get_fb_long_user_token()`.
 #' @inheritParams cc_get_fb_page_token
 #'
-#' @return
+#' @return A data frame with long-lived access tokens to all available pages.
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' if (interactive) {
+#'   cc_get_fb_long_page_token(
+#'     fb_user_id = "your_fb_user_id_here",
+#'     fb_user_token = "your_long_term_token_here"
+#'   )
+#' }
+#' }
+#'
 cc_get_fb_long_page_token <- function(fb_user_id = NULL,
                                       fb_user_token = NULL,
                                       api_version = "v18.0") {

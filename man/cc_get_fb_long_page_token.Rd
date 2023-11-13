@@ -17,6 +17,9 @@ cc_get_fb_long_page_token(
 \item{fb_user_token}{Must be a long-lived user token. This can be retrieved
 with `cc_get_fb_long_user_token()`.}
 }
+\value{
+A data frame with long-lived access tokens to all available pages.
+}
 \description{
 For details, see
 \url{https://developers.facebook.com/docs/facebook-login/guides/access-tokens/get-long-lived/}
@@ -25,4 +28,15 @@ For details, see
 You should use as input a long-lived user access token. Long-lived Page
 access token do not have an expiration date and only expire or are
 invalidated under certain conditions.
+}
+\examples{
+\dontrun{
+if (interactive) {
+  cc_get_fb_long_page_token(
+    fb_user_id = "your_fb_user_id_here",
+    fb_user_token = "your_long_term_token_here"
+  )
+}
+}
+
 }
