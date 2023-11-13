@@ -57,12 +57,32 @@ https://developers.facebook.com/docs/facebook-login/guides/access-tokens/get-lon
     </div>
 
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>A character vector of length one, with the long-loved user access token.</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>You should use as input a short-lived user access token. In future calls, you
 can then routinely use your newly aquired long-lived user access token, which
 should generally last about 60 days.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="va">interactive</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">cc_get_fb_long_user_token</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    fb_user_token <span class="op">=</span> <span class="st">"your_short_term_token_here"</span>,</span></span>
+<span class="r-in"><span>    fb_app_id <span class="op">=</span> <span class="st">"your_fb_app_id_here"</span>,</span></span>
+<span class="r-in"><span>    fb_app_secret <span class="op">=</span> <span class="st">"your_fb_app_secret_here"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
