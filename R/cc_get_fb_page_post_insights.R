@@ -126,7 +126,13 @@ cc_api_get_fb_page_post_insights <- function(fb_post_id,
       access_token = fb_page_token
     )
 
-  req <- httr2::req_perform(req = api_request)
+  req <- rlang::try_fetch(expr = httr2::req_perform(req = api_request),
+                          error = function(cnd) NULL)
+  
+  if (is.null(req)) {
+    rlang::warn(message = glue::glue("No data for post with id {fb_post_id}"))
+    return(NULL)
+  } 
 
   current_l <- httr2::resp_body_json(req)
 
