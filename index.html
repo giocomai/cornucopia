@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="index.html">cornucopia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9007</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9008</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -150,7 +150,11 @@
 <li><code>ads_read</code></li>
 <li><code>read_insights</code></li>
 </ul>
-<p>If you are managing pages through business manager, this is probably not enough, as you will need to add also the <code>business_management</code> permission.</p>
+<p>If you are managing pages through business manager, this is probably not enough, as you will need to add also the <code>business_management</code> permission. Also consider that if you want to interact with the Instagram page associated with this page you will also need:</p>
+<ul>
+<li><code>instagram_basic</code></li>
+<li><code>instagram_manage_insights</code></li>
+</ul>
 <p>Do remember to regenerate your token after adding permissions to actually get access.</p>
 <p>You can run <code><a href="reference/cc_get_fb_managed_pages.html">cc_get_fb_managed_pages()</a></code> and get the token for all of your pages, or if you know what you’re looking for, you can get the token for a specific page as follows:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
