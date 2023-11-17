@@ -22,8 +22,6 @@ NULL, a full list is automatically retrieved.}
 \item{api_version}{Defaults to "v18.0".}
 
 \item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to be confused with legacy Instragram account id.}
-
-\item{token}{Facebook user token (not a page token).}
 }
 \description{
 It retrieves the requested fields from the APIs and introduces a few

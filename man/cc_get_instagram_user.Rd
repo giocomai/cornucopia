@@ -10,7 +10,7 @@ cc_get_instagram_user(
   fields = c("id", "ig_id", "username", "name", "biography", "website",
     "followers_count", "follows_count", "media_count", "profile_picture_url",
     "shopping_product_tag_eligibility"),
-  token = NULL
+  fb_user_token = NULL
 )
 }
 \arguments{
@@ -20,13 +20,15 @@ cc_get_instagram_user(
 
 \item{fields}{Defaults to all available, consider reducing if you don't have all relevant permissions.}
 
-\item{token}{Facebook user token (not a page token).}
+\item{fb_user_token}{Facebook user token (not a page token).}
 }
 \description{
-See the relevant page in the documentation for available fields and more details
-https://developers.facebook.com/docs/instagram-api/reference/ig-user
+If you need to retrieve your Instagram user id, consider `cc_get_instagram_user_id()`.
 }
 \details{
+See the relevant page in the documentation for available fields and more details
+https://developers.facebook.com/docs/instagram-api/reference/ig-user
+
 Look in particular at the permissions requirements. If you have issues, consider dropping `shopping_product_tag_eligibility` from the fields, as it requires additional permissions.
 }
 \examples{

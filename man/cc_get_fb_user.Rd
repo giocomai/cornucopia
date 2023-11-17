@@ -11,8 +11,6 @@ Defaults to "data.frame". If list, a list is returned instead; mostly
 cc_get_fb_user(token = NULL, fields = c("id", "name"), format = "data.frame")
 }
 \arguments{
-\item{token}{Facebook user token (not a page token).}
-
 \item{fields}{Defaults to all available, consider reducing if you don't have all relevant permissions.}
 }
 \value{

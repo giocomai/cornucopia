@@ -15,6 +15,8 @@ cc_get_fb_managed_pages(
 
 \item{fb_user_id}{Facebook user id. Defaults to NULL, can be set with
 `cc_set()`. Can be retrieved with `cc_get_fb_user()`.}
+
+\item{fb_user_token}{Facebook user token (not a page token).}
 }
 \description{
 Get managed pages, including name, page token, and id

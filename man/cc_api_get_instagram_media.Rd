@@ -18,8 +18,6 @@ A list of identifiers for your account can be retrieved with
 `cc_get_instagram_media_id()`.}
 
 \item{api_version}{Defaults to "v18.0".}
-
-\item{token}{Facebook user token (not a page token).}
 }
 \description{
 Get information about a single media directly from the API. Mostly used

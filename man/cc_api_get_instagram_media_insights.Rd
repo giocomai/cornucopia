@@ -31,8 +31,6 @@ metrics will cause an error. Defaults to NULL. If left to NULL, metrics will be 
 \item{api_version}{Defaults to "v18.0".}
 
 \item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to be confused with legacy Instragram account id.}
-
-\item{token}{Facebook user token (not a page token).}
 }
 \description{
 See the official documentation for reference:

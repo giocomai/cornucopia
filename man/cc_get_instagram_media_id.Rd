@@ -17,8 +17,6 @@ cc_get_instagram_media_id(
 
 \item{api_version}{Defaults to "v18.0".}
 
-\item{token}{Facebook user token (not a page token).}
-
 \item{max_pages}{Defaults to NULL. If not given, it retrieves the number of media and calculates max number of pages needed. Hard-coded max number of pages at 1000.}
 }
 \value{
