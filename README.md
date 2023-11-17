@@ -180,7 +180,11 @@ Then you will see you’ll have more permissions in the list, including
 
 If you are managing pages through business manager, this is probably not
 enough, as you will need to add also the `business_management`
-permission.
+permission. Also consider that if you want to interact with the
+Instagram page associated with this page you will also need:
+
+- `instagram_basic`
+- `instagram_manage_insights`
 
 Do remember to regenerate your token after adding permissions to
 actually get access.

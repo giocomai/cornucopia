@@ -1,5 +1,7 @@
 #' Get information about your Instagram user
 #'
+#' If you need to retrieve your Instagram user id, consider `cc_get_instagram_user_id()`.
+#'
 #' See the relevant page in the documentation for available fields and more details
 #' https://developers.facebook.com/docs/instagram-api/reference/ig-user
 #'
@@ -8,7 +10,7 @@
 #' @param ig_user_id Instagram user id, typically composed of 17 digits. Not to be confused with legacy Instragram account id.
 #' @param api_version Defaults to "v18.0".
 #' @param fields Defaults to all available, consider reducing if you don't have all relevant permissions.
-#' @param token Facebook user token (not a page token).
+#' @param fb_user_token Facebook user token (not a page token).
 #'
 #' @return
 #' @export
@@ -32,7 +34,7 @@ cc_get_instagram_user <- function(ig_user_id = NULL,
                                     "profile_picture_url",
                                     "shopping_product_tag_eligibility"
                                   ),
-                                  token = NULL) {
+                                  fb_user_token = NULL) {
   if (is.null(ig_user_id)) {
     ig_user_id <- cc_get_settings(ig_user_id = ig_user_id) |>
       purrr::pluck("ig_user_id")
@@ -40,11 +42,11 @@ cc_get_instagram_user <- function(ig_user_id = NULL,
     ig_user_id <- as.character(ig_user_id)
   }
 
-  if (is.null(token)) {
-    fb_user_token <- cc_get_settings(fb_user_token = token) |>
+  if (is.null(fb_user_token)) {
+    fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
   } else {
-    fb_user_token <- as.character(token)
+    fb_user_token <- as.character(fb_user_token)
   }
 
 
