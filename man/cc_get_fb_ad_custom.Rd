@@ -2,7 +2,7 @@
 % Please edit documentation in R/cc_get_fb_ad_custom.R
 \name{cc_get_fb_ad_custom}
 \alias{cc_get_fb_ad_custom}
-\title{Title}
+\title{Get custom stats about an ad (currently not functional)}
 \usage{
 cc_get_fb_ad_custom(
   start_date = NULL,

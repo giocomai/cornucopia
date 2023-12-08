@@ -1,4 +1,4 @@
-#' Title
+#' Get custom stats about an ad (currently not functional)
 #'
 #' https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-stats/
 #'
@@ -61,11 +61,6 @@ cc_get_fb_ad_custom <- function(start_date = NULL,
   )
 
 
-  current_ad_id <- "23857761765310395"
-  current_ad_id <- "23856544953420395"
-  # current_ad_id <- "23856513969160395"
-
-  current_ad_id <- "23852480872050395"
   api_request <- httr2::request(base_url = base_url) |>
     httr2::req_url_path_append(current_ad_id) |>
     httr2::req_url_path_append("insights") |>
@@ -81,7 +76,6 @@ cc_get_fb_ad_custom <- function(start_date = NULL,
       #  summary = "true"
     )
 
-  current_ad_id <- "23856544953420395"
   api_request <- httr2::request(base_url = base_url) |>
     httr2::req_url_path_append(current_ad_id) |>
     httr2::req_url_path_append("insights") |>
@@ -108,7 +102,6 @@ cc_get_fb_ad_custom <- function(start_date = NULL,
       date_preset = "maximum"
       #  summary = "true"
     )
-
 
   req <- httr2::req_perform(req = api_request)
 
