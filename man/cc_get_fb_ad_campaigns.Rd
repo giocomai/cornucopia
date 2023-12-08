@@ -17,7 +17,8 @@ cc_get_fb_ad_campaigns(
 \arguments{
 \item{fields}{A character vector of fields to retrieve. Defaults to all valid
 fields that return a single value, see:
-`cc_valid_fields_ad_campaign_group_v`}
+`cc_valid_fields_ad_campaign_group_v`. Currently only default fields
+supported when caching.}
 }
 \description{
 For details on fields, see:

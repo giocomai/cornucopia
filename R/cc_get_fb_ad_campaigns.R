@@ -14,7 +14,8 @@
 #'
 #' @param fields A character vector of fields to retrieve. Defaults to all valid
 #'   fields that return a single value, see:
-#'   `cc_valid_fields_ad_campaign_group_v`
+#'   `cc_valid_fields_ad_campaign_group_v`. Currently only default fields
+#'   supported when caching.
 #' @return
 #' @export
 #'
@@ -42,8 +43,6 @@ cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
   } else {
     fb_ad_account_id <- as.character(fb_ad_account_id)
   }
-
-
 
   if (cache == TRUE) {
     if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
@@ -199,11 +198,15 @@ cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
         ) |>
         dplyr::ungroup()
       DBI::dbDisconnect(db)
-      return(output_ad_campaign_df)
     } else {
-      return(previous_ad_campaign_df)
+      output_ad_campaign_df <- previous_ad_campaign_df
     }
   } else {
-    new_campaigns_df
+    return(new_campaigns_df)
   }
+
+  dplyr::bind_rows(
+    cc_empty_fb_ad_campaign,
+    output_ad_campaign_df
+  )
 }
