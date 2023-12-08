@@ -1,11 +1,20 @@
 #' Get all campaigns for the current ad account
 #'
-#' For details on fields, see: https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/
+#' For details on fields, see:
+#' https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/
 #'
-#' It currently returns only fields that are always present for all campaigns: "id,name,created_time,updated_time,start_time,stop_time,objective,status"
+#' It currently returns all fields that return a single value,
+#' `cc_valid_fields_ad_campaign_group_v`
+#'
+#' For reference, these are the fields that are always present for all
+#' campaigns:
+#' "id,name,created_time,updated_time,start_time,stop_time,objective,status"
 #'
 #' Cache updating currently suboptimal.
 #'
+#' @param fields A character vector of fields to retrieve. Defaults to all valid
+#'   fields that return a single value, see:
+#'   `cc_valid_fields_ad_campaign_group_v`
 #' @return
 #' @export
 #'
@@ -13,8 +22,9 @@
 #' \dontrun{
 #' cc_get_fb_ad_campaigns()
 #' }
-cc_get_fb_ad_campaigns <- function(api_version = "v18.0",
-                                   ad_account_id = NULL,
+cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
+                                   api_version = "v18.0",
+                                   fb_ad_account_id = NULL,
                                    max_pages = NULL,
                                    token = NULL,
                                    cache = TRUE,
@@ -27,10 +37,10 @@ cc_get_fb_ad_campaigns <- function(api_version = "v18.0",
   }
 
   if (is.null(ad_account_id)) {
-    fb_ad_account_id <- cc_get_settings(fb_ad_account_id = ad_account_id) |>
+    fb_ad_account_id <- cc_get_settings(fb_ad_account_id = fb_ad_account_id) |>
       purrr::pluck("fb_ad_account_id")
   } else {
-    fb_ad_account_id <- as.character(ad_account_id)
+    fb_ad_account_id <- as.character(fb_ad_account_id)
   }
 
 
@@ -56,7 +66,7 @@ cc_get_fb_ad_campaigns <- function(api_version = "v18.0",
       DBI::dbWriteTable(
         conn = db,
         name = current_table,
-        value = cc_empty_fb_ad_campaign
+        value = tibble::as_tibble(cc_empty_fb_ad_campaign)
       )
     }
 
@@ -65,15 +75,17 @@ cc_get_fb_ad_campaigns <- function(api_version = "v18.0",
       name = current_table
     ) |>
       dplyr::collect() |>
-      tibble::as_tibble() |>
-      dplyr::group_by(campaign_id) |>
-      dplyr::slice_max(timestamp_retrieved,
-        n = 1,
-        with_ties = FALSE
-      ) |>
-      dplyr::ungroup()
+      tibble::as_tibble()
 
     if (nrow(previous_ad_campaign_df) > 0) {
+      previous_ad_campaign_df <- previous_ad_campaign_df |>
+        dplyr::group_by(campaign_id) |>
+        dplyr::slice_max(timestamp_retrieved,
+          n = 1,
+          with_ties = FALSE
+        ) |>
+        dplyr::ungroup()
+
       if (update == FALSE) {
         output_df <- previous_ad_campaign_df |>
           dplyr::collect()
@@ -88,6 +100,7 @@ cc_get_fb_ad_campaigns <- function(api_version = "v18.0",
     api_version
   )
 
+  fields_v <- stringr::str_c(fields, collapse = ",")
   out <- vector("list", max_pages %||% 1000)
   campaigns_l <- vector("list", max_pages %||% 1000)
 
@@ -98,7 +111,7 @@ cc_get_fb_ad_campaigns <- function(api_version = "v18.0",
     httr2::req_url_path_append(stringr::str_c("act_", fb_ad_account_id)) |>
     httr2::req_url_path_append("campaigns") |>
     httr2::req_url_query(
-      fields = "id,name,created_time,updated_time,start_time,stop_time,objective,status",
+      fields = fields_v,
       access_token = fb_user_token
     )
 
@@ -162,5 +175,6 @@ cc_get_fb_ad_campaigns <- function(api_version = "v18.0",
 
   campaigns_l |>
     purrr::list_rbind() |>
-    tibble::as_tibble()
+    tibble::as_tibble() |>
+    dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
 }
