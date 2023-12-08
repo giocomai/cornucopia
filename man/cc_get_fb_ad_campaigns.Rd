@@ -11,7 +11,7 @@ cc_get_fb_ad_campaigns(
   max_pages = NULL,
   token = NULL,
   cache = TRUE,
-  update = FALSE
+  update = TRUE
 )
 }
 \arguments{

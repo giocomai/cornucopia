@@ -28,7 +28,7 @@ cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
                                    max_pages = NULL,
                                    token = NULL,
                                    cache = TRUE,
-                                   update = FALSE) {
+                                   update = TRUE) {
   if (is.null(token)) {
     fb_user_token <- cc_get_settings(fb_user_token = token) |>
       purrr::pluck("fb_user_token")
@@ -155,6 +155,14 @@ cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
           name = current_table,
           value = current_campaigns_df
         )
+
+        if (nrow(dplyr::anti_join(
+          x = current_campaigns_df,
+          y = previous_ad_campaign_df,
+          by = "campaign_id"
+        )) < nrow(current_campaigns_df)) {
+          break
+        }
       }
     }
 
@@ -173,8 +181,29 @@ cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
 
   cli::cli_process_done()
 
-  campaigns_l |>
+  new_campaigns_df <- campaigns_l |>
     purrr::list_rbind() |>
     tibble::as_tibble() |>
     dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
+
+  if (cache == TRUE) {
+    if (nrow(new_campaigns_df) > 0) {
+      output_ad_campaign_df <- dplyr::bind_rows(
+        new_campaigns_df,
+        previous_ad_campaign_df
+      ) |>
+        dplyr::group_by(campaign_id) |>
+        dplyr::slice_max(timestamp_retrieved,
+          n = 1,
+          with_ties = FALSE
+        ) |>
+        dplyr::ungroup()
+      DBI::dbDisconnect(db)
+      return(output_ad_campaign_df)
+    } else {
+      return(previous_ad_campaign_df)
+    }
+  } else {
+    new_campaigns_df
+  }
 }
