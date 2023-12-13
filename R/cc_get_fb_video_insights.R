@@ -114,9 +114,16 @@ cc_api_get_fb_video_insights <- function(fb_video_id,
       access_token = fb_page_token
     )
 
-  req <- httr2::req_perform(req = api_request)
+  req <- api_request |>
+    httr2::req_error(is_error = \(resp) FALSE) |>
+    httr2::req_perform()
 
   current_l <- httr2::resp_body_json(req)
+
+  if (is.null(current_l[["error"]][["message"]]) == FALSE) {
+    cli::cli_warn(current_l[["error"]][["message"]])
+    return(invisible(NULL))
+  }
 
   output_df <- purrr::map(
     .x = current_l[["data"]],

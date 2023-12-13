@@ -21,3 +21,6 @@ cc_get_fb_page_post_insights(
 For reference, see: https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts
 defaults to Lifetime period for each post.
 }
+\details{
+Cache not yet working.
+}

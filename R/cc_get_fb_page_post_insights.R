@@ -3,6 +3,8 @@
 #' For reference, see: https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts
 #' defaults to Lifetime period for each post.
 #'
+#' Cache not yet working.
+#'
 #' @param fb_post_id
 #' @param metrics
 #' @param cache
