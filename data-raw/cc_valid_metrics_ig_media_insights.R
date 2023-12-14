@@ -11,7 +11,7 @@ cc_valid_metrics_ig_media_insights <- list(
     "total_interactions"
   ),
   photo_video = c(
-    #    "total_interactions", # should work, but actually doesn't
+    "total_interactions",
     "impressions",
     "reach",
     "saved",
