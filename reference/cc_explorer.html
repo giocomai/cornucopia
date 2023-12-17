@@ -46,6 +46,17 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cc_explorer</span><span class="op">(</span></span>
+<span>  start_date <span class="op">=</span> <span class="fu"><a href="cc_get_settings.html">cc_get_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"start_date"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  end_date <span class="op">=</span> <span class="fu"><a href="cc_get_settings.html">cc_get_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"end_date"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  fb_user_token <span class="op">=</span> <span class="fu"><a href="cc_get_settings.html">cc_get_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"fb_user_token"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  fb_page_token <span class="op">=</span> <span class="fu"><a href="cc_get_settings.html">cc_get_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"fb_page_token"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  fb_page_id <span class="op">=</span> <span class="fu"><a href="cc_get_settings.html">cc_get_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"fb_page_id"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  fb_business_id <span class="op">=</span> <span class="fu"><a href="cc_get_settings.html">cc_get_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"fb_business_id"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  fb_ad_account_id <span class="op">=</span> <span class="fu"><a href="cc_get_settings.html">cc_get_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"fb_ad_account_id"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  fb_product_catalog_id <span class="op">=</span> <span class="fu"><a href="cc_get_settings.html">cc_get_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"fb_product_catalog_id"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  fb_user_id <span class="op">=</span> <span class="fu"><a href="cc_get_settings.html">cc_get_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"fb_user_id"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  ig_user_id <span class="op">=</span> <span class="fu"><a href="cc_get_settings.html">cc_get_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"ig_user_id"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  custom_head_html <span class="op">=</span> <span class="st">"&lt;meta name=\"referrer\" content=\"no-referrer\" /&gt;"</span>,</span>
 <span>  onStart <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  enableBookmarking <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -56,7 +67,27 @@
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>onStart</dt>
+    <dl><dt>start_date</dt>
+<dd><p>Defaults to 91 days before today</p></dd>
+
+
+<dt>end_date</dt>
+<dd><p>Defaults to yesterday.</p></dd>
+
+
+<dt>fb_business_id</dt>
+<dd><p>Facebook business id. For details on how to find it,
+see <a href="https://www.facebook.com/business/help/1181250022022158" class="external-link">https://www.facebook.com/business/help/1181250022022158</a></p></dd>
+
+
+<dt>custom_head_html</dt>
+<dd><p>Chunk of code to be included in the app's `&lt;head&gt;`.
+This can be used, e.g., for custom analytics snippets. The default value,
+`&lt;meta name="referrer" content="no-referrer" /&gt;` asks the browser not to
+include the source website when following links to external websites.</p></dd>
+
+
+<dt>onStart</dt>
 <dd><p>A function that will be called before the app is actually run.
 This is only needed for <code>shinyAppObj</code>, since in the <code>shinyAppDir</code>
 case, a <code>global.R</code> file can be used for this purpose.</p></dd>
