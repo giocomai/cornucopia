@@ -5,6 +5,17 @@
 \title{Run the Shiny Application}
 \usage{
 cc_explorer(
+  start_date = cc_get_settings()[["start_date"]],
+  end_date = cc_get_settings()[["end_date"]],
+  fb_user_token = cc_get_settings()[["fb_user_token"]],
+  fb_page_token = cc_get_settings()[["fb_page_token"]],
+  fb_page_id = cc_get_settings()[["fb_page_id"]],
+  fb_business_id = cc_get_settings()[["fb_business_id"]],
+  fb_ad_account_id = cc_get_settings()[["fb_ad_account_id"]],
+  fb_product_catalog_id = cc_get_settings()[["fb_product_catalog_id"]],
+  fb_user_id = cc_get_settings()[["fb_user_id"]],
+  ig_user_id = cc_get_settings()[["ig_user_id"]],
+  custom_head_html = "<meta name=\\"referrer\\" content=\\"no-referrer\\" />",
   onStart = NULL,
   options = list(),
   enableBookmarking = NULL,
@@ -13,6 +24,18 @@ cc_explorer(
 )
 }
 \arguments{
+\item{start_date}{Defaults to 91 days before today}
+
+\item{end_date}{Defaults to yesterday.}
+
+\item{fb_business_id}{Facebook business id. For details on how to find it,
+see \url{https://www.facebook.com/business/help/1181250022022158}}
+
+\item{custom_head_html}{Chunk of code to be included in the app's `<head>`.
+This can be used, e.g., for custom analytics snippets. The default value,
+`<meta name="referrer" content="no-referrer" />` asks the browser not to
+include the source website when following links to external websites.}
+
 \item{onStart}{A function that will be called before the app is actually run.
 This is only needed for \code{shinyAppObj}, since in the \code{shinyAppDir}
 case, a \code{global.R} file can be used for this purpose.}

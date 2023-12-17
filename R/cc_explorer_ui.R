@@ -8,6 +8,7 @@ cc_explorer_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
+    tags$head(shiny::HTML(golem::get_golem_options("custom_head_html"))),
     # Your application UI logic
     bslib::page_sidebar(
       theme = bslib::bs_theme(),
