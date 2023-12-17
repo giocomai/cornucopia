@@ -4,13 +4,13 @@
 #'     DO NOT REMOVE.
 #' @import shiny
 #' @noRd
-app_ui <- function(request) {
+cc_explorer_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    navbarPage(
-      theme = bslib::bs_theme(version = 5),
+    bslib::page_sidebar(
+      theme = bslib::bs_theme(),
       h1("cornucopia"),
       bslib::layout_column_wrap(
         width = 1 / 2,
@@ -36,7 +36,7 @@ golem_add_external_resources <- function() {
   )
 
   tags$head(
-    favicon(),
+    favicon(ext = "png"),
     bundle_resources(
       path = app_sys("app/www"),
       app_title = "cornucopia"

@@ -7,7 +7,7 @@
 #' @export
 #' @importFrom shiny shinyApp
 #' @importFrom golem with_golem_options
-run_app <- function(
+cc_explorer <- function(
     onStart = NULL,
     options = list(),
     enableBookmarking = NULL,
@@ -15,8 +15,8 @@ run_app <- function(
     ...) {
   with_golem_options(
     app = shinyApp(
-      ui = app_ui,
-      server = app_server,
+      ui = cc_explorer_ui,
+      server = cc_explorer_server,
       onStart = onStart,
       options = options,
       enableBookmarking = enableBookmarking,
