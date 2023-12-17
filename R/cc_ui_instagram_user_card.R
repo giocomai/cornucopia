@@ -42,9 +42,6 @@ cc_ui_instagram_user_card <- function(ig_user_df = NULL,
     ),
     bslib::card_body(
       htmltools::p(
-        ig_user_df[["name"]]
-      ),
-      htmltools::p(
         htmltools::strong("Followers Instagram:"),
         scales::number(ig_user_df[["followers_count"]])
       )
