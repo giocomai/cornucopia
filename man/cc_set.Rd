@@ -2,7 +2,7 @@
 % Please edit documentation in R/cc_set.R
 \name{cc_set}
 \alias{cc_set}
-\title{Set default start and end dates}
+\title{Set settings and token for the session}
 \usage{
 cc_set(
   start_date = NULL,
@@ -26,10 +26,10 @@ cc_set(
 see \url{https://www.facebook.com/business/help/1181250022022158}}
 }
 \value{
-A list with two named elements of class "Date", `start_date` and `end_date`
+A list of named elements.
 }
 \description{
-Set default start and end dates
+Set settings and token for the session
 }
 \examples{
 \donttest{

@@ -1,4 +1,4 @@
-#' Set default start and end dates
+#' Set settings and token for the session
 #'
 #'
 #' @param start_date Defaults to 91 days before today
@@ -6,7 +6,7 @@
 #' @param fb_business_id Facebook business id. For details on how to find it,
 #'   see \url{https://www.facebook.com/business/help/1181250022022158}
 #'
-#' @return A list with two named elements of class "Date", `start_date` and `end_date`
+#' @return A list of named elements.
 #' @export
 #' @examples
 #' \donttest{
@@ -111,13 +111,14 @@ cc_set <- function(start_date = NULL,
 }
 
 
-#' Set default start and end dates
+#' Retrieve settings for the session.
 #'
+#' Typically set with `cc_set()`.
 #'
-#' @param start_date Defaults to 91 days before today
-#' @param end_date Defaults to yesterday.
+#' @param start_date Nominally defaults to NULL, but effectively to 91 days before today.
+#' @param end_date Nominally defaults to NULL, but effectively to yesterday.
 #'
-#' @return A list with two named elements of class "Date", `start_date` and `end_date`
+#' @return A list of named elements.
 #' @export
 #' @examples
 #' \donttest{

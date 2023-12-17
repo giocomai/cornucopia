@@ -2,7 +2,7 @@
 % Please edit documentation in R/cc_set.R
 \name{cc_get_settings}
 \alias{cc_get_settings}
-\title{Set default start and end dates}
+\title{Retrieve settings for the session.}
 \usage{
 cc_get_settings(
   start_date = NULL,
@@ -18,15 +18,15 @@ cc_get_settings(
 )
 }
 \arguments{
-\item{start_date}{Defaults to 91 days before today}
+\item{start_date}{Nominally defaults to NULL, but effectively to 91 days before today.}
 
-\item{end_date}{Defaults to yesterday.}
+\item{end_date}{Nominally defaults to NULL, but effectively to yesterday.}
 }
 \value{
-A list with two named elements of class "Date", `start_date` and `end_date`
+A list of named elements.
 }
 \description{
-Set default start and end dates
+Typically set with `cc_set()`.
 }
 \examples{
 \donttest{
