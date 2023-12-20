@@ -15,6 +15,7 @@ cc_explorer(
   fb_product_catalog_id = cc_get_settings()[["fb_product_catalog_id"]],
   fb_user_id = cc_get_settings()[["fb_user_id"]],
   ig_user_id = cc_get_settings()[["ig_user_id"]],
+  ig_user_df = NULL,
   custom_head_html = "<meta name=\\"referrer\\" content=\\"no-referrer\\" />",
   onStart = NULL,
   options = list(),

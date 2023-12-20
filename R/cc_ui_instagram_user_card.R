@@ -1,6 +1,6 @@
 #' Create a card to be used in dashboard or shiny app with basic information
 #' about the Instagram account
-#' 
+#'
 #' @inheritParams cc_get_instagram_user
 #'
 #' @return
@@ -22,6 +22,7 @@ cc_ui_instagram_user_card <- function(ig_user_df = NULL,
   }
 
   bslib::card(
+    fill = FALSE,
     bslib::card_header(
       htmltools::p(
         ig_user_df[["name"]],
