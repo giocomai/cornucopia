@@ -2,11 +2,11 @@
 
 cc_empty_fb_page_insights <- tibble::tibble(
   date = character(),
-  metric = character(),
   metric_title = character(),
-  period = character(),
-  value = numeric(),
-  end_time = character()
+  metric_name = character(),
+  metric_value_name = character(),
+  metric_value = numeric(),
+  period = character()
 )
 
 usethis::use_data(cc_empty_fb_page_insights, overwrite = TRUE)

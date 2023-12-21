@@ -26,6 +26,10 @@ cc_get_fb_page_insights <- function(metric = c(
     fb_page_token <- as.character(fb_page_token)
   }
 
+  if (fb_page_token == "") {
+    cli::cli_abort("{.var fb_page_token} must be given or set with {.fun cc_set}.")
+  }
+
   if (is.null(fb_page_id)) {
     fb_page_id <- cc_get_settings(fb_page_id = fb_page_id) |>
       purrr::pluck("fb_page_id")
@@ -87,7 +91,7 @@ cc_get_fb_page_insights <- function(metric = c(
       name = current_table
     ) |>
       dplyr::filter(
-        metric %in% active_metrics,
+        metric_name %in% active_metrics,
         date %in% all_dates_v
       ) |>
       dplyr::collect() |>
@@ -109,8 +113,6 @@ cc_get_fb_page_insights <- function(metric = c(
     api_version
   )
 
-  dates_to_process_v
-
   new_df <- purrr::map(
     .x = dates_to_process_v,
     .progress = TRUE,
@@ -126,51 +128,73 @@ cc_get_fb_page_insights <- function(metric = c(
           until = current_date
         )
 
-      req <- httr2::req_perform(req = api_request)
+      req <- api_request |>
+        httr2::req_error(is_error = \(resp) FALSE) |>
+        httr2::req_perform()
 
       page_insight_l <- httr2::resp_body_json(req)
+
+      if (is.null(page_insight_l[["error"]][["message"]]) == FALSE) {
+        cli::cli_abort(page_insight_l[["error"]][["message"]])
+      }
 
       current_date_df <- purrr::map(
         .x = page_insight_l[["data"]],
         .f = function(current_element_l) {
-          purrr::map(.x = current_element_l |>
-            purrr::pluck("values"), .f = function(current_values_l) {
-            current_values_l |>
-              tibble::as_tibble()
-          }) |>
+          purrr::map(
+            .x = current_element_l[["values"]],
+            .f = function(current_values_l) {
+              current_metric_value_names <- current_element_l |>
+                purrr::pluck("values", 1, "value") |>
+                names()
+
+              if (length(current_metric_value_names) == 0) {
+                current_metric_value_names <- NA_character_
+              }
+
+              current_metric_value <- current_element_l |>
+                purrr::pluck("values", 1, "value") |>
+                as.numeric()
+
+              if (length(current_metric_value) == 0) {
+                current_metric_value <- as.numeric(0)
+              }
+
+              tibble::tibble(
+                metric_title = current_element_l |> purrr::pluck("title"),
+                metric_name = current_element_l |> purrr::pluck("name"),
+                metric_value_name = current_metric_value_names,
+                metric_value = current_metric_value
+              )
+            }
+          ) |>
             purrr::list_rbind() |>
             dplyr::mutate(
-              metric = current_element_l[["name"]],
-              metric_title = current_element_l[["title"]],
+              date = as.character(current_date),
               period = current_element_l[["period"]]
             ) |>
-            dplyr::relocate(metric, metric_title, period, value, end_time)
+            dplyr::relocate(
+              date,
+              metric_title,
+              metric_name,
+              metric_value_name,
+              metric_value,
+              period
+            )
         }
       ) |>
         purrr::list_rbind()
 
-      out_df <- current_date_df |>
-        dplyr::mutate(
-          value = as.numeric(value),
-          date = (lubridate::as_datetime(
-            x = end_time,
-            tz = "UTC",
-            format = "%Y-%m-%dT%H:%M:%S%z"
-          ) |>
-            lubridate::as_date() |>
-            as.character())
-        ) |>
-        dplyr::relocate(date)
 
       if (cache == TRUE) {
         DBI::dbAppendTable(
           conn = db,
           name = current_table,
-          value = out_df
+          value = current_date_df
         )
       }
 
-      out_df
+      current_date_df
     }
   ) |>
     purrr::list_rbind()

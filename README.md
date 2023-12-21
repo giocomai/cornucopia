@@ -116,17 +116,17 @@ Things, however, are not so easy, as you’ll need to go through
 additional steps to get long-lived tokens, Facebook page tokens, etc. -
 more details below.
 
-Also, be mindful that the Meta APIs never, ever, return meaningful error
-messages, and the documentation has only few examples… as some queries
-work or not depending on the type of ad (its creatives/its format/etc.)
-or the type of organic post (is it a video? if so, is it a reel? etc.),
-there’s often some trial and error involved.
+Also, be mindful that the Meta APIs do not always return meaningful
+error messages, and the documentation has only few examples… as some
+queries work or not depending on the type of ad (its creatives/its
+format/etc.) or the type of organic post (is it a video? if so, is it a
+reel? etc.), there’s often some trial and error involved.
 
-More broadly, whenever you get an error message, don’t really look at
-what the error message says, but think creatively about what could be
-wrong: has my token expired? did I exceed query limit? did I include a
-field which was not available for this endpoint? did I use the wrong
-identifier (e.g. a post id instead of a video id, or vice versa)?
+More broadly, whenever you get an error message that is unclear, think
+creatively about what could be wrong: has my token expired? did I exceed
+query limit? did I include a field which was not available for this
+endpoint? did I use the wrong identifier (e.g. a post id instead of a
+video id, or vice versa)?
 
 ### Organic - Facebook pages and access tokens
 
@@ -146,7 +146,7 @@ And then use the Facebook user id to request all pages managed by that
 Facebook user, including the relevant Facebook page token:
 
 ``` r
-cc_set(fb_user_id = "actual_user_id_as_retrievd_with_cc_get_fb_user")
+cc_set(fb_user_id = "actual_user_id_as_retrieved_with_cc_get_fb_user")
 
 cc_get_fb_managed_pages()
 ```
@@ -178,10 +178,12 @@ Then you will see you’ll have more permissions in the list, including
 - `ads_read`
 - `read_insights`
 
-If you are managing pages through business manager, this is probably not
-enough, as you will need to add also the `business_management`
-permission. Also consider that if you want to interact with the
-Instagram page associated with this page you will also need:
+You probably want to add also `pages_read_user_content` in order to
+retrieve information about your own posts. If you are managing pages
+through business manager, this is probably not enough, as you will need
+to add also the `business_management` permission. Also consider that if
+you want to interact with the Instagram page associated with this page
+you will also need:
 
 - `instagram_basic`
 - `instagram_manage_insights`

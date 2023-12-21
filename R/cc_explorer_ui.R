@@ -26,6 +26,14 @@ cc_explorer_ui <- function(request) {
         p("[to do]")
       ),
       bslib::nav_panel(
+        title = "Facebook organic",
+        bslib::layout_column_wrap(
+          width = 1 / 2,
+          bslib::card(bslib::card_header("[TO DO]")),
+          bslib::card(bslib::card_header("[TO DO]"))
+        ),
+      ),
+      bslib::nav_panel(
         title = "Instagram organic",
         bslib::layout_column_wrap(
           width = 1 / 2,

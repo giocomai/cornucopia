@@ -207,9 +207,17 @@ cc_api_get_instagram_media <- function(ig_media_id,
       access_token = fb_user_token
     )
 
-  req <- httr2::req_perform(req = api_request)
+  req <- api_request |>
+    httr2::req_error(is_error = \(resp) FALSE) |>
+    httr2::req_perform()
 
-  output_df <- tibble::as_tibble(httr2::resp_body_json(req)) |>
+  current_l <- httr2::resp_body_json(req)
+
+  if (is.null(current_l[["error"]][["message"]]) == FALSE) {
+    cli::cli_abort(current_l[["error"]][["message"]])
+  }
+
+  output_df <- tibble::as_tibble(current_l) |>
     dplyr::rename(ig_media_id = id) |>
     dplyr::mutate(timestamp_retrieved = strftime(as.POSIXlt(Sys.time(), "UTC"), "%Y-%m-%dT%H:%M:%S%z"))
 
