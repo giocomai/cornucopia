@@ -100,8 +100,16 @@ cc_get_fb_page_posts <- function(api_version = "v18.0",
   repeat({
     cli::cli_progress_update(inc = 25)
 
-    out[[i]] <- httr2::req_perform(api_request) |>
+    current_response <- api_request |> 
+      httr2::req_error(is_error = \(resp) FALSE) |>
+      httr2::req_perform() |>
       httr2::resp_body_json()
+    
+    if (is.null(current_response[["error"]][["message"]])==FALSE) {
+      cli::cli_abort(current_response[["error"]][["message"]])
+    }
+    
+    out[[i]] <- current_response
 
     if (!is.null(max_pages) && i == max_pages) {
       break
