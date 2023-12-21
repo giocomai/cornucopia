@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="index.html">cornucopia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9008</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9009</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -119,8 +119,8 @@
 <p>You can then get your token from your <a href="https://developers.facebook.com/apps/" class="external-link">app page</a>, after adding the “Marketing API”. When you retrieve your token, you can select permissions: you probably want to include both “ads_read” and “read_insights”, as they are read-only and hence safe, while you probably don’t want to tick “ads_management”, unless you really know what you are doing.</p>
 <p>You can also get a token with a different set of options for customisation, through the <a href="https://developers.facebook.com/tools/explorer/" class="external-link">Facebook’s Graph API explorer</a>.</p>
 <p>Things, however, are not so easy, as you’ll need to go through additional steps to get long-lived tokens, Facebook page tokens, etc. - more details below.</p>
-<p>Also, be mindful that the Meta APIs never, ever, return meaningful error messages, and the documentation has only few examples… as some queries work or not depending on the type of ad (its creatives/its format/etc.) or the type of organic post (is it a video? if so, is it a reel? etc.), there’s often some trial and error involved.</p>
-<p>More broadly, whenever you get an error message, don’t really look at what the error message says, but think creatively about what could be wrong: has my token expired? did I exceed query limit? did I include a field which was not available for this endpoint? did I use the wrong identifier (e.g. a post id instead of a video id, or vice versa)?</p>
+<p>Also, be mindful that the Meta APIs do not always return meaningful error messages, and the documentation has only few examples… as some queries work or not depending on the type of ad (its creatives/its format/etc.) or the type of organic post (is it a video? if so, is it a reel? etc.), there’s often some trial and error involved.</p>
+<p>More broadly, whenever you get an error message that is unclear, think creatively about what could be wrong: has my token expired? did I exceed query limit? did I include a field which was not available for this endpoint? did I use the wrong identifier (e.g. a post id instead of a video id, or vice versa)?</p>
 <div class="section level3">
 <h3 id="organic---facebook-pages-and-access-tokens">Organic - Facebook pages and access tokens<a class="anchor" aria-label="anchor" href="#organic---facebook-pages-and-access-tokens"></a>
 </h3>
@@ -133,7 +133,7 @@
 <span><span class="fu"><a href="reference/cc_get_fb_user.html">cc_get_fb_user</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>And then use the Facebook user id to request all pages managed by that Facebook user, including the relevant Facebook page token:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_set.html">cc_set</a></span><span class="op">(</span>fb_user_id <span class="op">=</span> <span class="st">"actual_user_id_as_retrievd_with_cc_get_fb_user"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_set.html">cc_set</a></span><span class="op">(</span>fb_user_id <span class="op">=</span> <span class="st">"actual_user_id_as_retrieved_with_cc_get_fb_user"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/cc_get_fb_managed_pages.html">cc_get_fb_managed_pages</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>It is this page token that can then be used to retrieve information about a given page.</p>
@@ -150,7 +150,7 @@
 <li><code>ads_read</code></li>
 <li><code>read_insights</code></li>
 </ul>
-<p>If you are managing pages through business manager, this is probably not enough, as you will need to add also the <code>business_management</code> permission. Also consider that if you want to interact with the Instagram page associated with this page you will also need:</p>
+<p>You probably want to add also <code>pages_read_user_content</code> in order to retrieve information about your own posts. If you are managing pages through business manager, this is probably not enough, as you will need to add also the <code>business_management</code> permission. Also consider that if you want to interact with the Instagram page associated with this page you will also need:</p>
 <ul>
 <li><code>instagram_basic</code></li>
 <li><code>instagram_manage_insights</code></li>
