@@ -138,11 +138,11 @@ cc_get_fb_page_insights <- function(metric = c(
         cli::cli_abort(page_insight_l[["error"]][["message"]])
       }
 
-      if (length(page_insight_l[["data"]])==0) {
+      if (length(page_insight_l[["data"]]) == 0) {
         cli::cli_warn("No data available for this metric. Make sure that the metric is available for page insights (e.g. not a metric that is specific to *page posts*, rather than the page as a whole.)")
         return(NULL)
       }
-      
+
       current_date_df <- purrr::map(
         .x = page_insight_l[["data"]],
         .f = function(current_element_l) {

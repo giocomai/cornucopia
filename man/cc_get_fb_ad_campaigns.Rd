@@ -2,7 +2,7 @@
 % Please edit documentation in R/cc_get_fb_ad_campaigns.R
 \name{cc_get_fb_ad_campaigns}
 \alias{cc_get_fb_ad_campaigns}
-\title{Get all campaigns for the current ad account}
+\title{Get all campaigns for the current ad account / legacy}
 \usage{
 cc_get_fb_ad_campaigns(
   fields = cc_valid_fields_ad_campaign_group_v,

@@ -1,4 +1,4 @@
-#' Get all campaigns for the current ad account
+#' Get all campaigns for the current ad account / legacy
 #'
 #' For details on fields, see:
 #' https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/
@@ -37,7 +37,7 @@ cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
     fb_user_token <- as.character(token)
   }
 
-  if (is.null(ad_account_id)) {
+  if (is.null(fb_ad_account_id)) {
     fb_ad_account_id <- cc_get_settings(fb_ad_account_id = fb_ad_account_id) |>
       purrr::pluck("fb_ad_account_id")
   } else {
