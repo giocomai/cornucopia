@@ -37,9 +37,14 @@ cc_get_instagram_user_id <- function(fb_page_id = NULL,
       access_token = fb_user_token,
     )
 
-  req <- httr2::req_perform(req = api_request)
+  instagram_user_id_l <- api_request |>
+    httr2::req_error(is_error = \(resp) FALSE) |>
+    httr2::req_perform() |>
+    httr2::resp_body_json()
 
-  instagram_user_id_l <- httr2::resp_body_json(req)
+  if (is.null(instagram_user_id_l[["error"]][["message"]]) == FALSE) {
+    cli::cli_abort(instagram_user_id_l[["error"]][["message"]])
+  }
 
   instagram_user_id_l |>
     purrr::pluck("instagram_business_account", "id")

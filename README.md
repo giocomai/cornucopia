@@ -432,7 +432,13 @@ valid token with all the needed permissions (not having the right
 permissions is the most frequent problem you’ll find, so when
 troubleshooting, take it from there).
 
-So first set your `ig_user_id` and your token.
+So first set your `ig_user_id` and your token. If, as may well be the
+case, you don’t know your `ig_user_id` you can retrieve it with
+`cc_get_instagram_user_id()`, as long as you have the `fb_page_id` of
+the Facebook page associated with the given Instagram account and
+`fb_user_token` (notice, the user token, not the page token). For
+reference, see also [step 5 of this official
+guide](https://developers.facebook.com/docs/instagram-api/getting-started/).
 
 ``` r
 cc_set(
