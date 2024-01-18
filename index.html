@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="index.html">cornucopia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9009</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9010</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -268,7 +268,7 @@
 <h3 id="instagram">Instagram<a class="anchor" aria-label="anchor" href="#instagram"></a>
 </h3>
 <p>As for all things related to Meta’s API, you will need an app, and a valid token with all the needed permissions (not having the right permissions is the most frequent problem you’ll find, so when troubleshooting, take it from there).</p>
-<p>So first set your <code>ig_user_id</code> and your token.</p>
+<p>So first set your <code>ig_user_id</code> and your token. If, as may well be the case, you don’t know your <code>ig_user_id</code> you can retrieve it with <code><a href="reference/cc_get_instagram_user_id.html">cc_get_instagram_user_id()</a></code>, as long as you have the <code>fb_page_id</code> of the Facebook page associated with the given Instagram account and <code>fb_user_token</code> (notice, the user token, not the page token). For reference, see also <a href="https://developers.facebook.com/docs/instagram-api/getting-started/" class="external-link">step 5 of this official guide</a>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_set.html">cc_set</a></span><span class="op">(</span></span>
 <span>  ig_user_id <span class="op">=</span> <span class="st">"00000000000000000"</span>, <span class="co"># probably about 17 digits, not the legacy Instagram id</span></span>
