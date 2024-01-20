@@ -10,7 +10,7 @@
 #' @param ig_user_id Instagram user id, typically composed of 17 digits. Not to be confused with legacy Instragram account id.
 #' @param api_version Defaults to "v18.0".
 #' @param fields Defaults to all available, consider reducing if you don't have all relevant permissions.
-#' @param fb_user_token Facebook user token (not a page token).
+#' @inheritParams cc_set
 #'
 #' @return
 #' @export

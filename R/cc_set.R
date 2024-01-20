@@ -3,6 +3,7 @@
 #'
 #' @param start_date Defaults to 91 days before today
 #' @param end_date Defaults to yesterday.
+#' @param fb_user_token Facebook user token (not a page token).
 #' @param fb_business_id Facebook business id. For details on how to find it,
 #'   see \url{https://www.facebook.com/business/help/1181250022022158}
 #'
