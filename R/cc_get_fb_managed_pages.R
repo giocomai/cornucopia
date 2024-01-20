@@ -1,5 +1,6 @@
 #' Get managed pages, including name, page token, and id
 #'
+#' @param fields Defaults to `c("id", "name")`. Include "access_token" in order to retrieve you Facebook page access token.
 #' @param fb_user_id Facebook user id. Defaults to NULL, can be set with
 #'   `cc_set()`. Can be retrieved with `cc_get_fb_user()`.
 #' @inheritParams cc_get_instagram_user
@@ -11,7 +12,7 @@
 #' \dontrun{
 #' cc_get_fb_managed_pages()
 #' }
-cc_get_fb_managed_pages <- function(fields = c("name", "access_token"),
+cc_get_fb_managed_pages <- function(fields = c("id", "name"),
                                     fb_user_id = NULL,
                                     fb_user_token = NULL) {
   if (is.null(fb_user_token)) {

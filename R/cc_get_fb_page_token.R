@@ -19,7 +19,8 @@ cc_get_fb_page_token <- function(fb_user_id = NULL,
                                  fb_user_token = NULL) {
   pages_df <- cc_get_fb_managed_pages(
     fb_user_id = fb_user_id,
-    fb_user_token = fb_user_token
+    fb_user_token = fb_user_token,
+    fields = c("id", "name", "access_token")
   )
 
   if (is.null(page_id) == FALSE) {
