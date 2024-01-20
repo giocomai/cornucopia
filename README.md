@@ -133,7 +133,10 @@ video id, or vice versa)?
 Data about Facebook pages need to be accessed with a Facebook *page*
 token, that is separate to the Facebook *user* token.
 
-The first step is then to retrieve one’s own Facebook user id:
+After retrieving the Facebook user token (as mentioned above, e.g. on
+the [Graph API
+explorer](https://developers.facebook.com/tools/explorer/)), the first
+step is then to retrieve one’s own Facebook user id:
 
 ``` r
 library("cornucopia")
@@ -157,12 +160,12 @@ about a given page.
 You may hope that things would just work and that you’d see all your
 pages when you run `cc_get_fb_managed_pages()`. Things, however, may be
 not so simple, because of granular permissions. In other words, you need
-to explicitly gran permissions to access pages. As is characteristic of
+to explicitly grant permissions to access pages. As is characteristic of
 Facebook, they like to move settings around, but you should be able to
 add this permission from the [Graph Api
 Explorer](https://developers.facebook.com/tools/explorer/) (for context,
 see also [this answer on
-Stackoverflow](https://stackoverflow.com/a/77467164/4124601)).
+StackOverflow](https://stackoverflow.com/a/77467164/4124601)).
 
 Select your app from the drop down menu, and then from the “User or
 Page” dropdown select: “Get page access token”. You will be asked to
@@ -188,7 +191,7 @@ you will also need:
 - `instagram_basic`
 - `instagram_manage_insights`
 
-Do remember to regenerate your token after adding permissions to
+Do remember to re-generate your token after adding permissions to
 actually get access.
 
 You can run `cc_get_fb_managed_pages()` and get the token for all of
@@ -242,7 +245,7 @@ cc_get_fb_long_page_token(
 
 Store these access tokens safely: while long-lived user access token
 expire after 60 days, long-lived page access tokens *do not expire*. We
-are solidly in password territory here: make sure you do not inlcude
+are solidly in password territory here: make sure you do not include
 these tokens in scripts you share, as they can be used to retrieve data,
 and, especially if you’re not really careful when you create them, do
 all sorts of other things, including posting to your page or creating
@@ -256,6 +259,100 @@ passwords, and use them with care.
 At this stage, all functions in this package use only read API, but the
 same access tokens may potentially be used for other APIs. So… take
 care.
+
+#### Using the `keyring` package for storing tokens securely
+
+Throughout this readme and the documentation, reference is made to
+tokens as if they were directly included in scripts. As mentioned above,
+this is less than ideal, as this potentially implies having tokens
+stored as plain-text in scripts, as well as in local history files or
+server logs.
+
+A convenient and much safer approach relies on the [`keyring`
+package](https://keyring.r-lib.org/index.html), which allows to store
+tokens using your operating system’s credential store.
+
+Here is how a `keyring` based workflow would work.
+
+First, go the [Graph API
+explorer](https://developers.facebook.com/tools/explorer/) page and be
+ready to retrieve your Facebook user token, then run the following
+command to input it interactively and store it in your operating
+system’s keyring.
+
+``` r
+library("cornucopia")
+
+library("keyring")
+
+keyring::key_set(service = "fb_user_token")
+```
+
+Notice that `fb_user_token` here is just the way I decide to name this
+in my local keyring: I can give this whatever name I like, or add the
+`username` argument if I plan to use more than one account.
+
+Then I would usually need to add my Facebook user id. With the following
+command, I can retrieve and store the relevant id without even seeing it
+in the console.
+
+``` r
+keyring::key_set_with_value(
+  service = "fb_user_id",
+  password = cc_get_fb_user(
+    fb_user_token = keyring::key_get(service = "fb_user_token")) |>
+    dplyr::pull(id))
+```
+
+In order to add safely your Facebook page token, you could then proceed
+as follows.
+
+First, get the exact name or id of your Facebook page with:
+
+``` r
+cc_get_fb_managed_pages()
+```
+
+And store the relevant page id with:
+
+``` r
+keyring::key_set(service = "fb_page_id",
+                username = "My example page")
+```
+
+Then retrieve and store the Facebook page token in a single command:
+
+``` r
+keyring::key_set_with_value(
+  service = "fb_page_token",
+  username = "My example page", # use your page name, if you manage more than one page
+  password = cc_get_fb_page_token(
+    fb_user_id = keyring::key_get(service = "fb_user_id"),
+    fb_user_token = keyring::key_get(service = "fb_user_token"),
+    page_id = keyring::key_get(service = "fb_page_id",
+                username = "My example page")
+  ))
+```
+
+Now that you have stored these tokens in your local keyring, you can
+include at the beginning of your scripts something like this, without
+worring that your tokens will be shared involuntarily:
+
+``` r
+cc_set(
+  fb_user_id = keyring::key_get(service = "fb_user_id"),
+  fb_user_token = keyring::key_get(service = "fb_user_token"),
+  fb_page_token = keyring::key_get(service = "fb_page_token",
+                                   username = "My example page"),
+  fb_page_id = keyring::key_get(service = "fb_page_id",
+                                username = "My example page")
+)
+```
+
+For the sake of simplicity, you may find in this readme and elsewhere in
+the documentation example code that may suggest to include your tokens
+as plaintext: you now know that with `keyring` there is a better way.
+You have been warned.
 
 #### Once you’ve got your tokens
 
