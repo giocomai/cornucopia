@@ -6,29 +6,30 @@
 #' @fields A character vector of valid fields. Defaults to `c("id", "name)`.
 #'   Valid values include:
 #'   `c("short_name","first_name","last_name","middle_name","name_format","picture")
-#' @format Defaults to "data.frame". If list, a list is returned instead; mostly
-#'   useful when the "picture" field is requested.
-#' @inheritParams cc_get_instagram_user
+#' @format Defaults to "data.frame". If "list", a list is returned instead;
+#'   useful e.g. when the "picture" field is requested. 
+#' @inheritParams cc_set
 #'
 #' @return By default, a data frame with one row and two character columns,
-#'   "name" and "id".
+#'   "name" and "id". Customisable with the `format` argument.
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' cc_get_fb_user()
 #' }
-cc_get_fb_user <- function(token = NULL,
+cc_get_fb_user <- function(fb_user_token = NULL,
                            fields = c(
                              "id",
                              "name"
                            ),
                            format = "data.frame") {
-  if (is.null(token)) {
-    fb_user_token <- cc_get_settings(fb_user_token = token) |>
+  
+  if (is.null(fb_user_token)) {
+    fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
   } else {
-    fb_user_token <- as.character(token)
+    fb_user_token <- as.character(fb_user_token)
   }
 
   base_url <- stringr::str_c(
@@ -42,12 +43,19 @@ cc_get_fb_user <- function(token = NULL,
       fields = stringr::str_flatten(fields, collapse = ",")
     )
 
-  req <- httr2::req_perform(req = api_request)
+  current_l <- api_request |> 
+    httr2::req_error(is_error = \(resp) FALSE) |>
+    httr2::req_perform() |> 
+    httr2::resp_body_json(req)
 
+  if (is.null(current_l[["error"]][["message"]]) == FALSE) {
+    cli::cli_abort(current_l[["error"]][["message"]])
+  }
+  
   if (format == "data.frame") {
-    httr2::resp_body_json(req) |>
+    current_l |>
       tibble::as_tibble()
   } else {
-    httr2::resp_body_json(req)
+    current_l
   }
 }

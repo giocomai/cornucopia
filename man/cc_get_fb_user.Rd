@@ -4,18 +4,22 @@
 \alias{cc_get_fb_user}
 \title{Get Facebook user id and name, as well as other options fields}
 \format{
-Defaults to "data.frame". If list, a list is returned instead; mostly
-  useful when the "picture" field is requested.
+Defaults to "data.frame". If "list", a list is returned instead;
+  useful e.g. when the "picture" field is requested.
 }
 \usage{
-cc_get_fb_user(token = NULL, fields = c("id", "name"), format = "data.frame")
+cc_get_fb_user(
+  fb_user_token = NULL,
+  fields = c("id", "name"),
+  format = "data.frame"
+)
 }
 \arguments{
-\item{fields}{Defaults to all available, consider reducing if you don't have all relevant permissions.}
+\item{fb_user_token}{Facebook user token (not a page token).}
 }
 \value{
 By default, a data frame with one row and two character columns,
-  "name" and "id".
+  "name" and "id". Customisable with the `format` argument.
 }
 \description{
 For details, see:
