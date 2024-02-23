@@ -47,7 +47,8 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cc_get_fb_leads</span><span class="op">(</span></span>
 <span>  <span class="va">form_id</span>,</span>
-<span>  fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"created_time"</span>, <span class="st">"id"</span>, <span class="st">"ad_id"</span>, <span class="st">"form_id"</span>, <span class="st">"field_data"</span><span class="op">)</span>,</span>
+<span>  fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"created_time"</span>, <span class="st">"id"</span>, <span class="st">"campaign_id"</span>, <span class="st">"campaign_name"</span>, <span class="st">"adset_id"</span>,</span>
+<span>    <span class="st">"adset_name"</span>, <span class="st">"ad_id"</span>, <span class="st">"ad_name"</span>, <span class="st">"form_id"</span>, <span class="st">"is_organic"</span>, <span class="st">"platform"</span>, <span class="st">"field_data"</span><span class="op">)</span>,</span>
 <span>  fb_page_token <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fb_user_token <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  max_pages <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -58,23 +59,28 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>form_id</dt>
-<dd><p>Identifier of the lead gen form, presumably an id of about 17 digits.</p></dd>
+<dd><p>Identifier of the lead gen form, presumably an id of about 17
+digits.</p></dd>
 
 
 <dt>fields</dt>
-<dd><p>Defaults to `c("created_time", "id", "ad_id", "form_id", "field_data")`-</p></dd>
+<dd><p>Defaults to `c("created_time", "id", "ad_id", "form_id",
+"field_data")`-</p></dd>
 
 
 <dt>fb_page_token</dt>
-<dd><p>Takes precedence over `fb_user_token`. See documentation for required permissions.</p></dd>
+<dd><p>Takes precedence over `fb_user_token`. See documentation
+for required permissions.</p></dd>
 
 
 <dt>fb_user_token</dt>
-<dd><p>Used as a fallback option if `fb_page_token` not given. See documentation for required permissions.</p></dd>
+<dd><p>Used as a fallback option if `fb_page_token` not given.
+See documentation for required permissions.</p></dd>
 
 
 <dt>max_pages</dt>
-<dd><p>Maximum number of pages to retrieve (15 responses are included in each page). Defaults to 1000 pages internally.</p></dd>
+<dd><p>Maximum number of pages to retrieve (15 responses are
+included in each page). Defaults to 1000 pages internally.</p></dd>
 
 
 <dt>api_version</dt>
@@ -89,9 +95,12 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>All details:
+    <p>Details about the API:
 https://developers.facebook.com/docs/marketing-api/guides/lead-ads/retrieving</p>
-<p>Either a page or user token can be given. If both are given, page token is used.</p>
+<p>For the exact meaning of fields, see:
+https://www.facebook.com/business/help/974763215942961?id=735435806665862</p>
+<p>Either a page or user token can be given. If both are given, page token is
+used.</p>
 <p>In either case, be mindful of permission requirements:</p>
 <p>To read ad specific fields, such as ad_id, campaign_id, you will need:</p>
 <p>- A Page or User access token requested by a person who can advertise on the ad account and on the Page
@@ -99,7 +108,7 @@ https://developers.facebook.com/docs/marketing-api/guides/lead-ads/retrieving</p
 - The pages_read_engagement permission
 - The pages_show_list permission
 - The pages_manage_metadata permission - if using webhooks</p>
-<p>To read all lead data and ad level data, you will need:</p>  
+<p>To read all lead data and ad level data, you will need:</p>
 <p>- A Page or User access token requested by a person who can advertise on the ad account and on the Page
 - The ads_management permission
 - The leads_retrieval permission
