@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="index.html">cornucopia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9011</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9012</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,7 +110,7 @@
 <span><span class="va">dates_l</span><span class="op">$</span><span class="va">start_date</span></span>
 <span><span class="co">#&gt; [1] "2023-01-01"</span></span></code></pre></div>
 <p>Here is a full list of parameters that can be set with <code><a href="reference/cc_set.html">cc_set()</a></code>:</p>
-<p><code>start_date</code>, <code>end_date</code>, <code>fb_user_token</code>, <code>fb_page_token</code>, <code>fb_page_id</code>, <code>fb_business_id</code>, <code>fb_ad_account_id</code>, <code>fb_product_catalog_id</code>, <code>fb_user_id</code>, <code>ig_user_id</code></p>
+<p><code>start_date</code>, <code>end_date</code>, <code>fb_user_token</code>, <code>fb_page_token</code>, <code>fb_page_id</code>, <code>fb_business_id</code>, <code>fb_ad_account_id</code>, <code>fb_product_catalog_id</code>, <code>fb_user_id</code>, <code>ig_user_id</code>, <code>ga_email</code>, <code>ga_property_id</code></p>
 </div>
 <div class="section level2">
 <h2 id="meta--facebook--instagram">Meta / Facebook / Instagram<a class="anchor" aria-label="anchor" href="#meta--facebook--instagram"></a>
@@ -204,16 +204,20 @@
 <code class="sourceCode R"><span><span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_set_with_value</span><span class="op">(</span></span>
 <span>  service <span class="op">=</span> <span class="st">"fb_user_id"</span>,</span>
 <span>  password <span class="op">=</span> <span class="fu"><a href="reference/cc_get_fb_user.html">cc_get_fb_user</a></span><span class="op">(</span></span>
-<span>    fb_user_token <span class="op">=</span> <span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_get</span><span class="op">(</span>service <span class="op">=</span> <span class="st">"fb_user_token"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>    fb_user_token <span class="op">=</span> <span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_get</span><span class="op">(</span>service <span class="op">=</span> <span class="st">"fb_user_token"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>In order to add safely your Facebook page token, you could then proceed as follows.</p>
 <p>First, get the exact name or id of your Facebook page with:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_fb_managed_pages.html">cc_get_fb_managed_pages</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>And store the relevant page id with:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_set</span><span class="op">(</span>service <span class="op">=</span> <span class="st">"fb_page_id"</span>,</span>
-<span>                username <span class="op">=</span> <span class="st">"My example page"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_set</span><span class="op">(</span></span>
+<span>  service <span class="op">=</span> <span class="st">"fb_page_id"</span>,</span>
+<span>  username <span class="op">=</span> <span class="st">"My example page"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Then retrieve and store the Facebook page token in a single command:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_set_with_value</span><span class="op">(</span></span>
@@ -222,18 +226,25 @@
 <span>  password <span class="op">=</span> <span class="fu"><a href="reference/cc_get_fb_page_token.html">cc_get_fb_page_token</a></span><span class="op">(</span></span>
 <span>    fb_user_id <span class="op">=</span> <span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_get</span><span class="op">(</span>service <span class="op">=</span> <span class="st">"fb_user_id"</span><span class="op">)</span>,</span>
 <span>    fb_user_token <span class="op">=</span> <span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_get</span><span class="op">(</span>service <span class="op">=</span> <span class="st">"fb_user_token"</span><span class="op">)</span>,</span>
-<span>    page_id <span class="op">=</span> <span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_get</span><span class="op">(</span>service <span class="op">=</span> <span class="st">"fb_page_id"</span>,</span>
-<span>                username <span class="op">=</span> <span class="st">"My example page"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>    page_id <span class="op">=</span> <span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_get</span><span class="op">(</span></span>
+<span>      service <span class="op">=</span> <span class="st">"fb_page_id"</span>,</span>
+<span>      username <span class="op">=</span> <span class="st">"My example page"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Now that you have stored these tokens in your local keyring, you can include at the beginning of your scripts something like this, without worring that your tokens will be shared involuntarily:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_set.html">cc_set</a></span><span class="op">(</span></span>
 <span>  fb_user_id <span class="op">=</span> <span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_get</span><span class="op">(</span>service <span class="op">=</span> <span class="st">"fb_user_id"</span><span class="op">)</span>,</span>
 <span>  fb_user_token <span class="op">=</span> <span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_get</span><span class="op">(</span>service <span class="op">=</span> <span class="st">"fb_user_token"</span><span class="op">)</span>,</span>
-<span>  fb_page_token <span class="op">=</span> <span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_get</span><span class="op">(</span>service <span class="op">=</span> <span class="st">"fb_page_token"</span>,</span>
-<span>                                   username <span class="op">=</span> <span class="st">"My example page"</span><span class="op">)</span>,</span>
-<span>  fb_page_id <span class="op">=</span> <span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_get</span><span class="op">(</span>service <span class="op">=</span> <span class="st">"fb_page_id"</span>,</span>
-<span>                                username <span class="op">=</span> <span class="st">"My example page"</span><span class="op">)</span></span>
+<span>  fb_page_token <span class="op">=</span> <span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_get</span><span class="op">(</span></span>
+<span>    service <span class="op">=</span> <span class="st">"fb_page_token"</span>,</span>
+<span>    username <span class="op">=</span> <span class="st">"My example page"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  fb_page_id <span class="op">=</span> <span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_get</span><span class="op">(</span></span>
+<span>    service <span class="op">=</span> <span class="st">"fb_page_id"</span>,</span>
+<span>    username <span class="op">=</span> <span class="st">"My example page"</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>For the sake of simplicity, you may find in this readme and elsewhere in the documentation example code that may suggest to include your tokens as plaintext: you now know that with <code>keyring</code> there is a better way. You have been warned.</p>
 </div>
@@ -383,6 +394,21 @@
 <span>  path <span class="op">=</span> <span class="st">"LinkedIn_stats"</span>,</span>
 <span>  page_name <span class="op">=</span> <span class="st">"example-page"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="google-analytics">Google Analytics<a class="anchor" aria-label="anchor" href="#google-analytics"></a>
+</h2>
+<p>Only the most tentative integration with Google Analytics has so far been implemented, relying on <a href="https://cran.r-project.org/web/packages/googleAnalyticsR/index.html" class="external-link">googleAnalyticsR</a>.</p>
+<p>If you are interested in the ratio (possibly, calculated as a rolling average), consider something such as the following.</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/cc_set.html">cc_set</a></span><span class="op">(</span>ga_email <span class="op">=</span> <span class="st">"example@example.com"</span>,</span>
+<span>       ga_property_id <span class="op">=</span> <span class="fl">123456789</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/cc_get_ga_event_ratio.html">cc_get_ga_event_ratio</a></span><span class="op">(</span>events <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"session_start"</span>, <span class="st">"purchase"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/cc_get_ga_event_ratio.html">cc_get_ga_event_ratio</a></span><span class="op">(</span>events <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"session_start"</span>, <span class="st">"purchase"</span><span class="op">)</span>,</span>
+<span>                      rolling <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>This is a quick implementation, and further convenience functions based on <a href="https://cran.r-project.org/web/packages/googleAnalyticsR/index.html" class="external-link">googleAnalyticsR</a> may be introduced, including local caching.</p>
 </div>
 <div class="section level2">
 <h2 id="disclaimer">Disclaimer<a class="anchor" aria-label="anchor" href="#disclaimer"></a>

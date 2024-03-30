@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">cornucopia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9011</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9012</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,7 +55,9 @@
 <span>  fb_ad_account_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fb_product_catalog_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fb_user_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  ig_user_id <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  ig_user_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ga_email <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ga_property_id <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -76,6 +78,16 @@
 <dt>fb_business_id</dt>
 <dd><p>Facebook business id. For details on how to find it,
 see <a href="https://www.facebook.com/business/help/1181250022022158" class="external-link">https://www.facebook.com/business/help/1181250022022158</a></p></dd>
+
+
+<dt>ga_email</dt>
+<dd><p>E-mail addressed associated with relevant Google Analytics
+account, passed to `googleAnalyticsR::ga_auth()`</p></dd>
+
+
+<dt>ga_property_id</dt>
+<dd><p>Google Analytics property identifier. Find it with
+`googleAnalyticsR::ga_account_list("ga4")`.</p></dd>
 
 </dl></div>
     <div class="section level2">
