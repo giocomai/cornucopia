@@ -1,6 +1,6 @@
 Package: cornucopia
 Title: A cornucopia is like a funnel that keeps on giving
-Version: 0.0.0.9011
+Version: 0.0.0.9012
 Authors@R: 
     person("Giorgio", "Comai", , "g@giorgiocomai.eu",
     role = c("aut", "cre", "cph"),
@@ -18,7 +18,8 @@ Imports:
     shiny,
     golem,
     slider,
-    RSQLite
+    RSQLite,
+    googleAnalyticsR
 Suggests: 
     knitr,
     rmarkdown,

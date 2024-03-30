@@ -14,7 +14,9 @@ cc_set(
   fb_ad_account_id = NULL,
   fb_product_catalog_id = NULL,
   fb_user_id = NULL,
-  ig_user_id = NULL
+  ig_user_id = NULL,
+  ga_email = NULL,
+  ga_property_id = NULL
 )
 }
 \arguments{
@@ -26,6 +28,12 @@ cc_set(
 
 \item{fb_business_id}{Facebook business id. For details on how to find it,
 see \url{https://www.facebook.com/business/help/1181250022022158}}
+
+\item{ga_email}{E-mail addressed associated with relevant Google Analytics
+account, passed to `googleAnalyticsR::ga_auth()`}
+
+\item{ga_property_id}{Google Analytics property identifier. Find it with
+`googleAnalyticsR::ga_account_list("ga4")`.}
 }
 \value{
 A list of named elements.

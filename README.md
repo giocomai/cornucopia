@@ -92,7 +92,8 @@ Here is a full list of parameters that can be set with `cc_set()`:
 
 `start_date`, `end_date`, `fb_user_token`, `fb_page_token`,
 `fb_page_id`, `fb_business_id`, `fb_ad_account_id`,
-`fb_product_catalog_id`, `fb_user_id`, `ig_user_id`
+`fb_product_catalog_id`, `fb_user_id`, `ig_user_id`, `ga_email`,
+`ga_property_id`
 
 ## Meta / Facebook / Instagram
 
@@ -300,8 +301,10 @@ in the console.
 keyring::key_set_with_value(
   service = "fb_user_id",
   password = cc_get_fb_user(
-    fb_user_token = keyring::key_get(service = "fb_user_token")) |>
-    dplyr::pull(id))
+    fb_user_token = keyring::key_get(service = "fb_user_token")
+  ) |>
+    dplyr::pull(id)
+)
 ```
 
 In order to add safely your Facebook page token, you could then proceed
@@ -316,8 +319,10 @@ cc_get_fb_managed_pages()
 And store the relevant page id with:
 
 ``` r
-keyring::key_set(service = "fb_page_id",
-                username = "My example page")
+keyring::key_set(
+  service = "fb_page_id",
+  username = "My example page"
+)
 ```
 
 Then retrieve and store the Facebook page token in a single command:
@@ -329,9 +334,12 @@ keyring::key_set_with_value(
   password = cc_get_fb_page_token(
     fb_user_id = keyring::key_get(service = "fb_user_id"),
     fb_user_token = keyring::key_get(service = "fb_user_token"),
-    page_id = keyring::key_get(service = "fb_page_id",
-                username = "My example page")
-  ))
+    page_id = keyring::key_get(
+      service = "fb_page_id",
+      username = "My example page"
+    )
+  )
+)
 ```
 
 Now that you have stored these tokens in your local keyring, you can
@@ -342,10 +350,14 @@ worring that your tokens will be shared involuntarily:
 cc_set(
   fb_user_id = keyring::key_get(service = "fb_user_id"),
   fb_user_token = keyring::key_get(service = "fb_user_token"),
-  fb_page_token = keyring::key_get(service = "fb_page_token",
-                                   username = "My example page"),
-  fb_page_id = keyring::key_get(service = "fb_page_id",
-                                username = "My example page")
+  fb_page_token = keyring::key_get(
+    service = "fb_page_token",
+    username = "My example page"
+  ),
+  fb_page_id = keyring::key_get(
+    service = "fb_page_id",
+    username = "My example page"
+  )
 )
 ```
 
@@ -667,6 +679,30 @@ cc_drive_upload_linkedin_stats_visitors(
   page_name = "example-page"
 )
 ```
+
+## Google Analytics
+
+Only the most tentative integration with Google Analytics has so far
+been implemented, relying on
+[googleAnalyticsR](https://cran.r-project.org/web/packages/googleAnalyticsR/index.html).
+
+If you are interested in the ratio (possibly, calculated as a rolling
+average), consider something such as the following.
+
+``` r
+cc_set(ga_email = "example@example.com",
+       ga_property_id = 123456789)
+
+cc_get_ga_event_ratio(events = c("session_start", "purchase"))
+
+cc_get_ga_event_ratio(events = c("session_start", "purchase"),
+                      rolling = TRUE)
+```
+
+This is a quick implementation, and further convenience functions based
+on
+[googleAnalyticsR](https://cran.r-project.org/web/packages/googleAnalyticsR/index.html)
+may be introduced, including local caching.
 
 ## Disclaimer
 
