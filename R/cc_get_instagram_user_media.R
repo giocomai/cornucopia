@@ -24,28 +24,28 @@ cc_get_instagram_user_media <- function(ig_username,
   } else {
     ig_user_id <- as.character(ig_user_id)
   }
-  
+
   if (is.null(fb_user_token)) {
     fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
   } else {
     fb_user_token <- as.character(fb_user_token)
   }
-  
+
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
     api_version
   )
-  
+
   users_posts_df <- purrr::map(
     .x = ig_username,
     .progress = stringr::str_c("Retrieving user posts"),
     .f = function(current_user) {
       out <- vector("list", max_pages %||% 1000)
       posts_l <- vector("list", max_pages %||% 1000)
-      
+
       i <- 1L
-      
+
       api_request <- httr2::request(base_url = base_url) |>
         httr2::req_url_path_append(ig_user_id) |>
         httr2::req_url_query(
@@ -58,31 +58,31 @@ cc_get_instagram_user_media <- function(ig_username,
           ),
           access_token = fb_user_token
         )
-      
+
       repeat({
         # cli::cli_progress_update(inc = 25)
-        
+
         req <- api_request |>
           httr2::req_error(is_error = \(resp) FALSE) |>
           httr2::req_perform() |>
           httr2::resp_body_json()
-        
+
         if (is.null(out[[i]][["error"]][["message"]]) == FALSE) {
           cli::cli_warn(out[[i]][["error"]][["message"]])
           cli::cli_inform(c(x = "Not all posts have been processed."))
- 
+
           break
         }
-        
+
         out[[i]] <- req
-        
+
         if (!is.null(max_pages) && i == max_pages) {
           break
         }
-        
+
         if (purrr::pluck_exists(out[[i]], "business_discovery", "media", "paging", "cursors", "after") == TRUE) {
           after_string <- purrr::pluck(out[[i]], "business_discovery", "media", "paging", "cursors", "after")
-          
+
           api_request <- httr2::request(base_url = base_url) |>
             httr2::req_url_path_append(ig_user_id) |>
             httr2::req_url_query(
@@ -100,36 +100,36 @@ cc_get_instagram_user_media <- function(ig_username,
         } else {
           break
         }
-        
+
         i <- i + 1L
         if (i > length(out)) {
           length(out) <- length(out) * 2L
         }
       })
-      
+
       post_details_df <- purrr::map(
         .x = out,
         .f = function(current_set) {
           current_set_l <- current_set |>
             purrr::pluck("business_discovery", "media", "data")
-          
+
           purrr::map(current_set_l,
-                     .f = function(current_set) {
-                       current_set |>
-                         tibble::as_tibble()
-                     }
+            .f = function(current_set) {
+              current_set |>
+                tibble::as_tibble()
+            }
           ) |>
             purrr::list_rbind()
         }
       )
-      
-      
+
+
       if (purrr::pluck_exists(out[[max(c(i - 1, 1))]], "business_discovery", "media", "paging", "cursors", "after") == TRUE) {
         current_set_l <- out[[max(c(i - 1, 1))]] |>
           purrr::pluck("business_discovery", "media", "data")
-        
+
         fs::dir_create("cornucopia_db")
-        
+
         db <- DBI::dbConnect(
           drv = RSQLite::SQLite(),
           fs::path(
@@ -138,7 +138,7 @@ cc_get_instagram_user_media <- function(ig_username,
               fs::path_sanitize()
           )
         )
-        
+
         DBI::dbWriteTable(
           conn = db,
           name = "ig_bd",
@@ -149,10 +149,10 @@ cc_get_instagram_user_media <- function(ig_username,
           ),
           append = TRUE
         )
-        
+
         DBI::dbDisconnect(db)
       }
-      
+
       post_details_df |>
         purrr::list_rbind() |>
         dplyr::relocate(id, username, timestamp, permalink)

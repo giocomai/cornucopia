@@ -7,7 +7,7 @@
 #'   Valid values include:
 #'   `c("short_name","first_name","last_name","middle_name","name_format","picture")
 #' @format Defaults to "data.frame". If "list", a list is returned instead;
-#'   useful e.g. when the "picture" field is requested. 
+#'   useful e.g. when the "picture" field is requested.
 #' @inheritParams cc_set
 #'
 #' @return By default, a data frame with one row and two character columns,
@@ -24,7 +24,6 @@ cc_get_fb_user <- function(fb_user_token = NULL,
                              "name"
                            ),
                            format = "data.frame") {
-  
   if (is.null(fb_user_token)) {
     fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
@@ -43,15 +42,15 @@ cc_get_fb_user <- function(fb_user_token = NULL,
       fields = stringr::str_flatten(fields, collapse = ",")
     )
 
-  current_l <- api_request |> 
+  current_l <- api_request |>
     httr2::req_error(is_error = \(resp) FALSE) |>
-    httr2::req_perform() |> 
+    httr2::req_perform() |>
     httr2::resp_body_json()
 
   if (is.null(current_l[["error"]][["message"]]) == FALSE) {
     cli::cli_abort(current_l[["error"]][["message"]])
   }
-  
+
   if (format == "data.frame") {
     current_l |>
       tibble::as_tibble()

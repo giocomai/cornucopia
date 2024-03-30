@@ -69,6 +69,6 @@ To read all lead data and ad level data, you will need:
 }
 \examples{
 \dontrun{
-  cc_get_fb_leads(form_id = "12345678912345678")
+cc_get_fb_leads(form_id = "12345678912345678")
 }
 }

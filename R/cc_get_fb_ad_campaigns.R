@@ -118,14 +118,14 @@ cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
     if (!is.null(max_pages) && i == max_pages) {
       break
     }
-    
+
     cli::cli_progress_update(inc = 25)
 
     req_json <- httr2::req_perform(req = api_request) |>
       httr2::resp_body_json()
-    
-    out[[i]] <- req_json 
-    
+
+    out[[i]] <- req_json
+
     response_l <- req_json |>
       purrr::pluck("data")
 
