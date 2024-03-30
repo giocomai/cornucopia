@@ -14,7 +14,9 @@ cc_get_settings(
   fb_ad_account_id = NULL,
   fb_product_catalog_id = NULL,
   fb_user_id = NULL,
-  ig_user_id = NULL
+  ig_user_id = NULL,
+  ga_email = NULL,
+  ga_property_id = NULL
 )
 }
 \arguments{
