@@ -595,6 +595,30 @@ month for the last year, once a year for previous years). As a
 consequence, you should mostly be able to keep this in scripts and rely
 on it to autoaupdate data without much delay.
 
+### Retrieve leads from Meta ads
+
+In order to retrieve leads from ad campaigns that rely on Meta’s native
+forms, you should make sure that your user token has the right
+permissions (it must include `leads_retrieval`).
+
+Then you must get the identifier of your lead form: you can see it when
+you create it, when you download leads as a csv from a single ad, or
+from the dedicated section in the ads manager. You should be aware that
+only the form id matters; all leads from that form will be retrieved, no
+matter the the ad set or ad in which it is included (refernce to adset
+and ad are however included in the returned along with the data).
+
+``` r
+cc_get_fb_leads(form_id = "insert_form_id_here")
+```
+
+You can of course feed these data into your own workflows,
+e.g. uploading them to Google Sheets with
+[`googlesheets4`](https://github.com/tidyverse/googlesheets4/), and even
+do this recurrently, by running e.g. the script every hour as faciliated
+by packages such as [`cronR`](https://github.com/bnosac/cronR) or
+[`taskscheduleR`](https://github.com/bnosac/taskscheduleR).
+
 ## LinkedIn
 
 LinkedIn does not allow for exporting statistics about pages or ads
