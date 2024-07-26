@@ -1,174 +1,60 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/404.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/index.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_api_get_fb_page_post_insights.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_api_get_fb_video_insights.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_api_get_instagram_media.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_api_get_instagram_media_insights.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_check_instagram_media_update.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_date_to_json.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_drive_upload_linkedin_stats_content.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_drive_upload_linkedin_stats_followers.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_drive_upload_linkedin_stats_visitors.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_explorer.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_actions_by_day.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_campaigns.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_creatives_id.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_custom.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_spend_totals_by_day_by_campaign.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_spend_totals_by_day_by_objective.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ads.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ads_by_date.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ads_daily.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ads_totals_by_day.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_leads.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_long_page_token.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_long_user_token.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_managed_pages.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_owned_product_catalogs.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_insights.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_post_insights.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_posts.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_token.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_video.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_products.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_user.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_video_insights.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_ga_event_ratio.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_instagram_media.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_instagram_media_id.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_instagram_media_insights.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_instagram_user.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_instagram_user_id.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_instagram_user_media.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_linkedin_stats_content.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_linkedin_stats_files.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_linkedin_stats_followers.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_linkedin_stats_visitors.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_get_settings.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_nomnoml.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_read_fb_ads_by_date.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_set.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_ui_instagram_user_card.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/cc_valid_fields_ad_insights.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/cornucopia/reference/index.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://giocomai.github.io/cornucopia/404.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/LICENSE-text.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/LICENSE.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/authors.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/index.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/news/index.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_api_get_fb_page_post_insights.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_api_get_fb_video_insights.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_api_get_instagram_media.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_api_get_instagram_media_insights.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_check_instagram_media_update.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_date_to_json.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_drive_upload_linkedin_stats_content.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_drive_upload_linkedin_stats_followers.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_drive_upload_linkedin_stats_visitors.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_explorer.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_actions_by_day.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_campaigns.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_creatives_id.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_custom.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_spend_totals_by_day_by_campaign.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_spend_totals_by_day_by_objective.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ads.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ads_by_date.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ads_daily.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_ads_totals_by_day.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_leads.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_long_page_token.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_long_user_token.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_managed_pages.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_owned_product_catalogs.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_insights.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_post_insights.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_posts.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_token.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_video.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_products.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_user.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_fb_video_insights.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_ga_event_ratio.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_instagram_media.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_instagram_media_id.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_instagram_media_insights.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_instagram_user.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_instagram_user_id.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_instagram_user_media.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_linkedin_stats_content.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_linkedin_stats_files.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_linkedin_stats_followers.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_linkedin_stats_visitors.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_get_settings.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_nomnoml.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_read_fb_ads_by_date.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_set.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_ui_instagram_user_card.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/cc_valid_fields_ad_insights.html</loc></url>
+<url><loc>https://giocomai.github.io/cornucopia/reference/index.html</loc></url>
 </urlset>
+
