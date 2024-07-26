@@ -9,7 +9,7 @@ cc_get_instagram_user_media(
   media_fields = c("like_count", "comments_count", "caption", "media_product_type",
     "media_type", "media_url", "permalink", "thumbnail_url", "timestamp", "username"),
   max_pages = NULL,
-  api_version = "v18.0",
+  api_version = "v19.0",
   ig_user_id = NULL,
   fb_user_token = NULL
 )

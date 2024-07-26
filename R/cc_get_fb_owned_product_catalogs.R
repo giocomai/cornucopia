@@ -16,7 +16,7 @@
 #' cc_get_fb_owned_product_catalogs()
 #' }
 cc_get_fb_owned_product_catalogs <- function(fb_business_id = NULL,
-                                             api_version = "v18.0",
+                                             api_version = "v19.0",
                                              fields = c(
                                                "id",
                                                "business",

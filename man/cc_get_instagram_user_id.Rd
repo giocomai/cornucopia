@@ -7,7 +7,7 @@
 cc_get_instagram_user_id(
   fb_page_id = NULL,
   fb_user_token = NULL,
-  api_version = "v18.0"
+  api_version = "v19.0"
 )
 }
 \arguments{

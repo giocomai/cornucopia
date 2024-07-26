@@ -28,7 +28,7 @@
 #'
 cc_get_fb_long_page_token <- function(fb_user_id = NULL,
                                       fb_user_token = NULL,
-                                      api_version = "v18.0") {
+                                      api_version = "v19.0") {
   if (is.null(fb_user_id)) {
     fb_user_id <- cc_get_settings(fb_user_id = fb_user_id) |>
       purrr::pluck("fb_user_id")

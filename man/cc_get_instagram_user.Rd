@@ -6,7 +6,7 @@
 \usage{
 cc_get_instagram_user(
   ig_user_id = NULL,
-  api_version = "v18.0",
+  api_version = "v19.0",
   fields = c("id", "ig_id", "username", "name", "biography", "website",
     "followers_count", "follows_count", "media_count", "profile_picture_url",
     "shopping_product_tag_eligibility"),

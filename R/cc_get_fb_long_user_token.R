@@ -26,7 +26,7 @@
 cc_get_fb_long_user_token <- function(fb_user_token = NULL,
                                       fb_app_id = NULL,
                                       fb_app_secret = NULL,
-                                      api_version = "v18.0") {
+                                      api_version = "v19.0") {
   base_url <- stringr::str_c(
     "https://graph.facebook.com/"
   )

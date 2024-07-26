@@ -30,7 +30,7 @@
 #' }
 cc_get_instagram_media_insights <- function(ig_media_id = NULL,
                                             metrics = NULL,
-                                            api_version = "v18.0",
+                                            api_version = "v19.0",
                                             ig_user_id = NULL,
                                             cache = TRUE,
                                             update = TRUE,
@@ -185,7 +185,7 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
           current_media_df <- cc_api_get_instagram_media_insights(
             ig_media_id = current_ig_media_id,
             media_type = current_media_type,
-            api_version = "v18.0",
+            api_version = "v19.0",
             token = token
           )
 
@@ -261,7 +261,7 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
 cc_api_get_instagram_media_insights <- function(ig_media_id,
                                                 metrics = NULL,
                                                 media_type = NULL,
-                                                api_version = "v18.0",
+                                                api_version = "v19.0",
                                                 ig_user_id = NULL,
                                                 token = NULL) {
   if (is.null(token)) {

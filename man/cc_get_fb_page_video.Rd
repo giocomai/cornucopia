@@ -5,7 +5,7 @@
 \title{Get Facebook page video id and basic information that can be stored as strings}
 \usage{
 cc_get_fb_page_video(
-  api_version = "v18.0",
+  api_version = "v19.0",
   max_pages = NULL,
   cache = TRUE,
   fb_page_id = NULL,

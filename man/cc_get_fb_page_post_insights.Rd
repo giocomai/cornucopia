@@ -9,7 +9,7 @@ cc_get_fb_page_post_insights(
   metrics = cc_valid_fields_fb_post_insights,
   cache = TRUE,
   update = TRUE,
-  api_version = "v18.0",
+  api_version = "v19.0",
   fb_page_id = NULL,
   fb_page_token = NULL
 )

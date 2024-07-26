@@ -6,7 +6,7 @@
 \usage{
 cc_get_instagram_media_id(
   ig_user_id = NULL,
-  api_version = "v18.0",
+  api_version = "v19.0",
   token = NULL,
   max_pages = NULL,
   cache = TRUE

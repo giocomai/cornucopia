@@ -10,7 +10,7 @@
 #' @examples
 cc_get_instagram_user_id <- function(fb_page_id = NULL,
                                      fb_user_token = NULL,
-                                     api_version = "v18.0") {
+                                     api_version = "v19.0") {
   if (is.null(fb_user_token)) {
     fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
