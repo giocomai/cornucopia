@@ -11,7 +11,7 @@
 #' }
 cc_get_fb_products <- function(fb_product_catalog_id = NULL,
                                fields = cc_valid_fields_fb_product,
-                               api_version = "v18.0",
+                               api_version = "v19.0",
                                max_pages = NULL,
                                token = NULL) {
   if (is.null(token)) {
@@ -132,10 +132,10 @@ cc_get_fb_products <- function(fb_product_catalog_id = NULL,
 
 
         if (length(current_item$additional_variant_attributes) == 0) {
-          current_item$additional_variant_attributes <- NA_character_
+          current_item$additional_variant_attributes <- list(NA_character_)
         }
         if (length(current_item$custom_data) == 0) {
-          current_item$custom_data <- NA_character_
+          current_item$custom_data <- list(NA_character_)
         }
 
 
@@ -144,7 +144,7 @@ cc_get_fb_products <- function(fb_product_catalog_id = NULL,
           commerce_insights_df,
           product_catalog_df,
           product_group_df
-        )
+        ) 
       }
     ) |>
       purrr::list_rbind()
