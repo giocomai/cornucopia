@@ -7,22 +7,30 @@
 cc_get_fb_managed_pages(
   fields = c("id", "name"),
   fb_user_id = NULL,
-  fb_user_token = NULL
+  fb_user_token = NULL,
+  api_version = "v21.0"
 )
 }
 \arguments{
-\item{fields}{Defaults to `c("id", "name")`. Include "access_token" in order to retrieve you Facebook page access token.}
+\item{fields}{Defaults to `c("id", "name")`. Include "access_token" in order
+to retrieve you Facebook page access token.}
 
 \item{fb_user_id}{Facebook user id. Defaults to NULL, can be set with
 `cc_set()`. Can be retrieved with `cc_get_fb_user()`.}
 
 \item{fb_user_token}{Facebook user token (not a page token).}
+
+\item{api_version}{Defaults to "v21.0".}
+}
+\value{
+A data frame (a tibble), with as many columns as fields (by default,
+  `id` and `name`).
 }
 \description{
 Get managed pages, including name, page token, and id
 }
 \examples{
 \dontrun{
-cc_get_fb_managed_pages()
+  cc_get_fb_managed_pages()
 }
 }

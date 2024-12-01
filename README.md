@@ -147,12 +147,14 @@ cc_get_fb_user()
 ```
 
 And then use the Facebook user id to request all pages managed by that
-Facebook user, including the relevant Facebook page token:
+Facebook user (including the relevant Facebook page token if you add
+“access_tokens” to the fields):
 
 ``` r
 cc_set(fb_user_id = "actual_user_id_as_retrieved_with_cc_get_fb_user")
 
 cc_get_fb_managed_pages()
+cc_get_fb_managed_pages(fields = c("id", "name", "access_token"))
 ```
 
 It is this page token that can then be used to retrieve information

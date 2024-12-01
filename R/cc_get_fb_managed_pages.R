@@ -1,20 +1,23 @@
 #' Get managed pages, including name, page token, and id
 #'
-#' @param fields Defaults to `c("id", "name")`. Include "access_token" in order to retrieve you Facebook page access token.
+#' @param fields Defaults to `c("id", "name")`. Include "access_token" in order
+#'   to retrieve you Facebook page access token.
 #' @param fb_user_id Facebook user id. Defaults to NULL, can be set with
 #'   `cc_set()`. Can be retrieved with `cc_get_fb_user()`.
 #' @inheritParams cc_get_instagram_user
 #'
-#' @return
+#' @return A data frame (a tibble), with as many columns as fields (by default,
+#'   `id` and `name`).
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' cc_get_fb_managed_pages()
+#'   cc_get_fb_managed_pages()
 #' }
 cc_get_fb_managed_pages <- function(fields = c("id", "name"),
                                     fb_user_id = NULL,
-                                    fb_user_token = NULL) {
+                                    fb_user_token = NULL,
+                                    api_version = "v21.0") {
   if (is.null(fb_user_token)) {
     fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
@@ -30,7 +33,8 @@ cc_get_fb_managed_pages <- function(fields = c("id", "name"),
   }
 
   base_url <- stringr::str_c(
-    "https://graph.facebook.com/"
+    "https://graph.facebook.com/",
+    api_version
   )
 
   api_request <- httr2::request(base_url = base_url) |>
@@ -52,5 +56,5 @@ cc_get_fb_managed_pages <- function(fields = c("id", "name"),
         tibble::as_tibble()
     }
   ) |>
-    purrr::list_rbind()
+    purrr::list_rbind() 
 }
