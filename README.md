@@ -154,7 +154,7 @@ Facebook user (including the relevant Facebook page token if you add
 cc_set(fb_user_id = "actual_user_id_as_retrieved_with_cc_get_fb_user")
 
 cc_get_fb_managed_pages()
-cc_get_fb_managed_pages(fields = c("id", "name", "access_token"))
+# cc_get_fb_managed_pages(fields = c("id", "name", "access_token"))
 ```
 
 It is this page token that can then be used to retrieve information

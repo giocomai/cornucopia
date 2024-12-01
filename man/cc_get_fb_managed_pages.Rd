@@ -31,6 +31,6 @@ Get managed pages, including name, page token, and id
 }
 \examples{
 \dontrun{
-  cc_get_fb_managed_pages()
+cc_get_fb_managed_pages()
 }
 }

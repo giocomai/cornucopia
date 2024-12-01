@@ -144,7 +144,7 @@ cc_get_fb_products <- function(fb_product_catalog_id = NULL,
           commerce_insights_df,
           product_catalog_df,
           product_group_df
-        ) 
+        )
       }
     ) |>
       purrr::list_rbind()

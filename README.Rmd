@@ -114,7 +114,7 @@ And then use the Facebook user id to request all pages managed by that Facebook 
 cc_set(fb_user_id = "actual_user_id_as_retrieved_with_cc_get_fb_user")
 
 cc_get_fb_managed_pages()
-cc_get_fb_managed_pages(fields = c("id", "name", "access_token"))
+# cc_get_fb_managed_pages(fields = c("id", "name", "access_token"))
 ```
 
 It is this page token that can then be used to retrieve information about a given page.
@@ -514,13 +514,17 @@ Only the most tentative integration with Google Analytics has so far been implem
 If you are interested in the ratio (possibly, calculated as a rolling average), consider something such as the following. 
 
 ```{r eval = FALSE}
-cc_set(ga_email = "example@example.com",
-       ga_property_id = 123456789)
+cc_set(
+  ga_email = "example@example.com",
+  ga_property_id = 123456789
+)
 
 cc_get_ga_event_ratio(events = c("session_start", "purchase"))
 
-cc_get_ga_event_ratio(events = c("session_start", "purchase"),
-                      rolling = TRUE)
+cc_get_ga_event_ratio(
+  events = c("session_start", "purchase"),
+  rolling = TRUE
+)
 ```
 
 This is a quick implementation, and further convenience functions based on [googleAnalyticsR](https://cran.r-project.org/web/packages/googleAnalyticsR/index.html) may be introduced, including local caching. 

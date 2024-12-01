@@ -12,7 +12,7 @@
 #'
 #' @examples
 #' \dontrun{
-#'   cc_get_fb_managed_pages()
+#' cc_get_fb_managed_pages()
 #' }
 cc_get_fb_managed_pages <- function(fields = c("id", "name"),
                                     fb_user_id = NULL,
@@ -56,5 +56,5 @@ cc_get_fb_managed_pages <- function(fields = c("id", "name"),
         tibble::as_tibble()
     }
   ) |>
-    purrr::list_rbind() 
+    purrr::list_rbind()
 }
