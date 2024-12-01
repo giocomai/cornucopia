@@ -19,7 +19,7 @@
 cc_get_fb_ad_custom <- function(start_date = NULL,
                                 end_date = NULL,
                                 only_cached = FALSE,
-                                api_version = "v19.0",
+                                api_version = "v21.0",
                                 cache = TRUE,
                                 ad_account_id = NULL,
                                 token = NULL) {

@@ -7,7 +7,7 @@
 cc_get_instagram_media_insights(
   ig_media_id = NULL,
   metrics = NULL,
-  api_version = "v19.0",
+  api_version = "v21.0",
   ig_user_id = NULL,
   cache = TRUE,
   update = TRUE,
@@ -19,7 +19,7 @@ cc_get_instagram_media_insights(
 account can be retrieved with `cc_get_instagram_media_id()`. If left to
 NULL, a full list is automatically retrieved.}
 
-\item{api_version}{Defaults to "v18.0".}
+\item{api_version}{Defaults to "v21.0".}
 
 \item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to be confused with legacy Instragram account id.}
 }

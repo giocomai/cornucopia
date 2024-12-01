@@ -7,7 +7,7 @@
 cc_get_fb_long_page_token(
   fb_user_id = NULL,
   fb_user_token = NULL,
-  api_version = "v19.0"
+  api_version = "v21.0"
 )
 }
 \arguments{

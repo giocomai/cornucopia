@@ -10,7 +10,7 @@ cc_api_get_fb_video_insights(
   metrics = cc_valid_fields_fb_video_insights,
   cache = TRUE,
   update = TRUE,
-  api_version = "v19.0",
+  api_version = "v21.0",
   fb_page_id = NULL,
   fb_page_token = NULL
 )

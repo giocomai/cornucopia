@@ -1,6 +1,6 @@
 #' Get Facebook page insights
 #'
-#' Official documentation: \url{https://developers.facebook.com/docs/graph-api/reference/v18.0/insights}
+#' Official documentation: \url{https://developers.facebook.com/docs/graph-api/reference/v21.0/insights}
 #'
 #' @param metric
 #' @param fb_page_id
@@ -15,7 +15,7 @@ cc_get_fb_page_insights <- function(metric = c(
                                     ),
                                     start_date = NULL,
                                     end_date = NULL,
-                                    api_version = "v19.0",
+                                    api_version = "v21.0",
                                     cache = TRUE,
                                     fb_page_id = NULL,
                                     fb_page_token = NULL) {

@@ -41,7 +41,7 @@
 #'   See documentation for required permissions.
 #' @param max_pages Maximum number of pages to retrieve (15 responses are
 #'   included in each page). Defaults to 1000 pages internally.
-#' @param api_version Defaults to "v19.0".
+#' @param api_version Defaults to "v21.0".
 #'
 #' @return A data frame
 #' @export
@@ -55,7 +55,7 @@ cc_get_fb_leads <- function(form_id,
                             fb_page_token = NULL,
                             fb_user_token = NULL,
                             max_pages = NULL,
-                            api_version = "v19.0") {
+                            api_version = "v21.0") {
   form_id <- stringr::str_remove(string = form_id, pattern = stringr::fixed("f:"))
 
   if (is.null(fb_page_token)) {

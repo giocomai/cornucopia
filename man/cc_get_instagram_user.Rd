@@ -6,7 +6,7 @@
 \usage{
 cc_get_instagram_user(
   ig_user_id = NULL,
-  api_version = "v19.0",
+  api_version = "v21.0",
   fields = c("id", "ig_id", "username", "name", "biography", "website",
     "followers_count", "follows_count", "media_count", "profile_picture_url",
     "shopping_product_tag_eligibility"),
@@ -16,7 +16,7 @@ cc_get_instagram_user(
 \arguments{
 \item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to be confused with legacy Instragram account id.}
 
-\item{api_version}{Defaults to "v18.0".}
+\item{api_version}{Defaults to "v21.0".}
 
 \item{fields}{Defaults to all available, consider reducing if you don't have all relevant permissions.}
 

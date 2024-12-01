@@ -8,7 +8,7 @@ internally.}
 cc_api_get_instagram_media(
   ig_media_id,
   fields = cc_valid_fields_instagram_media_v,
-  api_version = "v19.0",
+  api_version = "v21.0",
   token = NULL
 )
 }
@@ -17,7 +17,7 @@ cc_api_get_instagram_media(
 A list of identifiers for your account can be retrieved with
 `cc_get_instagram_media_id()`.}
 
-\item{api_version}{Defaults to "v18.0".}
+\item{api_version}{Defaults to "v21.0".}
 }
 \description{
 Get information about a single media directly from the API. Mostly used

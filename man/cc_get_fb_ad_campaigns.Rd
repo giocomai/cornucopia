@@ -6,7 +6,7 @@
 \usage{
 cc_get_fb_ad_campaigns(
   fields = cc_valid_fields_ad_campaign_group_v,
-  api_version = "v19.0",
+  api_version = "v21.0",
   fb_ad_account_id = NULL,
   max_pages = NULL,
   token = NULL,

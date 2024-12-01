@@ -11,7 +11,7 @@
 #' }
 cc_get_fb_products <- function(fb_product_catalog_id = NULL,
                                fields = cc_valid_fields_fb_product,
-                               api_version = "v19.0",
+                               api_version = "v21.0",
                                max_pages = NULL,
                                token = NULL) {
   if (is.null(token)) {

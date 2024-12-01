@@ -9,7 +9,7 @@ cc_get_fb_ads_daily(
   level = "campaign",
   start_date = NULL,
   end_date = NULL,
-  api_version = "v19.0",
+  api_version = "v21.0",
   fb_ad_account_id = NULL,
   max_pages = NULL,
   fb_user_token = NULL,

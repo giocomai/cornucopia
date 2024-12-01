@@ -9,7 +9,7 @@ cc_api_get_instagram_media_insights(
   ig_media_id,
   metrics = NULL,
   media_type = NULL,
-  api_version = "v19.0",
+  api_version = "v21.0",
   ig_user_id = NULL,
   token = NULL
 )
@@ -28,7 +28,7 @@ metrics will cause an error. Defaults to NULL. If left to NULL, metrics will be 
 "CAROUSEL_ALBUM". Defaults to NULL. If not given, it will be retrieved with
 `cc_get_instagram_media`. Ignored if `metrics` explicitly given.}
 
-\item{api_version}{Defaults to "v18.0".}
+\item{api_version}{Defaults to "v21.0".}
 
 \item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to be confused with legacy Instragram account id.}
 }

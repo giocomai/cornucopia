@@ -3,7 +3,7 @@
 #' See the relevant page in the documentation for available fields and more details
 #' https://developers.facebook.com/docs/marketing-api/reference/product-catalog
 #'
-#' @param api_version Defaults to "v18.0".
+#' @param api_version Defaults to "v21.0".
 #' @param fields Defaults to all available.
 #' @param token Facebook user token (not a page token).
 #' @inheritParams cc_set
@@ -16,7 +16,7 @@
 #' cc_get_fb_owned_product_catalogs()
 #' }
 cc_get_fb_owned_product_catalogs <- function(fb_business_id = NULL,
-                                             api_version = "v19.0",
+                                             api_version = "v21.0",
                                              fields = c(
                                                "id",
                                                "business",
