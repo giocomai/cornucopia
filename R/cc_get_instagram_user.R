@@ -1,18 +1,25 @@
 #' Get information about your Instagram user
 #'
-#' If you need to retrieve your Instagram user id, consider `cc_get_instagram_user_id()`.
+#' If you need to retrieve your Instagram user id, consider
+#' `cc_get_instagram_user_id()`.
 #'
-#' See the relevant page in the documentation for available fields and more details
-#' https://developers.facebook.com/docs/instagram-api/reference/ig-user
+#' See the relevant page in the documentation for available fields and more
+#' details https://developers.facebook.com/docs/instagram-api/reference/ig-user
 #'
-#' Look in particular at the permissions requirements. If you have issues, consider dropping `shopping_product_tag_eligibility` from the fields, as it requires additional permissions.
+#' Look in particular at the permissions requirements. If you have issues,
+#' consider dropping `shopping_product_tag_eligibility` from the fields, as it
+#' requires additional permissions.
 #'
-#' @param ig_user_id Instagram user id, typically composed of 17 digits. Not to be confused with legacy Instragram account id.
+#' @param ig_user_id Instagram user id, typically composed of 17 digits. Not to
+#'   be confused with legacy Instragram account id.
 #' @param api_version Defaults to "v21.0".
-#' @param fields Defaults to all available, consider reducing if you don't have all relevant permissions.
+#' @param fields Defaults to all available (except
+#'   "shopping_product_tag_eligibility", which requires dedicated permissions).
+#'   Consider reducing if you don't have all relevant permissions.
 #' @inheritParams cc_set
 #'
-#' @return
+#' @return A data frame (a tibble), with a column for id, plus as many columns
+#'   as the requested fields.
 #' @export
 #'
 #' @examples
@@ -31,8 +38,7 @@ cc_get_instagram_user <- function(ig_user_id = NULL,
                                     "followers_count",
                                     "follows_count",
                                     "media_count",
-                                    "profile_picture_url",
-                                    "shopping_product_tag_eligibility"
+                                    "profile_picture_url"
                                   ),
                                   fb_user_token = NULL) {
   if (is.null(ig_user_id)) {
@@ -49,7 +55,6 @@ cc_get_instagram_user <- function(ig_user_id = NULL,
     fb_user_token <- as.character(fb_user_token)
   }
 
-
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
     api_version
@@ -64,7 +69,14 @@ cc_get_instagram_user <- function(ig_user_id = NULL,
       access_token = fb_user_token
     )
 
-  req <- httr2::req_perform(req = api_request)
+  response_l <- api_request |>
+    httr2::req_error(is_error = \(resp) FALSE) |>
+    httr2::req_perform() |>
+    httr2::resp_body_json()
 
-  tibble::as_tibble(httr2::resp_body_json(req))
+  if (is.null(response_l[["error"]][["message"]]) == FALSE) {
+    cli::cli_abort(response_l[["error"]][["message"]])
+  }
+
+  tibble::as_tibble(response_l)
 }

@@ -12,7 +12,8 @@ cc_ui_instagram_user_card(
 )
 }
 \arguments{
-\item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to be confused with legacy Instragram account id.}
+\item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to
+be confused with legacy Instragram account id.}
 
 \item{fb_user_token}{Facebook user token (not a page token).}
 }

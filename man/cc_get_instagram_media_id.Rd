@@ -13,7 +13,8 @@ cc_get_instagram_media_id(
 )
 }
 \arguments{
-\item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to be confused with legacy Instragram account id.}
+\item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to
+be confused with legacy Instragram account id.}
 
 \item{api_version}{Defaults to "v21.0".}
 

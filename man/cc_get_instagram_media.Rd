@@ -21,7 +21,8 @@ NULL, a full list is automatically retrieved.}
 
 \item{api_version}{Defaults to "v21.0".}
 
-\item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to be confused with legacy Instragram account id.}
+\item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to
+be confused with legacy Instragram account id.}
 }
 \description{
 It retrieves the requested fields from the APIs and introduces a few

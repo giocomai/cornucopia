@@ -16,7 +16,8 @@ cc_check_instagram_media_update(
 account can be retrieved with `cc_get_instagram_media_id()`. If left to
 NULL, a full list is automatically retrieved.}
 
-\item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to be confused with legacy Instragram account id.}
+\item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to
+be confused with legacy Instragram account id.}
 }
 \value{
 A tibble with four columns: `ig_media_id` (a character column),
