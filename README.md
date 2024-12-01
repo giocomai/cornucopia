@@ -466,7 +466,7 @@ Notice that if you ask for a lengthy period, you may hit the API query
 limit. The error message is however not helpful, as it apparently
 complains about `fields`. Just wait and try again after a few hours: all
 downloaded data are by default stored in a local folder and nothing will
-lost, queries will be made only for missing data.
+be lost, queries will be made only for missing data.
 
 If you’re hitting the API limits but what to proceed with writing your
 code as you wait, you can set the `only_cached` parameter to TRUE, so
@@ -607,8 +607,9 @@ Then you must get the identifier of your lead form: you can see it when
 you create it, when you download leads as a csv from a single ad, or
 from the dedicated section in the ads manager. You should be aware that
 only the form id matters; all leads from that form will be retrieved, no
-matter the the ad set or ad in which it is included (refernce to adset
-and ad are however included in the returned along with the data).
+matter the the ad set or ad in which it is included (reference to adset
+and ad are however included in the returned data frame along with the
+form responses).
 
 ``` r
 cc_get_fb_leads(form_id = "insert_form_id_here")
@@ -716,13 +717,17 @@ If you are interested in the ratio (possibly, calculated as a rolling
 average), consider something such as the following.
 
 ``` r
-cc_set(ga_email = "example@example.com",
-       ga_property_id = 123456789)
+cc_set(
+  ga_email = "example@example.com",
+  ga_property_id = 123456789
+)
 
 cc_get_ga_event_ratio(events = c("session_start", "purchase"))
 
-cc_get_ga_event_ratio(events = c("session_start", "purchase"),
-                      rolling = TRUE)
+cc_get_ga_event_ratio(
+  events = c("session_start", "purchase"),
+  rolling = TRUE
+)
 ```
 
 This is a quick implementation, and further convenience functions based

@@ -346,7 +346,7 @@ fbad_init(
 ads_df <- cc_get_fb_ads()
 ```
 
-Notice that if you ask for a lengthy period, you may hit the API query limit. The error message is however not helpful, as it apparently complains about `fields`. Just wait and try again after a few hours: all downloaded data are by default stored in a local folder and nothing will lost, queries will be made only for missing data.
+Notice that if you ask for a lengthy period, you may hit the API query limit. The error message is however not helpful, as it apparently complains about `fields`. Just wait and try again after a few hours: all downloaded data are by default stored in a local folder and nothing will be lost, queries will be made only for missing data.
 
 If you're hitting the API limits but what to proceed with writing your code as you wait, you can set the `only_cached` parameter to TRUE, so you can proceed with your analysis with the data you have until you'll be able to download more data. 
 
@@ -357,7 +357,6 @@ ads_df <- cc_get_fb_ads(only_cached = TRUE)
 
 
 Notice that you can customise the fields to retrieve and that not all fields can be asked at the same time. See the embedded list `cc_valid_fields_ad_insights` for list of valid fields, divided by broad categories (this subdivision has been made by the package author, not by Facebook itself). Caching of retrieved contents by type of fields will be addedt to future versions. 
-
 
 Not all ad-related information, however, can be retrieved through this endpoint. 
 
@@ -433,7 +432,7 @@ Responses to `cc_get_instagram_media()` are cached by default, and updated with 
 
 In order to retrieve leads from ad campaigns that rely on Meta's native forms, you should make sure that your user token has the right permissions (it must include `leads_retrieval`). 
 
-Then you must get the identifier of your lead form: you can see it when you create it, when you download leads as a csv from a single ad, or from the dedicated section in the ads manager. You should be aware that only the form id matters; all leads from that form will be retrieved, no matter the the ad set or ad in which it is included (refernce to adset and ad are however included in the returned along with the data).
+Then you must get the identifier of your lead form: you can see it when you create it, when you download leads as a csv from a single ad, or from the dedicated section in the ads manager. You should be aware that only the form id matters; all leads from that form will be retrieved, no matter the the ad set or ad in which it is included (reference to adset and ad are however included in the returned data frame along with the form responses).
 
 ```{r}
 cc_get_fb_leads(form_id = "insert_form_id_here")
