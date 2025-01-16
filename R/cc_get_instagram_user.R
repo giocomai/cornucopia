@@ -11,7 +11,7 @@
 #' requires additional permissions.
 #'
 #' @param ig_user_id Instagram user id, typically composed of 17 digits. Not to
-#'   be confused with legacy Instragram account id.
+#'   be confused with legacy Instagram account id.
 #' @param api_version Defaults to "v21.0".
 #' @param fields Defaults to all available (except
 #'   "shopping_product_tag_eligibility", which requires dedicated permissions).

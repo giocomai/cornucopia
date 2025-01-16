@@ -14,7 +14,7 @@ cc_get_instagram_user(
 }
 \arguments{
 \item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to
-be confused with legacy Instragram account id.}
+be confused with legacy Instagram account id.}
 
 \item{api_version}{Defaults to "v21.0".}
 
