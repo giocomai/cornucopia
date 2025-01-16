@@ -17,7 +17,7 @@ cc_get_fb_ad_actions_by_day <- function(ad_id = NULL,
                                         only_cached = FALSE,
                                         api_version = "v21.0",
                                         ad_account_id = NULL,
-                                        token = NULL,
+                                        fb_user_token = NULL,
                                         max_pages = NULL) {
   if (!(type %in% c("actions", "action_values", "cost_per_action_type"))) {
     cli::cli_abort("Invalid type. Check documentation.")
@@ -30,11 +30,11 @@ cc_get_fb_ad_actions_by_day <- function(ad_id = NULL,
       dplyr::pull(ad_id)
   }
 
-  if (is.null(token)) {
-    fb_user_token <- cc_get_settings(fb_user_token = token) |>
+  if (is.null(fb_user_token)) {
+    fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
   } else {
-    fb_user_token <- as.character(token)
+    fb_user_token <- as.character(fb_user_token)
   }
 
   if (is.null(ad_account_id)) {

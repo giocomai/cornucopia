@@ -9,7 +9,7 @@ cc_get_fb_ad_campaigns(
   api_version = "v21.0",
   fb_ad_account_id = NULL,
   max_pages = NULL,
-  token = NULL,
+  fb_user_token = NULL,
   cache = TRUE,
   update = TRUE
 )

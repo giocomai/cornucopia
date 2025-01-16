@@ -11,11 +11,8 @@ cc_get_fb_ad_custom(
   api_version = "v21.0",
   cache = TRUE,
   ad_account_id = NULL,
-  token = NULL
+  fb_user_token = NULL
 )
-}
-\arguments{
-\item{token}{}
 }
 \description{
 https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-stats/

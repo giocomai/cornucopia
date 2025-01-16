@@ -12,7 +12,7 @@ cc_get_fb_ad_actions_by_day(
   only_cached = FALSE,
   api_version = "v21.0",
   ad_account_id = NULL,
-  token = NULL,
+  fb_user_token = NULL,
   max_pages = NULL
 )
 }

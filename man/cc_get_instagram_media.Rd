@@ -11,7 +11,7 @@ cc_get_instagram_media(
   ig_user_id = NULL,
   update = TRUE,
   cache = TRUE,
-  token = NULL
+  fb_user_token = NULL
 )
 }
 \arguments{
@@ -23,6 +23,8 @@ NULL, a full list is automatically retrieved.}
 
 \item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to
 be confused with legacy Instagram account id.}
+
+\item{fb_user_token}{Facebook user token (not a page token).}
 }
 \description{
 It retrieves the requested fields from the APIs and introduces a few

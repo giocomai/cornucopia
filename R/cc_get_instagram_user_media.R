@@ -29,6 +29,8 @@
 cc_get_instagram_user_media <- function(ig_username,
                                         media_fields = c("like_count", "comments_count", "caption", "media_product_type", "media_type", "media_url", "permalink", "thumbnail_url", "timestamp", "username"),
                                         max_pages = NULL,
+                                        update = TRUE,
+                                        cache = TRUE,
                                         api_version = "v21.0",
                                         ig_user_id = NULL,
                                         fb_user_token = NULL) {
@@ -74,7 +76,7 @@ cc_get_instagram_user_media <- function(ig_username,
         )
 
       repeat({
-        # cli::cli_progress_update(inc = 25)
+        cli::cli_progress_update(inc = 25)
 
         req <- api_request |>
           httr2::req_error(is_error = \(resp) FALSE) |>

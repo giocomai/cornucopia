@@ -9,7 +9,7 @@
 #' @examples
 cc_get_instagram_media_id <- function(ig_user_id = NULL,
                                       api_version = "v21.0",
-                                      token = NULL,
+                                      fb_user_token = NULL,
                                       max_pages = NULL,
                                       cache = TRUE) {
   if (is.null(max_pages)) {
@@ -29,11 +29,11 @@ cc_get_instagram_media_id <- function(ig_user_id = NULL,
     ig_user_id <- as.character(ig_user_id)
   }
 
-  if (is.null(token)) {
-    fb_user_token <- cc_get_settings(fb_user_token = token) |>
+  if (is.null(fb_user_token)) {
+    fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
   } else {
-    fb_user_token <- as.character(token)
+    fb_user_token <- as.character(fb_user_token)
   }
 
 

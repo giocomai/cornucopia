@@ -9,7 +9,7 @@ cc_api_get_instagram_media(
   ig_media_id,
   fields = cc_valid_fields_instagram_media_v,
   api_version = "v21.0",
-  token = NULL
+  fb_user_token = NULL
 )
 }
 \arguments{
@@ -18,6 +18,8 @@ A list of identifiers for your account can be retrieved with
 `cc_get_instagram_media_id()`.}
 
 \item{api_version}{Defaults to "v21.0".}
+
+\item{fb_user_token}{Facebook user token (not a page token).}
 }
 \description{
 Get information about a single media directly from the API. Mostly used

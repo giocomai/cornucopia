@@ -9,7 +9,7 @@ cc_get_fb_ad_creatives_id(
   ad_account_id = NULL,
   api_version = "v21.0",
   cache = TRUE,
-  token = NULL
+  fb_user_token = NULL
 )
 }
 \value{

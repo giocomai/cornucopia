@@ -5,13 +5,6 @@
 #' attribution window
 #' https://developers.facebook.com/docs/marketing-api/reference/ads-action-stats/
 #'
-#' @param start_date
-#' @param end_date
-#' @param only_cached
-#' @param api_version
-#' @param cache
-#' @param ad_account_id
-#' @param token
 #'
 #' @return
 #'
@@ -22,7 +15,7 @@ cc_get_fb_ad_custom <- function(start_date = NULL,
                                 api_version = "v21.0",
                                 cache = TRUE,
                                 ad_account_id = NULL,
-                                token = NULL) {
+                                fb_user_token = NULL) {
   dates_l <- cc_get_settings(
     start_date = start_date,
     end_date = end_date
@@ -37,11 +30,11 @@ cc_get_fb_ad_custom <- function(start_date = NULL,
 
   names(dates) <- dates
 
-  if (is.null(token)) {
-    fb_user_token <- cc_get_settings(fb_user_token = token) |>
+  if (is.null(fb_user_token)) {
+    fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
   } else {
-    fb_user_token <- as.character(token)
+    fb_user_token <- as.character(fb_user_token)
   }
 
   if (is.null(ad_account_id)) {

@@ -8,7 +8,7 @@ cc_check_instagram_media_update(
   ig_media_id = NULL,
   ig_user_id = NULL,
   insights = FALSE,
-  token = NULL
+  fb_user_token = NULL
 )
 }
 \arguments{
@@ -18,6 +18,8 @@ NULL, a full list is automatically retrieved.}
 
 \item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to
 be confused with legacy Instagram account id.}
+
+\item{fb_user_token}{Facebook user token (not a page token).}
 }
 \value{
 A tibble with four columns: `ig_media_id` (a character column),

@@ -19,7 +19,7 @@
 cc_check_instagram_media_update <- function(ig_media_id = NULL,
                                             ig_user_id = NULL,
                                             insights = FALSE,
-                                            token = NULL) {
+                                            fb_user_token = NULL) {
   if (is.null(ig_user_id)) {
     ig_user_id <- cc_get_settings(ig_user_id = ig_user_id) |>
       purrr::pluck("ig_user_id")
@@ -36,7 +36,7 @@ cc_check_instagram_media_update <- function(ig_media_id = NULL,
     ig_user_id = ig_user_id,
     cache = TRUE,
     update = FALSE,
-    token = token
+    fb_user_token = fb_user_token
   )
 
   if (insights == TRUE) {
@@ -45,7 +45,7 @@ cc_check_instagram_media_update <- function(ig_media_id = NULL,
       ig_user_id = ig_user_id,
       cache = TRUE,
       update = FALSE,
-      token = token
+      fb_user_token = fb_user_token
     ) |>
       dplyr::select(ig_media_id, timestamp_retrieved)
 

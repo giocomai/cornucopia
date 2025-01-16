@@ -27,14 +27,14 @@ cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
                                    api_version = "v21.0",
                                    fb_ad_account_id = NULL,
                                    max_pages = NULL,
-                                   token = NULL,
+                                   fb_user_token = NULL,
                                    cache = TRUE,
                                    update = TRUE) {
   if (is.null(token)) {
-    fb_user_token <- cc_get_settings(fb_user_token = token) |>
+    fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
   } else {
-    fb_user_token <- as.character(token)
+    fb_user_token <- as.character(fb_user_token)
   }
 
   if (is.null(fb_ad_account_id)) {

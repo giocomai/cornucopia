@@ -30,7 +30,7 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
                                    ig_user_id = NULL,
                                    update = TRUE,
                                    cache = TRUE,
-                                   token = NULL) {
+                                   fb_user_token = NULL) {
   if (is.null(ig_user_id)) {
     ig_user_id <- cc_get_settings(ig_user_id = ig_user_id) |>
       purrr::pluck("ig_user_id")
@@ -46,7 +46,7 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
     ig_media_id <- cc_get_instagram_media_id(
       ig_user_id = ig_user_id,
       api_version = api_version,
-      token = token,
+      fb_user_token = fb_user_token,
       cache = cache
     ) |>
       dplyr::pull(ig_media_id)
@@ -99,7 +99,7 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
           ig_media_id = unique(previous_ig_media_df$ig_media_id),
           ig_user_id = ig_user_id,
           insights = FALSE,
-          token = token
+          fb_user_token = fb_user_token
         ) |>
           dplyr::filter(update == TRUE)
 
@@ -131,7 +131,7 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
         ig_media_id = current_ig_media_id,
         fields = cc_valid_fields_instagram_media_v,
         api_version = "v21.0",
-        token = token
+        fb_user_token = fb_user_token
       )
 
       if (cache == TRUE) {
@@ -181,12 +181,12 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
 cc_api_get_instagram_media <- function(ig_media_id,
                                        fields = cc_valid_fields_instagram_media_v,
                                        api_version = "v21.0",
-                                       token = NULL) {
-  if (is.null(token)) {
-    fb_user_token <- cc_get_settings(fb_user_token = token) |>
+                                       fb_user_token = NULL) {
+  if (is.null(fb_user_token)) {
+    fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
   } else {
-    fb_user_token <- as.character(token)
+    fb_user_token <- as.character(fb_user_token)
   }
 
   if (!"id" %in% fields) {

@@ -7,7 +7,7 @@
 cc_get_instagram_media_id(
   ig_user_id = NULL,
   api_version = "v21.0",
-  token = NULL,
+  fb_user_token = NULL,
   max_pages = NULL,
   cache = TRUE
 )
@@ -17,6 +17,8 @@ cc_get_instagram_media_id(
 be confused with legacy Instagram account id.}
 
 \item{api_version}{Defaults to "v21.0".}
+
+\item{fb_user_token}{Facebook user token (not a page token).}
 
 \item{max_pages}{Defaults to NULL. If not given, it retrieves the number of media and calculates max number of pages needed. Hard-coded max number of pages at 1000.}
 }

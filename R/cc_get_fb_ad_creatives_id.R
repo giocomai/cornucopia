@@ -11,12 +11,12 @@ cc_get_fb_ad_creatives_id <- function(ad_id = NULL,
                                       ad_account_id = NULL,
                                       api_version = "v21.0",
                                       cache = TRUE,
-                                      token = NULL) {
-  if (is.null(token)) {
-    fb_user_token <- cc_get_settings(fb_user_token = token) |>
+                                      fb_user_token = NULL) {
+  if (is.null(fb_user_token)) {
+    fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
   } else {
-    fb_user_token <- as.character(token)
+    fb_user_token <- as.character(fb_user_token)
   }
 
   if (is.null(ad_account_id)) {
