@@ -27,7 +27,11 @@ A data frame (a tibble), with as many columns as fields (by default,
   `id` and `name`).
 }
 \description{
-Get managed pages, including name, page token, and id
+Be mindful of the permissions associated with the current user token: you
+will probably need "pages_show_list", and, if pages are managed through a
+business manger, "business_management". If you don't get any response, the
+problem is most likely related to permissions, so try adding more permissions
+as relevant.
 }
 \examples{
 \dontrun{

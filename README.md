@@ -103,17 +103,32 @@ platform](https://developers.facebook.com/apps/create/).
 
 You can then get your token from your [app
 page](https://developers.facebook.com/apps/), after adding the
-“Marketing API”. When you retrieve your token, you can select
-permissions: you probably want to include both “ads_read” and
-“read_insights”, as they are read-only and hence safe, while you
-probably don’t want to tick “ads_management”, unless you really know
-what you are doing.
+“Marketing API” (be mindful that if you’re using Facebook “as a page”
+rather than as your personal profile, the above link to the app page may
+not work… the page doesn’t load without a meaningful error message;
+switch back to your main account, and then click again on the link).
+When you retrieve your token, you can select permissions: you probably
+want to include both “ads_read” and “read_insights”, as they are
+read-only and hence safe, while you probably don’t want to tick
+“ads_management”, unless you really know what you are doing.
 
 You can also get a token with a different set of options for
 customisation, through the [Facebook’s Graph API
-explorer](https://developers.facebook.com/tools/explorer/).
+explorer](https://developers.facebook.com/tools/explorer/). This is
+effectively the recommended approach, as you can be more specific about
+the permissions granted to your user token. If you don’t get what you
+expect, most likely it is a permission problem.
 
-Things, however, are not so easy, as you’ll need to go through
+**This is important**: if a function returns an empty result, make sure
+that you have the needed permissions… consider adding even temporarily
+permissions as you troubleshoot. For examples, you want to see a list of
+pages you manage, and you don’t get any result: did you include the
+`pages_show_list` permission [when you created your
+token](https://developers.facebook.com/tools/explorer/)? If pages are
+controlled through a business manager, did you include the
+`business_management` permission? Etc.
+
+Even so… things, however, are not so easy, as you’ll need to go through
 additional steps to get long-lived tokens, Facebook page tokens, etc. -
 more details below.
 
