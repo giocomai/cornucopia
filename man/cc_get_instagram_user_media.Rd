@@ -26,3 +26,18 @@ Consider that only information about posts of creative or business users may be 
 Given restrictions on the rate limit, you are likely to hit rate limits quite soon.
 Wait one hour and try again.
 }
+\details{
+[More details about permissions](https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/business_discovery/).
+
+In brief, necessary:
+
+- `instagram_basic`
+- `instagram_manage_insights` 
+- `pages_read_engagement` or `pages_show_list`
+
+If the token is from a User whose Page role was granted via the Business Manager, one of the following permissions is also required:
+
+- `ads_management`
+- `pages_read_engagement`
+- `business_management`
+}
