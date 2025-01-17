@@ -15,6 +15,8 @@ cc_get_instagram_bd_user(
 }
 \arguments{
 \item{ig_username}{A user name of an Instagram user.}
+
+\item{fields}{Defaults to all fields publicly available through `business_discovery`. See [the documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media) for other fields that may be available.}
 }
 \description{
 This function allows you to retrieve basic information about an Instagram account you are not associated with, as long as they are a business account.

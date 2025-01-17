@@ -129,7 +129,7 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
     .f = function(current_ig_media_id) {
       current_media_df <- cc_api_get_instagram_media(
         ig_media_id = current_ig_media_id,
-        fields = cc_valid_fields_instagram_media_v,
+        fields = fields,
         api_version = "v21.0",
         fb_user_token = fb_user_token
       )

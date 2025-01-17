@@ -1,6 +1,6 @@
 Package: cornucopia
 Title: A cornucopia is like a funnel that keeps on giving
-Version: 0.0.0.9017
+Version: 0.0.0.9018
 Authors@R: 
     person("Giorgio", "Comai", , "g@giorgiocomai.eu",
     role = c("aut", "cre", "cph"),
@@ -34,5 +34,5 @@ LazyData: true
 RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5)
 URL: https://giocomai.github.io/cornucopia/

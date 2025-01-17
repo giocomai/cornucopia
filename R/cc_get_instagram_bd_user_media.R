@@ -21,7 +21,7 @@
 #' - `business_management`
 #'
 #' @param ig_username A user name of an Instagram user.
-#' @param media_fields Defaults to all fields publicly available through `business_discovery`. See [the documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media) for other fields that may be available.
+#' @param fields Defaults to all fields publicly available through `business_discovery`. See [the documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media) for other fields that may be available.
 #' @inheritParams cc_get_fb_page_posts
 #'
 #' @return
@@ -29,7 +29,18 @@
 #'
 #' @examples
 cc_get_instagram_bd_user_media <- function(ig_username,
-                                           media_fields = c("like_count", "comments_count", "caption", "media_product_type", "media_type", "media_url", "permalink", "thumbnail_url", "timestamp", "username"),
+                                           fields = c(
+                                             "like_count",
+                                             "comments_count",
+                                             "caption",
+                                             "media_product_type",
+                                             "media_type",
+                                             "media_url",
+                                             "permalink",
+                                             "thumbnail_url",
+                                             "timestamp",
+                                             "username"
+                                           ),
                                            max_pages = NULL,
                                            update = TRUE,
                                            cache = TRUE,
@@ -71,7 +82,7 @@ cc_get_instagram_bd_user_media <- function(ig_username,
             "business_discovery.username(",
             current_user,
             "){media{",
-            stringr::str_flatten(media_fields, collapse = ","),
+            stringr::str_flatten(fields, collapse = ","),
             "}}"
           ),
           access_token = fb_user_token
@@ -116,7 +127,7 @@ cc_get_instagram_bd_user_media <- function(ig_username,
                 "){media.after(",
                 after_string,
                 "){",
-                stringr::str_flatten(media_fields, collapse = ","),
+                stringr::str_flatten(fields, collapse = ","),
                 "}}"
               ),
               access_token = fb_user_token
@@ -134,6 +145,10 @@ cc_get_instagram_bd_user_media <- function(ig_username,
       post_details_df <- purrr::map(
         .x = out,
         .f = function(current_set) {
+          if (length(current_set) == 0) {
+            return(NULL)
+          }
+
           current_set_l <- current_set |>
             purrr::pluck("business_discovery", "media", "data")
 
@@ -143,10 +158,21 @@ cc_get_instagram_bd_user_media <- function(ig_username,
                 tibble::as_tibble()
             }
           ) |>
-            purrr::list_rbind()
+            purrr::list_rbind() |>
+            dplyr::rename(ig_media_id = id) |>
+            dplyr::mutate(timestamp_retrieved = strftime(as.POSIXlt(Sys.time(), "UTC"), "%Y-%m-%dT%H:%M:%S%z"))
         }
-      )
+      ) |>
+        purrr::list_rbind()
 
+      fields_filter <- fields[fields != "id"]
+
+      output_df <- post_details_df[c("ig_media_id", fields_filter, "timestamp_retrieved")]
+
+      if ("owner" %in% colnames(output_df)) {
+        output_df <- output_df |>
+          dplyr::mutate(owner = as.character(unlist(stringr::str_c(owner, collapse = ";"))))
+      }
 
       if (purrr::pluck_exists(out[[max(c(i - 1, 1))]], "business_discovery", "media", "paging", "cursors", "after") == TRUE) {
         current_set_l <- out[[max(c(i - 1, 1))]] |>

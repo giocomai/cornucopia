@@ -6,7 +6,7 @@
 \usage{
 cc_get_instagram_bd_user_media(
   ig_username,
-  media_fields = c("like_count", "comments_count", "caption", "media_product_type",
+  fields = c("like_count", "comments_count", "caption", "media_product_type",
     "media_type", "media_url", "permalink", "thumbnail_url", "timestamp", "username"),
   max_pages = NULL,
   update = TRUE,
@@ -19,7 +19,7 @@ cc_get_instagram_bd_user_media(
 \arguments{
 \item{ig_username}{A user name of an Instagram user.}
 
-\item{media_fields}{Defaults to all fields publicly available through `business_discovery`. See [the documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media) for other fields that may be available.}
+\item{fields}{Defaults to all fields publicly available through `business_discovery`. See [the documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media) for other fields that may be available.}
 
 \item{max_pages}{Posts are returned in pages of 25 posts each. How many pages should be retrieved? By default, this will try to retrieve all posts.}
 
