@@ -53,29 +53,36 @@ cc_get_instagram_bd_user <- function(ig_username,
 
   fields_v <- stringr::str_c(fields, collapse = ",")
 
-  api_request <- httr2::request(base_url = base_url) |>
-    httr2::req_url_path_append(ig_user_id) |>
-    httr2::req_url_query(
-      fields = stringr::str_c(
-        "business_discovery.username(",
-        ig_username,
-        "){",
-        fields_v,
-        "}"
-      ),
-      access_token = fb_user_token
-    )
+  purrr::map(
+    .progress = TRUE,
+    .x = ig_username,
+    .f = \(current_ig_username) {
+      api_request <- httr2::request(base_url = base_url) |>
+        httr2::req_url_path_append(ig_user_id) |>
+        httr2::req_url_query(
+          fields = stringr::str_c(
+            "business_discovery.username(",
+            current_ig_username,
+            "){",
+            fields_v,
+            "}"
+          ),
+          access_token = fb_user_token
+        )
 
-  response <- api_request |>
-    httr2::req_error(is_error = \(resp) FALSE) |>
-    httr2::req_perform()
+      response <- api_request |>
+        httr2::req_error(is_error = \(resp) FALSE) |>
+        httr2::req_perform()
 
-  response_l <- response |>
-    httr2::resp_body_json()
+      response_l <- response |>
+        httr2::resp_body_json()
 
-  if (is.null(response_l[["error"]][["message"]]) == FALSE) {
-    cli::cli_abort(response_l[["error"]][["message"]])
-  }
+      if (is.null(response_l[["error"]][["message"]]) == FALSE) {
+        cli::cli_abort(response_l[["error"]][["message"]])
+      }
 
-  tibble::as_tibble(response_l[["business_discovery"]])
+      tibble::as_tibble(response_l[["business_discovery"]])
+    }
+  ) |>
+    purrr::list_rbind()
 }
