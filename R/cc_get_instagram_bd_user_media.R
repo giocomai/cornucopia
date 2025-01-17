@@ -30,16 +30,16 @@
 #' @examples
 cc_get_instagram_bd_user_media <- function(ig_username,
                                            fields = c(
+                                             "username",
+                                             "timestamp",
                                              "like_count",
                                              "comments_count",
                                              "caption",
                                              "media_product_type",
                                              "media_type",
                                              "media_url",
-                                             "permalink",
                                              "thumbnail_url",
-                                             "timestamp",
-                                             "username"
+                                             "permalink"
                                            ),
                                            max_pages = NULL,
                                            update = TRUE,
@@ -61,15 +61,25 @@ cc_get_instagram_bd_user_media <- function(ig_username,
     fb_user_token <- as.character(fb_user_token)
   }
 
+  fields_filter <- fields[fields != "id"]
+
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
     api_version
   )
 
   users_posts_df <- purrr::map(
-    .x = ig_username,
+    .x = current_user,
     .progress = stringr::str_c("Retrieving user posts"),
     .f = function(current_user) {
+      bd_user_basic_df <- cc_get_instagram_bd_user_basic(
+        ig_username = current_user,
+        cache = cache,
+        api_version = api_version,
+        ig_user_id = ig_user_id,
+        fb_user_token = fb_user_token
+      )
+
       out <- vector("list", max_pages %||% 1000)
       posts_l <- vector("list", max_pages %||% 1000)
 
@@ -88,6 +98,8 @@ cc_get_instagram_bd_user_media <- function(ig_username,
           access_token = fb_user_token
         )
 
+      cli::cli_progress_bar(name = cli::cli_text("Retrieving posts for user {.val {current_user}}:"))
+
       repeat({
         cli::cli_progress_update(inc = 25)
 
@@ -102,21 +114,28 @@ cc_get_instagram_bd_user_media <- function(ig_username,
           cli::cli_abort(req[["error"]][["message"]])
         }
 
-        if (is.null(out[[i]][["error"]][["message"]]) == FALSE) {
-          cli::cli_warn(out[[i]][["error"]][["message"]])
-          cli::cli_inform(c(x = "Not all posts have been processed."))
 
-          break
-        }
+        current_set_l <- req |>
+          purrr::pluck("business_discovery", "media", "data")
 
-        out[[i]] <- req
+        current_post_set_details_df <- purrr::map(current_set_l,
+          .f = function(current_set) {
+            current_set |>
+              tibble::as_tibble()
+          }
+        ) |>
+          purrr::list_rbind() |>
+          dplyr::rename(ig_media_id = id) |>
+          dplyr::mutate(timestamp_retrieved = strftime(as.POSIXlt(Sys.time(), "UTC"), "%Y-%m-%dT%H:%M:%S%z")) |>
+          dplyr::relocate(ig_media_id)
 
-        if (!is.null(max_pages) && i == max_pages) {
-          break
-        }
 
-        if (purrr::pluck_exists(out[[i]], "business_discovery", "media", "paging", "cursors", "after") == TRUE) {
-          after_string <- purrr::pluck(out[[i]], "business_discovery", "media", "paging", "cursors", "after")
+        output_df <- current_post_set_details_df[c("ig_media_id", fields_filter, "timestamp_retrieved")]
+
+        out[[i]] <- output_df
+
+        if (purrr::pluck_exists(req, "business_discovery", "media", "paging", "cursors", "after") == TRUE) {
+          after_string <- purrr::pluck(req, "business_discovery", "media", "paging", "cursors", "after")
 
           api_request <- httr2::request(base_url = base_url) |>
             httr2::req_url_path_append(ig_user_id) |>
@@ -132,7 +151,20 @@ cc_get_instagram_bd_user_media <- function(ig_username,
               ),
               access_token = fb_user_token
             )
+
+          readr::write_lines(
+            x = after_string,
+            file = fs::path(
+              "cornucopia_db",
+              fs::path_ext_set(stringr::str_c("bd_user_media_", bd_user_basic_df$id), ".txt") |>
+                fs::path_sanitize()
+            )
+          )
         } else {
+          break
+        }
+
+        if (!is.null(max_pages) && i == max_pages) {
           break
         }
 
@@ -142,71 +174,41 @@ cc_get_instagram_bd_user_media <- function(ig_username,
         }
       })
 
-      post_details_df <- purrr::map(
-        .x = out,
-        .f = function(current_set) {
-          if (length(current_set) == 0) {
-            return(NULL)
-          }
-
-          current_set_l <- current_set |>
-            purrr::pluck("business_discovery", "media", "data")
-
-          purrr::map(current_set_l,
-            .f = function(current_set) {
-              current_set |>
-                tibble::as_tibble()
-            }
-          ) |>
-            purrr::list_rbind() |>
-            dplyr::rename(ig_media_id = id) |>
-            dplyr::mutate(timestamp_retrieved = strftime(as.POSIXlt(Sys.time(), "UTC"), "%Y-%m-%dT%H:%M:%S%z"))
-        }
-      ) |>
+      out |>
         purrr::list_rbind()
-
-      fields_filter <- fields[fields != "id"]
-
-      output_df <- post_details_df[c("ig_media_id", fields_filter, "timestamp_retrieved")]
-
-      if ("owner" %in% colnames(output_df)) {
-        output_df <- output_df |>
-          dplyr::mutate(owner = as.character(unlist(stringr::str_c(owner, collapse = ";"))))
-      }
-
-      if (purrr::pluck_exists(out[[max(c(i - 1, 1))]], "business_discovery", "media", "paging", "cursors", "after") == TRUE) {
-        current_set_l <- out[[max(c(i - 1, 1))]] |>
-          purrr::pluck("business_discovery", "media", "data")
-
-        fs::dir_create("cornucopia_db")
-
-        db <- DBI::dbConnect(
-          drv = RSQLite::SQLite(),
-          fs::path(
-            "cornucopia_db",
-            fs::path_ext_set(stringr::str_c("ig_bd_", ig_user_id), ".sqlite") |>
-              fs::path_sanitize()
-          )
-        )
-
-        DBI::dbWriteTable(
-          conn = db,
-          name = "ig_bd",
-          value = tibble::tibble(
-            ig_username = ig_username,
-            after = purrr::pluck(out[[max(c(i - 1, 1))]], "business_discovery", "media", "paging", "cursors", "after"),
-            oldest_timestamp = current_set_l[[min(length(current_set_l), 25)]][["timestamp"]]
-          ),
-          append = TRUE
-        )
-
-        DBI::dbDisconnect(db)
-      }
-
-      post_details_df |>
-        purrr::list_rbind() |>
-        dplyr::relocate(id, username, timestamp, permalink)
     }
   ) |>
     purrr::list_rbind()
+
+
+  # if (purrr::pluck_exists(out[[max(c(i - 1, 1))]], "business_discovery", "media", "paging", "cursors", "after") == TRUE) {
+  #   current_set_l <- out[[max(c(i - 1, 1))]] |>
+  #     purrr::pluck("business_discovery", "media", "data")
+  #
+  #   fs::dir_create("cornucopia_db")
+  #
+  #   db <- DBI::dbConnect(
+  #     drv = RSQLite::SQLite(),
+  #     fs::path(
+  #       "cornucopia_db",
+  #       fs::path_ext_set(stringr::str_c("ig_bd_", ig_user_id), ".sqlite") |>
+  #         fs::path_sanitize()
+  #     )
+  #   )
+  #
+  #   DBI::dbWriteTable(
+  #     conn = db,
+  #     name = "ig_bd",
+  #     value = tibble::tibble(
+  #       ig_username = ig_username,
+  #       after = purrr::pluck(out[[max(c(i - 1, 1))]], "business_discovery", "media", "paging", "cursors", "after"),
+  #       oldest_timestamp = current_set_l[[min(length(current_set_l), 25)]][["timestamp"]]
+  #     ),
+  #     append = TRUE
+  #   )
+  #
+  #   DBI::dbDisconnect(db)
+  # }
+
+  users_posts_df
 }

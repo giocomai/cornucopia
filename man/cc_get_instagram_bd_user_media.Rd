@@ -6,8 +6,8 @@
 \usage{
 cc_get_instagram_bd_user_media(
   ig_username,
-  fields = c("like_count", "comments_count", "caption", "media_product_type",
-    "media_type", "media_url", "permalink", "thumbnail_url", "timestamp", "username"),
+  fields = c("username", "timestamp", "like_count", "comments_count", "caption",
+    "media_product_type", "media_type", "media_url", "thumbnail_url", "permalink"),
   max_pages = NULL,
   update = TRUE,
   cache = TRUE,
