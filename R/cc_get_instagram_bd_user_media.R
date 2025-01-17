@@ -3,39 +3,39 @@
 #' Consider that only information about posts of creative or business users may be available.
 #' Given restrictions on the rate limit, you are likely to hit rate limits quite soon.
 #' Wait one hour and try again.
-#' 
+#'
 #' For details about rate limits, see [this section of the documentation](https://developers.facebook.com/docs/graph-api/overview/rate-limiting).
-#' 
-#' [More details about permissions](https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/business_discovery/).
-#' 
+#'
+#' [More details about Business Discovery and relevant permissions](https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/business_discovery/).
+#'
 #' In brief, necessary:
-#' 
+#'
 #' - `instagram_basic`
-#' - `instagram_manage_insights` 
+#' - `instagram_manage_insights`
 #' - `pages_read_engagement` or `pages_show_list`
-#' 
+#'
 #' If the token is from a User whose Page role was granted via the Business Manager, one of the following permissions is also required:
-#' 
+#'
 #' - `ads_management`
 #' - `pages_read_engagement`
 #' - `business_management`
 #'
 #' @param ig_username A user name of an Instagram user.
-#' @param media_fields Defaults to all fields publicly available through `business_discovery`.
+#' @param media_fields Defaults to all fields publicly available through `business_discovery`. See [the documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media) for other fields that may be available.
 #' @inheritParams cc_get_fb_page_posts
 #'
 #' @return
 #' @export
 #'
 #' @examples
-cc_get_instagram_user_media <- function(ig_username,
-                                        media_fields = c("like_count", "comments_count", "caption", "media_product_type", "media_type", "media_url", "permalink", "thumbnail_url", "timestamp", "username"),
-                                        max_pages = NULL,
-                                        update = TRUE,
-                                        cache = TRUE,
-                                        api_version = "v21.0",
-                                        ig_user_id = NULL,
-                                        fb_user_token = NULL) {
+cc_get_instagram_bd_user_media <- function(ig_username,
+                                           media_fields = c("like_count", "comments_count", "caption", "media_product_type", "media_type", "media_url", "permalink", "thumbnail_url", "timestamp", "username"),
+                                           max_pages = NULL,
+                                           update = TRUE,
+                                           cache = TRUE,
+                                           api_version = "v21.0",
+                                           ig_user_id = NULL,
+                                           fb_user_token = NULL) {
   if (is.null(ig_user_id)) {
     ig_user_id <- cc_get_settings(ig_user_id = ig_user_id) |>
       purrr::pluck("ig_user_id")
@@ -83,14 +83,14 @@ cc_get_instagram_user_media <- function(ig_username,
         resp <- api_request |>
           httr2::req_error(is_error = \(resp) FALSE) |>
           httr2::req_perform()
-        
-        req <- resp |> 
+
+        req <- resp |>
           httr2::resp_body_json()
 
         if (is.null(req[["error"]][["message"]]) == FALSE) {
           cli::cli_abort(req[["error"]][["message"]])
         }
-        
+
         if (is.null(out[[i]][["error"]][["message"]]) == FALSE) {
           cli::cli_warn(out[[i]][["error"]][["message"]])
           cli::cli_inform(c(x = "Not all posts have been processed."))

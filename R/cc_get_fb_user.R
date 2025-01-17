@@ -45,10 +45,10 @@ cc_get_fb_user <- function(fb_user_token = NULL,
   resp <- api_request |>
     httr2::req_error(is_error = \(resp) FALSE) |>
     httr2::req_perform()
-  
+
   current_l <- resp |>
     httr2::resp_body_json()
-  
+
   if (is.null(current_l[["error"]][["message"]]) == FALSE) {
     cli::cli_abort(current_l[["error"]][["message"]])
   }

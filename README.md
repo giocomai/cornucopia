@@ -612,6 +612,25 @@ month for the last year, once a year for previous years). As a
 consequence, you should mostly be able to keep this in scripts and rely
 on it to autoaupdate data without much delay.
 
+### Retrieve information about other Instagram users
+
+Instagram Graph APIs allow to retrieve information about other users
+through a mechanism known as [“business
+discovery”](https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/business_discovery/).
+
+This allows to retrieve basic information about a user (e.g follower
+count bio, etc.), as well as about their posts (e.g. likes count). Using
+this function it’s much easier to hit usage limits… usage limits,
+however, reset after one hour, so through caching and waiting you can
+still go a long way.
+
+For example, to retrieve some information about the Instagram account of
+the United Nation, you would run:
+
+``` r
+cc_get_instagram_bd_user(ig_username = "unitednations")
+```
+
 ### Retrieve leads from Meta ads
 
 In order to retrieve leads from ad campaigns that rely on Meta’s native
