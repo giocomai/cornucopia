@@ -4,6 +4,8 @@
 #' Given restrictions on the rate limit, you are likely to hit rate limits quite soon.
 #' Wait one hour and try again.
 #' 
+#' For details about rate limits, see [this section of the documentation](https://developers.facebook.com/docs/graph-api/overview/rate-limiting).
+#' 
 #' [More details about permissions](https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/business_discovery/).
 #' 
 #' In brief, necessary:
@@ -78,9 +80,11 @@ cc_get_instagram_user_media <- function(ig_username,
       repeat({
         cli::cli_progress_update(inc = 25)
 
-        req <- api_request |>
+        resp <- api_request |>
           httr2::req_error(is_error = \(resp) FALSE) |>
-          httr2::req_perform() |>
+          httr2::req_perform()
+        
+        req <- resp |> 
           httr2::resp_body_json()
 
         if (is.null(req[["error"]][["message"]]) == FALSE) {

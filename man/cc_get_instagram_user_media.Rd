@@ -31,6 +31,8 @@ Given restrictions on the rate limit, you are likely to hit rate limits quite so
 Wait one hour and try again.
 }
 \details{
+For details about rate limits, see [this section of the documentation](https://developers.facebook.com/docs/graph-api/overview/rate-limiting).
+
 [More details about permissions](https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/business_discovery/).
 
 In brief, necessary:
