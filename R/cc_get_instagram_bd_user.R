@@ -158,7 +158,7 @@ cc_get_instagram_bd_user_basic <- function(ig_username,
     previous_ig_bd_users_df <- cc_empty_instagram_ig_bd_users_df
   }
 
-  ig_username_to_process <- ig_username[!ig_username %in% previous_ig_bd_users_df[["username"]]]
+  ig_username_to_process <- unique(ig_username[!ig_username %in% previous_ig_bd_users_df[["username"]]])
 
   if (length(ig_username_to_process) == 0) {
     return(previous_ig_bd_users_df)
