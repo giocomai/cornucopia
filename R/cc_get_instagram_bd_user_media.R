@@ -69,7 +69,7 @@ cc_get_instagram_bd_user_media <- function(ig_username,
   )
 
   users_posts_df <- purrr::map(
-    .x = current_user,
+    .x = ig_username,
     .progress = stringr::str_c("Retrieving user posts"),
     .f = function(current_user) {
       bd_user_basic_df <- cc_get_instagram_bd_user_basic(
@@ -129,7 +129,11 @@ cc_get_instagram_bd_user_media <- function(ig_username,
           dplyr::mutate(timestamp_retrieved = strftime(as.POSIXlt(Sys.time(), "UTC"), "%Y-%m-%dT%H:%M:%S%z")) |>
           dplyr::relocate(ig_media_id)
 
-
+        if (!"thumbnail_url" %in% colnames(current_post_set_details_df)) {
+          current_post_set_details_df <- current_post_set_details_df |> 
+            dplyr::mutate(thumbnail_url = NA_character_)
+        }
+        
         output_df <- current_post_set_details_df[c("ig_media_id", fields_filter, "timestamp_retrieved")]
 
         out[[i]] <- output_df
