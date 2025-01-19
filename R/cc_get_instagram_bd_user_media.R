@@ -164,6 +164,7 @@ cc_get_instagram_bd_user_media <- function(ig_username,
         if (is.null(req[["error"]][["message"]]) == FALSE) {
           cli::cli_alert_danger(req[["error"]][["message"]])
           cli::cli_alert_success("Returning the {.val {i}} pages retrieved so far, presumably corresponding to {.val {i*25}} posts.")
+          cli::cli_alert_info("Consider waiting for an hour for limits to reset, and set {.var wait} to 300 before retrying.")
           break
         }
 
