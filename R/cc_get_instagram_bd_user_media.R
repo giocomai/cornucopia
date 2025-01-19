@@ -162,9 +162,10 @@ cc_get_instagram_bd_user_media <- function(ig_username,
           httr2::resp_body_json()
 
         if (is.null(req[["error"]][["message"]]) == FALSE) {
-          cli::cli_abort(req[["error"]][["message"]])
+          cli::cli_alert_danger(req[["error"]][["message"]])
+          cli::cli_alert_success("Returning the {.val {i}} pages retrieved so far, presumably corresponding to {.val {i*25}} posts.")
+          break
         }
-
 
         current_set_l <- req |>
           purrr::pluck("business_discovery", "media", "data")
