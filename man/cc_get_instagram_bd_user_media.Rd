@@ -9,6 +9,8 @@ cc_get_instagram_bd_user_media(
   fields = c("username", "timestamp", "like_count", "comments_count", "caption",
     "media_product_type", "media_type", "media_url", "thumbnail_url", "permalink"),
   max_pages = NULL,
+  wait = 0,
+  limit = 80,
   update = TRUE,
   cache = TRUE,
   api_version = "v21.0",
@@ -19,9 +21,23 @@ cc_get_instagram_bd_user_media(
 \arguments{
 \item{ig_username}{A user name of an Instagram user.}
 
-\item{fields}{Defaults to all fields publicly available through `business_discovery`. See [the documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media) for other fields that may be available.}
+\item{fields}{Defaults to all fields publicly available through
+`business_discovery`. See [the documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media)
+for other fields that may be available.}
 
 \item{max_pages}{Posts are returned in pages of 25 posts each. How many pages should be retrieved? By default, this will try to retrieve all posts.}
+
+\item{wait}{Defaults to zero. Time in seconds before each request to the API.
+If you make a very small number of queries, you can leave it to zero. If
+you make a even just a few dozens query, you'll hit API limits unless you
+set a wait time. Setting this to 300 (5 minutes) should slow things down
+just enough (but yes, this means you'll get 25 posts every five minutes, no
+more and no less).}
+
+\item{limit}{Defaults to 80, meaning 80%. It means that when either of the
+three values determining rate limiting reaches at least 80%, the function
+returns what it has collected so far. Set to NULL to ignore. For details,
+see [the official documentation](https://developers.facebook.com/docs/graph-api/overview/rate-limiting/).}
 
 \item{cache}{Defaults to TRUE.}
 }

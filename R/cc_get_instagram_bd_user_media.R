@@ -21,7 +21,19 @@
 #' - `business_management`
 #'
 #' @param ig_username A user name of an Instagram user.
-#' @param fields Defaults to all fields publicly available through `business_discovery`. See [the documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media) for other fields that may be available.
+#' @param fields Defaults to all fields publicly available through
+#'   `business_discovery`. See [the documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media)
+#'   for other fields that may be available.
+#' @param wait Defaults to zero. Time in seconds before each request to the API.
+#'   If you make a very small number of queries, you can leave it to zero. If
+#'   you make a even just a few dozens query, you'll hit API limits unless you
+#'   set a wait time. Setting this to 300 (5 minutes) should slow things down
+#'   just enough (but yes, this means you'll get 25 posts every five minutes, no
+#'   more and no less).
+#' @param limit Defaults to 80, meaning 80%. It means that when either of the
+#'   three values determining rate limiting reaches at least 80%, the function
+#'   returns what it has collected so far. Set to NULL to ignore. For details,
+#'   see [the official documentation](https://developers.facebook.com/docs/graph-api/overview/rate-limiting/).
 #' @inheritParams cc_get_fb_page_posts
 #'
 #' @return
@@ -42,6 +54,8 @@ cc_get_instagram_bd_user_media <- function(ig_username,
                                              "permalink"
                                            ),
                                            max_pages = NULL,
+                                           wait = 0,
+                                           limit = 80,
                                            update = TRUE,
                                            cache = TRUE,
                                            api_version = "v21.0",
@@ -80,6 +94,29 @@ cc_get_instagram_bd_user_media <- function(ig_username,
         fb_user_token = fb_user_token
       )
 
+      if (cache) {
+        current_user_id <- bd_user_basic_df[["id"]]
+
+        fs::dir_create("cornucopia_db")
+
+        db <- DBI::dbConnect(
+          drv = RSQLite::SQLite(),
+          fs::path(
+            "cornucopia_db",
+            fs::path_ext_set(stringr::str_c("ig_bd_", current_user_id), ".sqlite") |>
+              fs::path_sanitize()
+          )
+        )
+
+        if (DBI::dbExistsTable(conn = db, name = "media")) {
+          # TODO
+          # check previous data
+        } else {
+          # TODO
+          # create empty table
+        }
+      }
+
       out <- vector("list", max_pages %||% 1000)
       posts_l <- vector("list", max_pages %||% 1000)
 
@@ -107,6 +144,20 @@ cc_get_instagram_bd_user_media <- function(ig_username,
           httr2::req_error(is_error = \(resp) FALSE) |>
           httr2::req_perform()
 
+        if (is.null(limit) == FALSE) {
+          limits_l <- resp$headers$`x-app-usage` |>
+            jsonlite::parse_json(simplifyVector = TRUE)
+          if (sum(limits_l > limit) >= 1) {
+            over_limits <- limits_l[which.max(unlist(limits_l))]
+
+            cli::cli_alert_warning("Rate limit has reached threshold: {.var {names(over_limits)}} is now at {.val {over_limits}%}")
+            cli::cli_alert_success("Returning the {.val {i}} pages retrieved so far, presumably corresponding to {.val {i*25}} posts.")
+            cli::cli_alert_info("Consider waiting for an hour for limits to reset, and set {.var wait} to 300 before retrying.")
+
+            break
+          }
+        }
+
         req <- resp |>
           httr2::resp_body_json()
 
@@ -130,10 +181,10 @@ cc_get_instagram_bd_user_media <- function(ig_username,
           dplyr::relocate(ig_media_id)
 
         if (!"thumbnail_url" %in% colnames(current_post_set_details_df)) {
-          current_post_set_details_df <- current_post_set_details_df |> 
+          current_post_set_details_df <- current_post_set_details_df |>
             dplyr::mutate(thumbnail_url = NA_character_)
         }
-        
+
         output_df <- current_post_set_details_df[c("ig_media_id", fields_filter, "timestamp_retrieved")]
 
         out[[i]] <- output_df
@@ -176,6 +227,8 @@ cc_get_instagram_bd_user_media <- function(ig_username,
         if (i > length(out)) {
           length(out) <- length(out) * 2L
         }
+
+        Sys.sleep(time = wait)
       })
 
       out |>
@@ -189,16 +242,6 @@ cc_get_instagram_bd_user_media <- function(ig_username,
   #   current_set_l <- out[[max(c(i - 1, 1))]] |>
   #     purrr::pluck("business_discovery", "media", "data")
   #
-  #   fs::dir_create("cornucopia_db")
-  #
-  #   db <- DBI::dbConnect(
-  #     drv = RSQLite::SQLite(),
-  #     fs::path(
-  #       "cornucopia_db",
-  #       fs::path_ext_set(stringr::str_c("ig_bd_", ig_user_id), ".sqlite") |>
-  #         fs::path_sanitize()
-  #     )
-  #   )
   #
   #   DBI::dbWriteTable(
   #     conn = db,
