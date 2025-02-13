@@ -249,7 +249,7 @@ cc_get_fb_long_user_token(
 Then you can use this long-lived user token to get a long-lived Facebook
 page access token. With the following function you will get a data frame
 with access tokens to all pages to which your short-lived tokens has
-access (you can select just a few or include all from the web intreface
+access (you can select just a few or include all from the web interface
 when you create the short-lived access token).
 
 ``` r
