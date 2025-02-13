@@ -5,7 +5,7 @@
 \title{Get Facebook page post id and basic information that can be stored as strings}
 \usage{
 cc_get_fb_page_posts(
-  api_version = "v21.0",
+  api_version = "v22.0",
   max_pages = NULL,
   fields = names(cc_empty_fb_page_post_df),
   cache = TRUE,

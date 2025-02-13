@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-cc_get_fb_page_video <- function(api_version = "v21.0",
+cc_get_fb_page_video <- function(api_version = "v22.0",
                                  max_pages = NULL,
                                  cache = TRUE,
                                  fb_page_id = NULL,

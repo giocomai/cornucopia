@@ -8,7 +8,7 @@ internally.}
 cc_api_get_instagram_media(
   ig_media_id,
   fields = cc_valid_fields_instagram_media_v,
-  api_version = "v21.0",
+  api_version = "v22.0",
   fb_user_token = NULL
 )
 }

@@ -22,7 +22,7 @@
 #'   posts_df
 #' }
 #' }
-cc_get_fb_page_posts <- function(api_version = "v21.0",
+cc_get_fb_page_posts <- function(api_version = "v22.0",
                                  max_pages = NULL,
                                  fields = names(cc_empty_fb_page_post_df),
                                  cache = TRUE,

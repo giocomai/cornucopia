@@ -6,7 +6,7 @@
 \usage{
 cc_get_fb_owned_product_catalogs(
   fb_business_id = NULL,
-  api_version = "v21.0",
+  api_version = "v22.0",
   fields = c("id", "business", "commerce_merchant_settings", "da_display_settings",
     "default_image_url", "fallback_image_url", "feed_count", "is_catalog_segment",
     "name", "product_count", "vertical"),

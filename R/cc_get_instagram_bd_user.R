@@ -29,7 +29,7 @@ cc_get_instagram_bd_user <- function(ig_username,
                                        "media_count",
                                        "profile_picture_url"
                                      ),
-                                     api_version = "v21.0",
+                                     api_version = "v22.0",
                                      ig_user_id = NULL,
                                      fb_user_token = NULL) {
   if (is.null(ig_user_id)) {
@@ -106,7 +106,7 @@ cc_get_instagram_bd_user <- function(ig_username,
 #' }
 cc_get_instagram_bd_user_basic <- function(ig_username,
                                            cache = TRUE,
-                                           api_version = "v21.0",
+                                           api_version = "v22.0",
                                            ig_user_id = NULL,
                                            fb_user_token = NULL) {
   if (is.null(ig_user_id)) {

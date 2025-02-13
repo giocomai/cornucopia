@@ -23,7 +23,7 @@
 cc_get_fb_managed_pages <- function(fields = c("id", "name"),
                                     fb_user_id = NULL,
                                     fb_user_token = NULL,
-                                    api_version = "v21.0") {
+                                    api_version = "v22.0") {
   if (is.null(fb_user_token)) {
     fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")

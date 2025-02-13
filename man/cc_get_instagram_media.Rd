@@ -7,7 +7,7 @@
 cc_get_instagram_media(
   ig_media_id = NULL,
   fields = cc_valid_fields_instagram_media_v,
-  api_version = "v21.0",
+  api_version = "v22.0",
   ig_user_id = NULL,
   update = TRUE,
   cache = TRUE,

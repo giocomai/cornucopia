@@ -7,7 +7,7 @@
 cc_get_instagram_media_insights(
   ig_media_id = NULL,
   metrics = NULL,
-  api_version = "v21.0",
+  api_version = "v22.0",
   ig_user_id = NULL,
   cache = TRUE,
   update = TRUE,

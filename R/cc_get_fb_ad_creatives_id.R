@@ -9,7 +9,7 @@
 #' @examples
 cc_get_fb_ad_creatives_id <- function(ad_id = NULL,
                                       ad_account_id = NULL,
-                                      api_version = "v21.0",
+                                      api_version = "v22.0",
                                       cache = TRUE,
                                       fb_user_token = NULL) {
   if (is.null(fb_user_token)) {

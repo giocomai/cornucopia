@@ -26,7 +26,7 @@
 #' }
 cc_get_instagram_media <- function(ig_media_id = NULL,
                                    fields = cc_valid_fields_instagram_media_v,
-                                   api_version = "v21.0",
+                                   api_version = "v22.0",
                                    ig_user_id = NULL,
                                    update = TRUE,
                                    cache = TRUE,
@@ -130,7 +130,7 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
       current_media_df <- cc_api_get_instagram_media(
         ig_media_id = current_ig_media_id,
         fields = fields,
-        api_version = "v21.0",
+        api_version = "v22.0",
         fb_user_token = fb_user_token
       )
 
@@ -180,7 +180,7 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
 #' @examples
 cc_api_get_instagram_media <- function(ig_media_id,
                                        fields = cc_valid_fields_instagram_media_v,
-                                       api_version = "v21.0",
+                                       api_version = "v22.0",
                                        fb_user_token = NULL) {
   if (is.null(fb_user_token)) {
     fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>

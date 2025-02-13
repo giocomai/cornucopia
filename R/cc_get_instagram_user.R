@@ -27,7 +27,7 @@
 #' cc_get_instagram_user()
 #' }
 cc_get_instagram_user <- function(ig_user_id = NULL,
-                                  api_version = "v21.0",
+                                  api_version = "v22.0",
                                   fields = c(
                                     "id",
                                     "ig_id",

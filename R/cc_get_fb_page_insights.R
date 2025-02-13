@@ -15,7 +15,7 @@ cc_get_fb_page_insights <- function(metric = c(
                                     ),
                                     start_date = NULL,
                                     end_date = NULL,
-                                    api_version = "v21.0",
+                                    api_version = "v22.0",
                                     cache = TRUE,
                                     fb_page_id = NULL,
                                     fb_page_token = NULL) {

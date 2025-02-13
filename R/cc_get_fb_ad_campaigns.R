@@ -24,7 +24,7 @@
 #' cc_get_fb_ad_campaigns()
 #' }
 cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
-                                   api_version = "v21.0",
+                                   api_version = "v22.0",
                                    fb_ad_account_id = NULL,
                                    max_pages = NULL,
                                    fb_user_token = NULL,
