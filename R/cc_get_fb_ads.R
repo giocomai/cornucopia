@@ -45,12 +45,21 @@ cc_get_fb_ads <- function(start_date = NULL,
                             "ctr",
                             "frequency",
                             "reach"
-                          )) {
+                          ), 
+                          fb_ad_account_id = NULL) {
   dates_l <- cc_get_settings(
     start_date = start_date,
     end_date = end_date
   )
-
+  
+  fb_ad_account_id <- cc_get_settings(fb_ad_account_id = fb_ad_account_id)[["fb_ad_account_id"]]
+  
+  cache_folder <- dplyr::if_else(
+    fb_ad_account_id=="",
+    true = "fb_ads_by_date_rds",
+    false = stringr::str_flatten(c("fb_ads_by_date_rds", "-", fb_ad_account_id), collapse = "")
+    )
+  
   start_date <- dates_l$start_date
   end_date <- dates_l$end_date
 
@@ -61,8 +70,11 @@ cc_get_fb_ads <- function(start_date = NULL,
   names(dates) <- dates
 
   if (only_cached == TRUE) {
+    if (fs::file_exists(cache_folder)==FALSE) {
+      cli::cli_abort("No ads data previously stored for the selected ad account.")
+    }
     cached_v <- fs::dir_ls(
-      path = "fb_ads_by_date_rds",
+      path = cache_folder,
       recurse = FALSE,
       type = "file",
       glob = "*.rds"
@@ -78,7 +90,8 @@ cc_get_fb_ads <- function(start_date = NULL,
     .f = function(x) {
       cc_get_fb_ads_by_date(
         date = x,
-        fields = fields
+        fields = fields,
+        fb_ad_account_id = fb_ad_account_id
       )
     },
     .id = "date"
