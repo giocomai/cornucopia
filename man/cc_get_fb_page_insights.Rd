@@ -18,5 +18,5 @@ cc_get_fb_page_insights(
 \item{fb_page_token}{}
 }
 \description{
-Official documentation: \url{https://developers.facebook.com/docs/graph-api/reference/v21.0/insights}
+Official documentation: \url{https://developers.facebook.com/docs/graph-api/reference/v22.0/insights}
 }

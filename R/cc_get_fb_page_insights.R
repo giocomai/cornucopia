@@ -1,6 +1,6 @@
 #' Get Facebook page insights
 #'
-#' Official documentation: \url{https://developers.facebook.com/docs/graph-api/reference/v21.0/insights}
+#' Official documentation: \url{https://developers.facebook.com/docs/graph-api/reference/v22.0/insights}
 #'
 #' @param metric
 #' @param fb_page_id

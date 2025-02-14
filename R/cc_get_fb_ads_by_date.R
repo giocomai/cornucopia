@@ -30,20 +30,20 @@ cc_get_fb_ads_by_date <- function(date,
                                     "ctr",
                                     "frequency",
                                     "reach"
-                                  ), 
+                                  ),
                                   fb_ad_account_id = NULL) {
   if (is.null(names(date))) {
     names(date) <- date
   }
 
   fb_ad_account_id <- cc_get_settings(fb_ad_account_id = fb_ad_account_id)[["fb_ad_account_id"]]
-  
+
   cache_folder <- dplyr::if_else(
-    fb_ad_account_id=="",
+    fb_ad_account_id == "",
     true = "fb_ads_by_date_rds",
     false = stringr::str_flatten(c("fb_ads_by_date_rds", "-", fb_ad_account_id), collapse = "")
   )
-  
+
   fs::dir_create(cache_folder)
 
   local_rds <- fs::path(

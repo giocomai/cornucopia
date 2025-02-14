@@ -12,7 +12,8 @@ cc_get_fb_ads(
     "ad_id", "objective", "account_currency", "spend", "actions", "action_values",
     "cost_per_action_type", "cost_per_unique_action_type", "conversions",
     "cost_per_conversion", "conversion_rate_ranking", "cpc", "cpm", "cpp", "ctr",
-    "frequency", "reach")
+    "frequency", "reach"),
+  fb_ad_account_id = NULL
 )
 }
 \arguments{
