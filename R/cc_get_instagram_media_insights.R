@@ -186,7 +186,7 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
             ig_media_id = current_ig_media_id,
             media_type = current_media_type,
             api_version = "v22.0",
-            token = token
+            fb_user_token = fb_user_token
           )
 
           if (cache == TRUE) {
@@ -263,12 +263,12 @@ cc_api_get_instagram_media_insights <- function(ig_media_id,
                                                 media_type = NULL,
                                                 api_version = "v22.0",
                                                 ig_user_id = NULL,
-                                                token = NULL) {
-  if (is.null(token)) {
-    fb_user_token <- cc_get_settings(fb_user_token = token) |>
+                                                fb_user_token = NULL) {
+  if (is.null(fb_user_token)) {
+    fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
   } else {
-    fb_user_token <- as.character(token)
+    fb_user_token <- as.character(fb_user_token)
   }
 
   if (is.null(ig_user_id)) {
@@ -290,7 +290,7 @@ cc_api_get_instagram_media_insights <- function(ig_media_id,
         fields = "media_type",
         api_version = api_version,
         ig_user_id = ig_user_id,
-        token = token
+        fb_user_token = fb_user_token
       )
       media_type <- current_media_df |>
         dplyr::pull(media_type)
