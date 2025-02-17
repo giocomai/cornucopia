@@ -77,7 +77,7 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
   ig_media_id_available <- ig_media_id[!(ig_media_id %in% unavailable_media_df$ig_media_id)]
 
   if (length(ig_media_id_available) < length(ig_media_id)) {
-    cli::cli_warn("Media posted before 2017 have been dropped as Insights are not available for earlier posts")
+    cli::cli_alert_warning("Media posted before 2017 have been dropped as Insights are not available for earlier posts")
     ig_media_id <- ig_media_id_available
     media_df <- media_df |>
       dplyr::filter(date >= as.Date("2017-01-01"))
@@ -328,7 +328,7 @@ cc_api_get_instagram_media_insights <- function(ig_media_id,
   current_l <- httr2::resp_body_json(req)
 
   if (is.null(current_l[["error"]][["message"]]) == FALSE) {
-    cli::cli_warn(current_l[["error"]][["message"]])
+    cli::cli_alert_warning(current_l[["error"]][["message"]])
     return(invisible(NULL))
   }
 
