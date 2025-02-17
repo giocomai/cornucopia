@@ -11,7 +11,7 @@ cc_api_get_instagram_media_insights(
   media_type = NULL,
   api_version = "v22.0",
   ig_user_id = NULL,
-  token = NULL
+  fb_user_token = NULL
 )
 }
 \arguments{
@@ -32,6 +32,8 @@ metrics will cause an error. Defaults to NULL. If left to NULL, metrics will be 
 
 \item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to
 be confused with legacy Instagram account id.}
+
+\item{fb_user_token}{Facebook user token (not a page token).}
 }
 \description{
 See the official documentation for reference:

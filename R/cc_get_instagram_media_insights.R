@@ -311,7 +311,7 @@ cc_api_get_instagram_media_insights <- function(ig_media_id,
     }
   }
 
-  metrics_v <- stringr::str_c(metrics, collapse = ",")
+  metrics_v <- stringr::str_flatten(metrics, collapse = ",")
 
   api_request <- httr2::request(base_url = base_url) |>
     httr2::req_url_path_append(ig_media_id) |>
