@@ -198,7 +198,7 @@ cc_api_get_instagram_media <- function(ig_media_id,
     api_version
   )
 
-  fields_v <- stringr::str_c(cc_valid_fields_instagram_media_v, collapse = ",")
+  fields_v <- stringr::str_flatten(fields, collapse = ",")
 
   api_request <- httr2::request(base_url = base_url) |>
     httr2::req_url_path_append(ig_media_id) |>
