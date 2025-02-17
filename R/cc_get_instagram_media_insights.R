@@ -1,6 +1,6 @@
 #' Get insights about a given Instagram post based on its ig_media_id
 #'
-#' It retrieves the requested fields from the APIs and introduces a few
+#' It retrieves the requested metrics from the APIs and introduces a few
 #' adjustments:
 #'
 #' - it always includes the media id, in a column named `ig_media_id`
@@ -34,7 +34,7 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
                                             ig_user_id = NULL,
                                             cache = TRUE,
                                             update = TRUE,
-                                            token = NULL) {
+                                            fb_user_token = NULL) {
   if (is.null(ig_user_id)) {
     ig_user_id <- cc_get_settings(ig_user_id = ig_user_id) |>
       purrr::pluck("ig_user_id")
@@ -50,7 +50,7 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
     ig_media_id <- cc_get_instagram_media_id(
       ig_user_id = ig_user_id,
       api_version = api_version,
-      token = token,
+      fb_user_token = fb_user_token,
       cache = cache
     ) |>
       dplyr::pull(ig_media_id)
@@ -62,7 +62,7 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
     api_version = api_version,
     ig_user_id = ig_user_id,
     cache = cache,
-    token = token
+    fb_user_token = fb_user_token
   ) |>
     dplyr::mutate(media_type = stringr::str_to_lower(dplyr::if_else(condition = media_product_type == "REELS",
       true = "REELS",
@@ -148,7 +148,7 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
               ig_media_id = unique(previous_ig_media_df$ig_media_id),
               ig_user_id = ig_user_id,
               insights = TRUE,
-              token = token
+              fb_user_token = fb_user_token
             ) |>
               dplyr::filter(update == TRUE)
 
