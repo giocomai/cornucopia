@@ -16,6 +16,10 @@ cc_get_fb_ad_actions_by_day(
   max_pages = NULL
 )
 }
+\arguments{
+\item{only_cached}{Defaults to FALSE. If TRUE, only data cached locally will
+be retrieved.}
+}
 \description{
 For action breakdowns, see: https://developers.facebook.com/docs/marketing-api/insights/breakdowns/
 }

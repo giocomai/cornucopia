@@ -4,6 +4,9 @@
 #'
 #' Draft: caching disabled by default as only partly functional;
 #' Not yet fully tested with ads running longer than 25 days
+#' 
+#' @param only_cached Defaults to FALSE. If TRUE, only data cached locally will
+#'   be retrieved.
 #'
 #'
 #' @return
