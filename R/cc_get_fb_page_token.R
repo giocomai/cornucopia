@@ -1,18 +1,25 @@
 #' Get Facebook page token
 #'
-#' @param fb_user_id Facebook used id. If not known, can be retrieved with `cc_get_fb_user()`.
-#' @param page_id Exact page id. See `cc_get_fb_managed_pages()` for pages you have access to.
-#' @param page_name Exact page name. See `cc_get_fb_managed_pages()` for pages you have access to.
+#' @param fb_user_id Facebook used id. If not known, can be retrieved with
+#'   `cc_get_fb_user()`.
+#' @param page_id Exact page id. See `cc_get_fb_managed_pages()` for pages you
+#'   have access to.
+#' @param page_name Exact page name. See `cc_get_fb_managed_pages()` for pages
+#'   you have access to.
 #' @param token User token.
 #'
-#' @return A character vector of length one with the Facebook token.
+#' @return A character vector of length one with the Facebook page token.
 #' @export
 #'
 #' @examples
-#' cc_get_fb_page_token(
+#' \dontrun{
+#' if (interactive()){
+#'  cc_get_fb_page_token(
 #'   fb_user_id = cc_get_fb_user(),
 #'   page_name = "My example page"
-#' )
+#'  )
+#' }
+#' }
 cc_get_fb_page_token <- function(fb_user_id = NULL,
                                  page_id = NULL,
                                  page_name = NULL,
@@ -22,7 +29,7 @@ cc_get_fb_page_token <- function(fb_user_id = NULL,
     fb_user_token = fb_user_token,
     fields = c("id", "name", "access_token")
   )
-
+  
   if (is.null(page_id) == FALSE) {
     pages_df |>
       dplyr::filter(as.character(id) == as.character(page_id)) |>
