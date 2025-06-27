@@ -40,27 +40,29 @@
 #' @export
 #'
 #' @examples
-cc_get_instagram_bd_user_media <- function(ig_username,
-                                           fields = c(
-                                             "username",
-                                             "timestamp",
-                                             "like_count",
-                                             "comments_count",
-                                             "caption",
-                                             "media_product_type",
-                                             "media_type",
-                                             "media_url",
-                                             "thumbnail_url",
-                                             "permalink"
-                                           ),
-                                           max_pages = NULL,
-                                           wait = 0,
-                                           limit = 80,
-                                           update = TRUE,
-                                           cache = TRUE,
-                                           api_version = "v22.0",
-                                           ig_user_id = NULL,
-                                           fb_user_token = NULL) {
+cc_get_instagram_bd_user_media <- function(
+  ig_username,
+  fields = c(
+    "username",
+    "timestamp",
+    "like_count",
+    "comments_count",
+    "caption",
+    "media_product_type",
+    "media_type",
+    "media_url",
+    "thumbnail_url",
+    "permalink"
+  ),
+  max_pages = NULL,
+  wait = 0,
+  limit = 80,
+  update = TRUE,
+  cache = TRUE,
+  api_version = "v23.0",
+  ig_user_id = NULL,
+  fb_user_token = NULL
+) {
   if (is.null(ig_user_id)) {
     ig_user_id <- cc_get_settings(ig_user_id = ig_user_id) |>
       purrr::pluck("ig_user_id")
@@ -103,7 +105,10 @@ cc_get_instagram_bd_user_media <- function(ig_username,
           drv = RSQLite::SQLite(),
           fs::path(
             "cornucopia_db",
-            fs::path_ext_set(stringr::str_c("ig_bd_", current_user_id), ".sqlite") |>
+            fs::path_ext_set(
+              stringr::str_c("ig_bd_", current_user_id),
+              ".sqlite"
+            ) |>
               fs::path_sanitize()
           )
         )
@@ -135,110 +140,161 @@ cc_get_instagram_bd_user_media <- function(ig_username,
           access_token = fb_user_token
         )
 
-      cli::cli_progress_bar(name = cli::cli_text("Retrieving posts for user {.val {current_user}}:"))
+      cli::cli_progress_bar(
+        name = cli::cli_text("Retrieving posts for user {.val {current_user}}:")
+      )
 
-      repeat({
-        cli::cli_progress_update(inc = 25)
+      repeat
+        ({
+          cli::cli_progress_update(inc = 25)
 
-        resp <- api_request |>
-          httr2::req_error(is_error = \(resp) FALSE) |>
-          httr2::req_perform()
+          resp <- api_request |>
+            httr2::req_error(is_error = \(resp) FALSE) |>
+            httr2::req_perform()
 
-        if (is.null(limit) == FALSE) {
-          limits_l <- resp$headers$`x-app-usage` |>
-            jsonlite::parse_json(simplifyVector = TRUE)
-          if (sum(limits_l > limit) >= 1) {
-            over_limits <- limits_l[which.max(unlist(limits_l))]
+          if (is.null(limit) == FALSE) {
+            limits_l <- resp$headers$`x-app-usage` |>
+              jsonlite::parse_json(simplifyVector = TRUE)
+            if (sum(limits_l > limit) >= 1) {
+              over_limits <- limits_l[which.max(unlist(limits_l))]
 
-            cli::cli_alert_warning("Rate limit has reached threshold: {.var {names(over_limits)}} is now at {.val {over_limits}%}")
-            cli::cli_alert_success("Returning the {.val {i}} pages retrieved so far, presumably corresponding to {.val {i*25}} posts.")
-            cli::cli_alert_info("Consider waiting for an hour for limits to reset, and set {.var wait} to 300 before retrying.")
+              cli::cli_alert_warning(
+                "Rate limit has reached threshold: {.var {names(over_limits)}} is now at {.val {over_limits}%}"
+              )
+              cli::cli_alert_success(
+                "Returning the {.val {i}} pages retrieved so far, presumably corresponding to {.val {i*25}} posts."
+              )
+              cli::cli_alert_info(
+                "Consider waiting for an hour for limits to reset, and set {.var wait} to 300 before retrying."
+              )
 
+              break
+            }
+          }
+
+          req <- resp |>
+            httr2::resp_body_json()
+
+          if (is.null(req[["error"]][["message"]]) == FALSE) {
+            cli::cli_alert_danger(req[["error"]][["message"]])
+            cli::cli_alert_success(
+              "Returning the {.val {i}} pages retrieved so far, presumably corresponding to {.val {i*25}} posts."
+            )
+            cli::cli_alert_info(
+              "Consider waiting for an hour for limits to reset, and set {.var wait} to 300 before retrying."
+            )
             break
           }
-        }
 
-        req <- resp |>
-          httr2::resp_body_json()
+          current_set_l <- req |>
+            purrr::pluck("business_discovery", "media", "data")
 
-        if (is.null(req[["error"]][["message"]]) == FALSE) {
-          cli::cli_alert_danger(req[["error"]][["message"]])
-          cli::cli_alert_success("Returning the {.val {i}} pages retrieved so far, presumably corresponding to {.val {i*25}} posts.")
-          cli::cli_alert_info("Consider waiting for an hour for limits to reset, and set {.var wait} to 300 before retrying.")
-          break
-        }
+          current_post_set_details_df <- purrr::map(
+            current_set_l,
+            .f = function(current_set) {
+              current_set |>
+                tibble::as_tibble()
+            }
+          ) |>
+            purrr::list_rbind() |>
+            dplyr::rename(ig_media_id = id) |>
+            dplyr::mutate(
+              timestamp_retrieved = strftime(
+                as.POSIXlt(Sys.time(), "UTC"),
+                "%Y-%m-%dT%H:%M:%S%z"
+              )
+            ) |>
+            dplyr::relocate(ig_media_id)
 
-        current_set_l <- req |>
-          purrr::pluck("business_discovery", "media", "data")
-
-        current_post_set_details_df <- purrr::map(current_set_l,
-          .f = function(current_set) {
-            current_set |>
-              tibble::as_tibble()
+          if (!"thumbnail_url" %in% colnames(current_post_set_details_df)) {
+            current_post_set_details_df <- current_post_set_details_df |>
+              dplyr::mutate(thumbnail_url = NA_character_)
           }
-        ) |>
-          purrr::list_rbind() |>
-          dplyr::rename(ig_media_id = id) |>
-          dplyr::mutate(timestamp_retrieved = strftime(as.POSIXlt(Sys.time(), "UTC"), "%Y-%m-%dT%H:%M:%S%z")) |>
-          dplyr::relocate(ig_media_id)
 
-        if (!"thumbnail_url" %in% colnames(current_post_set_details_df)) {
-          current_post_set_details_df <- current_post_set_details_df |>
-            dplyr::mutate(thumbnail_url = NA_character_)
-        }
+          if (
+            "like_count" %in%
+              fields &
+              !"like_count" %in% colnames(current_post_set_details_df)
+          ) {
+            current_post_set_details_df <- current_post_set_details_df |>
+              dplyr::mutate(like_count = NA_integer_)
+          }
 
-        output_df <- current_post_set_details_df[c("ig_media_id", fields_filter, "timestamp_retrieved")]
+          output_df <- current_post_set_details_df[c(
+            "ig_media_id",
+            fields_filter,
+            "timestamp_retrieved"
+          )]
 
-        out[[i]] <- output_df
+          out[[i]] <- output_df
 
-        if (purrr::pluck_exists(req, "business_discovery", "media", "paging", "cursors", "after") == TRUE) {
-          after_string <- purrr::pluck(req, "business_discovery", "media", "paging", "cursors", "after")
-
-          api_request <- httr2::request(base_url = base_url) |>
-            httr2::req_url_path_append(ig_user_id) |>
-            httr2::req_url_query(
-              fields = stringr::str_c(
-                "business_discovery.username(",
-                current_user,
-                "){media.after(",
-                after_string,
-                "){",
-                stringr::str_flatten(fields, collapse = ","),
-                "}}"
-              ),
-              access_token = fb_user_token
+          if (
+            purrr::pluck_exists(
+              req,
+              "business_discovery",
+              "media",
+              "paging",
+              "cursors",
+              "after"
+            ) ==
+              TRUE
+          ) {
+            after_string <- purrr::pluck(
+              req,
+              "business_discovery",
+              "media",
+              "paging",
+              "cursors",
+              "after"
             )
 
-          readr::write_lines(
-            x = after_string,
-            file = fs::path(
-              "cornucopia_db",
-              fs::path_ext_set(stringr::str_c("bd_user_media_", bd_user_basic_df$id), ".txt") |>
-                fs::path_sanitize()
+            api_request <- httr2::request(base_url = base_url) |>
+              httr2::req_url_path_append(ig_user_id) |>
+              httr2::req_url_query(
+                fields = stringr::str_c(
+                  "business_discovery.username(",
+                  current_user,
+                  "){media.after(",
+                  after_string,
+                  "){",
+                  stringr::str_flatten(fields, collapse = ","),
+                  "}}"
+                ),
+                access_token = fb_user_token
+              )
+
+            readr::write_lines(
+              x = after_string,
+              file = fs::path(
+                "cornucopia_db",
+                fs::path_ext_set(
+                  stringr::str_c("bd_user_media_", bd_user_basic_df$id),
+                  ".txt"
+                ) |>
+                  fs::path_sanitize()
+              )
             )
-          )
-        } else {
-          break
-        }
+          } else {
+            break
+          }
 
-        if (!is.null(max_pages) && i == max_pages) {
-          break
-        }
+          if (!is.null(max_pages) && i == max_pages) {
+            break
+          }
 
-        i <- i + 1L
-        if (i > length(out)) {
-          length(out) <- length(out) * 2L
-        }
+          i <- i + 1L
+          if (i > length(out)) {
+            length(out) <- length(out) * 2L
+          }
 
-        Sys.sleep(time = wait)
-      })
+          Sys.sleep(time = wait)
+        })
 
       out |>
         purrr::list_rbind()
     }
   ) |>
     purrr::list_rbind()
-
 
   # if (purrr::pluck_exists(out[[max(c(i - 1, 1))]], "business_discovery", "media", "paging", "cursors", "after") == TRUE) {
   #   current_set_l <- out[[max(c(i - 1, 1))]] |>
