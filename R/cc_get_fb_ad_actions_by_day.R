@@ -4,7 +4,7 @@
 #'
 #' Draft: caching disabled by default as only partly functional;
 #' Not yet fully tested with ads running longer than 25 days
-#' 
+#'
 #' @param only_cached Defaults to FALSE. If TRUE, only data cached locally will
 #'   be retrieved.
 #'
@@ -13,15 +13,17 @@
 #' @export
 #'
 #' @examples
-cc_get_fb_ad_actions_by_day <- function(ad_id = NULL,
-                                        type = "actions",
-                                        action_breakdowns = NULL,
-                                        cache = FALSE,
-                                        only_cached = FALSE,
-                                        api_version = "v22.0",
-                                        ad_account_id = NULL,
-                                        fb_user_token = NULL,
-                                        max_pages = NULL) {
+cc_get_fb_ad_actions_by_day <- function(
+  ad_id = NULL,
+  type = "actions",
+  action_breakdowns = NULL,
+  cache = FALSE,
+  only_cached = FALSE,
+  api_version = "v23.0",
+  ad_account_id = NULL,
+  fb_user_token = NULL,
+  max_pages = NULL
+) {
   if (!(type %in% c("actions", "action_values", "cost_per_action_type"))) {
     cli::cli_abort("Invalid type. Check documentation.")
   }
