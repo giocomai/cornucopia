@@ -1,6 +1,7 @@
 #' Get Facebook page insights
 #'
-#' Official documentation: \url{https://developers.facebook.com/docs/graph-api/reference/v22.0/insights}
+#' Official documentation: \url{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights}
+#' For avaialable metrics, see: \url{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#availmetrics}
 #'
 #' @param metric
 #' @param fb_page_id
@@ -10,15 +11,17 @@
 #' @export
 #'
 #' @examples
-cc_get_fb_page_insights <- function(metric = c(
-                                      "page_impressions"
-                                    ),
-                                    start_date = NULL,
-                                    end_date = NULL,
-                                    api_version = "v22.0",
-                                    cache = TRUE,
-                                    fb_page_id = NULL,
-                                    fb_page_token = NULL) {
+cc_get_fb_page_insights <- function(
+  metric = c(
+    "page_impressions"
+  ),
+  start_date = NULL,
+  end_date = NULL,
+  api_version = "v24.0",
+  cache = TRUE,
+  fb_page_id = NULL,
+  fb_page_token = NULL
+) {
   if (is.null(fb_page_token)) {
     fb_page_token <- cc_get_settings(fb_page_token = fb_page_token) |>
       purrr::pluck("fb_page_token")
@@ -27,7 +30,9 @@ cc_get_fb_page_insights <- function(metric = c(
   }
 
   if (fb_page_token == "") {
-    cli::cli_abort("{.var fb_page_token} must be given or set with {.fun cc_set}.")
+    cli::cli_abort(
+      "{.var fb_page_token} must be given or set with {.fun cc_set}."
+    )
   }
 
   if (is.null(fb_page_id)) {
@@ -61,7 +66,9 @@ cc_get_fb_page_insights <- function(metric = c(
 
   if (cache == TRUE) {
     if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
-      cli::cli_abort("Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE.")
+      cli::cli_abort(
+        "Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE."
+      )
     }
     fs::dir_create("cornucopia_db")
 
@@ -76,7 +83,7 @@ cc_get_fb_page_insights <- function(metric = c(
 
     current_table <- "fb_page_insights"
 
-    if (DBI::dbExistsTable(conn = db, name = current_table) == FALSE) {
+    if (!DBI::dbExistsTable(conn = db, name = current_table)) {
       DBI::dbWriteTable(
         conn = db,
         name = current_table,
@@ -98,12 +105,16 @@ cc_get_fb_page_insights <- function(metric = c(
       tibble::as_tibble()
 
     if (nrow(previous_fb_page_insights_df) > 0) {
-      dates_to_process_v <- all_dates_v[!(all_dates_v %in% previous_fb_page_insights_df[["date"]])]
+      dates_to_process_v <- all_dates_v[
+        !(all_dates_v %in% previous_fb_page_insights_df[["date"]])
+      ]
 
       if (length(dates_to_process_v) == 0) {
         DBI::dbDisconnect(db)
-        return(previous_fb_page_insights_df |>
-          dplyr::arrange(date, metric))
+        return(
+          previous_fb_page_insights_df |>
+            dplyr::arrange(date, metric)
+        )
       }
     }
   }
@@ -120,7 +131,10 @@ cc_get_fb_page_insights <- function(metric = c(
       api_request <- httr2::request(base_url = base_url) |>
         httr2::req_url_path_append(fb_page_id) |>
         httr2::req_url_path_append("insights") |>
-        httr2::req_url_path_append(stringr::str_flatten(string = metric, collapse = ",")) |>
+        httr2::req_url_path_append(stringr::str_flatten(
+          string = metric,
+          collapse = ","
+        )) |>
         httr2::req_url_path_append("day") |>
         httr2::req_url_query(
           access_token = fb_page_token,
@@ -139,7 +153,9 @@ cc_get_fb_page_insights <- function(metric = c(
       }
 
       if (length(page_insight_l[["data"]]) == 0) {
-        cli::cli_alert_warning("No data available for this metric. Make sure that the metric is available for page insights (e.g. not a metric that is specific to *page posts*, rather than the page as a whole.)")
+        cli::cli_alert_warning(
+          "No data available for this metric. Make sure that the metric is available for page insights (e.g. not a metric that is specific to *page posts*, rather than the page as a whole.)"
+        )
         return(NULL)
       }
 
@@ -190,7 +206,6 @@ cc_get_fb_page_insights <- function(metric = c(
       ) |>
         purrr::list_rbind()
 
-
       if (cache == TRUE) {
         DBI::dbAppendTable(
           conn = db,
@@ -203,7 +218,6 @@ cc_get_fb_page_insights <- function(metric = c(
     }
   ) |>
     purrr::list_rbind()
-
 
   if (cache == TRUE) {
     output_df <- dplyr::bind_rows(

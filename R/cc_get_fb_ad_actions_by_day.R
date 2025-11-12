@@ -49,10 +49,11 @@ cc_get_fb_ad_actions_by_day <- function(
     fb_ad_account_id <- as.character(ad_account_id)
   }
 
-
   if (cache == TRUE) {
     if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
-      cli::cli_abort("Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE.")
+      cli::cli_abort(
+        "Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE."
+      )
     }
     fs::dir_create("cornucopia_db")
 
@@ -60,7 +61,10 @@ cc_get_fb_ad_actions_by_day <- function(
       drv = RSQLite::SQLite(),
       fs::path(
         "cornucopia_db",
-        fs::path_ext_set(stringr::str_c("fb_ad_", fb_ad_account_id), ".sqlite") |>
+        fs::path_ext_set(
+          stringr::str_c("fb_ad_", fb_ad_account_id),
+          ".sqlite"
+        ) |>
           fs::path_sanitize()
       )
     )
@@ -90,7 +94,9 @@ cc_get_fb_ad_actions_by_day <- function(
     previous_fb_ad_details_df |>
       dplyr::distinct(ad_id, date)
 
-    ad_id_to_process_v <- ad_id[!(ad_id %in% unique(previous_fb_ad_details_df$ad_id))]
+    ad_id_to_process_v <- ad_id[
+      !(ad_id %in% unique(previous_fb_ad_details_df$ad_id))
+    ]
   } else {
     ad_id_to_process_v <- ad_id
   }
@@ -124,71 +130,76 @@ cc_get_fb_ad_actions_by_day <- function(
           time_increment = 1
         )
 
-      repeat({
-        # cli::cli_progress_update(inc = 25)
+      repeat {
+        ({
+          # cli::cli_progress_update(inc = 25)
 
-        out[[i]] <- httr2::req_perform(api_request) |>
-          httr2::resp_body_json()
+          out[[i]] <- httr2::req_perform(api_request) |>
+            httr2::resp_body_json()
 
-        if (!is.null(max_pages) && i == max_pages) {
-          break
-        }
-
-        req <- httr2::req_perform(req = api_request)
-
-        response_l <- httr2::resp_body_json(req) |>
-          purrr::pluck("data")
-
-
-        new_fb_ad_details_pre_df <- purrr::map(
-          .x = response_l,
-          .f = function(response_for_current_date) {
-            purrr::map(.x = response_for_current_date[[type]], .f = function(x) {
-              x |> tibble::as_tibble()
-            }) |>
-              purrr::list_rbind() |>
-              dplyr::mutate(date = response_for_current_date[["date_start"]]) |>
-              dplyr::relocate(date)
+          if (!is.null(max_pages) && i == max_pages) {
+            break
           }
-        ) |>
-          purrr::list_rbind() |>
-          dplyr::mutate(ad_id = current_ad_id) |>
-          dplyr::relocate(ad_id)
 
+          req <- httr2::req_perform(req = api_request)
 
-        if (ncol(new_fb_ad_details_pre_df) < 4) {
-          new_fb_ad_details_df <- cc_empty_fb_ad_actions
-        } else {
-          new_fb_ad_details_df <- new_fb_ad_details_pre_df |>
-            dplyr::mutate(value = as.numeric(value))
-        }
+          response_l <- httr2::resp_body_json(req) |>
+            purrr::pluck("data")
 
-        ad_details_l[[i]] <- new_fb_ad_details_df
+          new_fb_ad_details_pre_df <- purrr::map(
+            .x = response_l,
+            .f = function(response_for_current_date) {
+              purrr::map(
+                .x = response_for_current_date[[type]],
+                .f = function(x) {
+                  x |> tibble::as_tibble()
+                }
+              ) |>
+                purrr::list_rbind() |>
+                dplyr::mutate(
+                  date = response_for_current_date[["date_start"]]
+                ) |>
+                dplyr::relocate(date)
+            }
+          ) |>
+            purrr::list_rbind() |>
+            dplyr::mutate(ad_id = current_ad_id) |>
+            dplyr::relocate(ad_id)
 
-        if (nrow(new_fb_ad_details_df) == 0) {
-          # do nothing
-        } else {
-          if (cache == TRUE) {
-            DBI::dbAppendTable(
-              conn = db,
-              name = current_table,
-              value = new_fb_ad_details_df
-            )
+          if (ncol(new_fb_ad_details_pre_df) < 4) {
+            new_fb_ad_details_df <- cc_empty_fb_ad_actions
+          } else {
+            new_fb_ad_details_df <- new_fb_ad_details_pre_df |>
+              dplyr::mutate(value = as.numeric(value))
           }
-        }
 
-        if (purrr::pluck_exists(out[[i]], "paging", "next") == TRUE) {
-          api_request <- purrr::pluck(out[[i]], "paging", "next") |>
-            httr2::request()
-        } else {
-          break
-        }
+          ad_details_l[[i]] <- new_fb_ad_details_df
 
-        i <- i + 1L
-        if (i > length(out)) {
-          length(out) <- length(out) * 2L
-        }
-      })
+          if (nrow(new_fb_ad_details_df) == 0) {
+            # do nothing
+          } else {
+            if (cache == TRUE) {
+              DBI::dbAppendTable(
+                conn = db,
+                name = current_table,
+                value = new_fb_ad_details_df
+              )
+            }
+          }
+
+          if (purrr::pluck_exists(out[[i]], "paging", "next") == TRUE) {
+            api_request <- purrr::pluck(out[[i]], "paging", "next") |>
+              httr2::request()
+          } else {
+            break
+          }
+
+          i <- i + 1L
+          if (i > length(out)) {
+            length(out) <- length(out) * 2L
+          }
+        })
+      }
 
       # cli::cli_process_done()
 
@@ -200,7 +211,6 @@ cc_get_fb_ad_actions_by_day <- function(
     }
   ) |>
     purrr::list_rbind()
-
 
   if (cache == TRUE) {
     output_df <- dplyr::bind_rows(

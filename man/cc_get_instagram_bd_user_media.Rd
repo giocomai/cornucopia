@@ -25,7 +25,8 @@ cc_get_instagram_bd_user_media(
 `business_discovery`. See [the documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media)
 for other fields that may be available.}
 
-\item{max_pages}{Posts are returned in pages of 25 posts each. How many pages should be retrieved? By default, this will try to retrieve all posts.}
+\item{max_pages}{Posts are returned in pages of 25 posts each. How many pages
+should be retrieved? By default, this will try to retrieve all posts.}
 
 \item{wait}{Defaults to zero. Time in seconds before each request to the API.
 If you make a very small number of queries, you can leave it to zero. If

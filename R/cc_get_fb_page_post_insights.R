@@ -17,13 +17,15 @@
 #' @export
 #'
 #' @examples
-cc_get_fb_page_post_insights <- function(fb_post_id = NULL,
-                                         metrics = cc_valid_fields_fb_post_insights,
-                                         cache = TRUE,
-                                         update = TRUE,
-                                         api_version = "v22.0",
-                                         fb_page_id = NULL,
-                                         fb_page_token = NULL) {
+cc_get_fb_page_post_insights <- function(
+  fb_post_id = NULL,
+  metrics = cc_valid_fields_fb_post_insights,
+  cache = TRUE,
+  update = TRUE,
+  api_version = "v24.0",
+  fb_page_id = NULL,
+  fb_page_token = NULL
+) {
   if (is.null(fb_page_token)) {
     fb_page_token <- cc_get_settings(fb_page_token = fb_page_token) |>
       purrr::pluck("fb_page_token")
@@ -69,7 +71,6 @@ cc_get_fb_page_post_insights <- function(fb_post_id = NULL,
 }
 
 
-
 #' Get information about a single media directly from the API. Mostly used
 #' internally.
 #'
@@ -90,13 +91,15 @@ cc_get_fb_page_post_insights <- function(fb_post_id = NULL,
 #' @export
 #'
 #' @examples
-cc_api_get_fb_page_post_insights <- function(fb_post_id,
-                                             metrics = cc_valid_fields_fb_post_insights,
-                                             cache = TRUE,
-                                             update = TRUE,
-                                             api_version = "v22.0",
-                                             fb_page_id = NULL,
-                                             fb_page_token = NULL) {
+cc_api_get_fb_page_post_insights <- function(
+  fb_post_id,
+  metrics = cc_valid_fields_fb_post_insights,
+  cache = TRUE,
+  update = TRUE,
+  api_version = "v22.0",
+  fb_page_id = NULL,
+  fb_page_token = NULL
+) {
   if (is.null(fb_page_token)) {
     fb_page_token <- cc_get_settings(fb_page_token = fb_page_token) |>
       purrr::pluck("fb_page_token")
@@ -110,7 +113,6 @@ cc_api_get_fb_page_post_insights <- function(fb_post_id,
   } else {
     fb_page_id <- as.character(fb_page_id)
   }
-
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
@@ -153,7 +155,12 @@ cc_api_get_fb_page_post_insights <- function(fb_post_id,
     purrr::list_rbind() |>
     dplyr::mutate(fb_post_id = fb_post_id) |>
     dplyr::relocate(fb_post_id) |>
-    dplyr::mutate(timestamp_retrieved = strftime(as.POSIXlt(Sys.time(), "UTC"), "%Y-%m-%dT%H:%M:%S%z"))
+    dplyr::mutate(
+      timestamp_retrieved = strftime(
+        as.POSIXlt(Sys.time(), "UTC"),
+        "%Y-%m-%dT%H:%M:%S%z"
+      )
+    )
 
   output_df
 }

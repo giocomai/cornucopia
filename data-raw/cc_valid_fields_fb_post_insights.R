@@ -26,8 +26,10 @@ cc_valid_fields_fb_post_insights <- c(
   "post_reactions_haha_total",
   "post_reactions_sorry_total",
   "post_reactions_anger_total",
+  "post_reactions_by_type_total",
   "post_negative_feedback",
   "post_negative_feedback_unique",
+  "post_media_view",
 
   ## Video
 

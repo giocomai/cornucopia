@@ -9,13 +9,18 @@
 #' @return
 #'
 #' @examples
-cc_get_fb_ad_custom <- function(start_date = NULL,
-                                end_date = NULL,
-                                only_cached = FALSE,
-                                api_version = "v22.0",
-                                cache = TRUE,
-                                ad_account_id = NULL,
-                                fb_user_token = NULL) {
+cc_get_fb_ad_custom <- function(
+  fields = "reach",
+  breakdowns = "frequency_value",
+  ad_id = NULL,
+  start_date = NULL,
+  end_date = NULL,
+  only_cached = FALSE,
+  api_version = "v24.0",
+  cache = TRUE,
+  ad_account_id = NULL,
+  fb_user_token = NULL
+) {
   dates_l <- cc_get_settings(
     start_date = start_date,
     end_date = end_date
@@ -24,9 +29,7 @@ cc_get_fb_ad_custom <- function(start_date = NULL,
   start_date <- dates_l$start_date
   end_date <- dates_l$end_date
 
-  dates <- as.Date(start_date:end_date,
-    origin = as.Date("1970-01-01")
-  )
+  dates <- as.Date(start_date:end_date, origin = as.Date("1970-01-01"))
 
   names(dates) <- dates
 
@@ -46,13 +49,10 @@ cc_get_fb_ad_custom <- function(start_date = NULL,
 
   cc_date_to_json(start_date = dates)
 
-
-
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
     api_version
   )
-
 
   api_request <- httr2::request(base_url = base_url) |>
     httr2::req_url_path_append(current_ad_id) |>
@@ -70,12 +70,13 @@ cc_get_fb_ad_custom <- function(start_date = NULL,
     )
 
   api_request <- httr2::request(base_url = base_url) |>
+    # httr2::req_url_path_append(stringr::str_c("act_", fb_ad_account_id)) |>
+    # httr2::req_url_path_append("ads") |>
     httr2::req_url_path_append(current_ad_id) |>
     httr2::req_url_path_append("insights") |>
     httr2::req_url_query(
-      fields = "impressions,spend,clicks",
-      # fields = "actions",
-      breakdowns = "product_id",
+      fields = fields,
+      breakdowns = breakdowns,
       # time_increment = 1,
       access_token = fb_user_token,
       date_preset = "maximum",
@@ -96,6 +97,32 @@ cc_get_fb_ad_custom <- function(start_date = NULL,
       #  summary = "true"
     )
 
+  api_request <- httr2::request(base_url = base_url) |>
+    httr2::req_url_path_append(current_ad_id) |>
+    httr2::req_url_path_append("insights") |>
+    httr2::req_url_query(
+      fields = fields,
+      breakdowns = breakdowns,
+      # time_increment = 1,
+      access_token = fb_user_token,
+      #date_preset = "maximum",
+      #  summary = "true"
+    )
+
+  api_request <- httr2::request(base_url = base_url) |>
+    httr2::req_url_path_append(current_ad_id) |>
+    httr2::req_url_path_append("insights") |>
+    httr2::req_url_query(
+      fields = "impressions",
+      # breakdowns = "hourly_stats_aggregated_by_audience_time_zone",
+      # time_increment = 1,
+      access_token = fb_user_token,
+      #date_preset = "maximum",
+      # summary = "true"
+      date_preset = "last_7d"
+    )
+
+  httr2::req_dry_run(req = api_request)
   req <- httr2::req_perform(req = api_request)
 
   response_l <- httr2::resp_body_json(req)

@@ -8,7 +8,7 @@ cc_get_fb_page_insights(
   metric = c("page_impressions"),
   start_date = NULL,
   end_date = NULL,
-  api_version = "v22.0",
+  api_version = "v24.0",
   cache = TRUE,
   fb_page_id = NULL,
   fb_page_token = NULL
@@ -18,5 +18,6 @@ cc_get_fb_page_insights(
 \item{fb_page_token}{}
 }
 \description{
-Official documentation: \url{https://developers.facebook.com/docs/graph-api/reference/v22.0/insights}
+Official documentation: \url{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights}
+For avaialable metrics, see: \url{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#availmetrics}
 }
