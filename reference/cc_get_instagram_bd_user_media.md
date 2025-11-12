@@ -1,0 +1,80 @@
+# Retrieve information about other users through \`business_discovery\`
+
+Consider that only information about posts of creative or business users
+may be available. Given restrictions on the rate limit, you are likely
+to hit rate limits quite soon. Wait one hour and try again.
+
+## Usage
+
+``` r
+cc_get_instagram_bd_user_media(
+  ig_username,
+  fields = c("username", "timestamp", "like_count", "comments_count", "caption",
+    "media_product_type", "media_type", "media_url", "thumbnail_url", "permalink"),
+  max_pages = NULL,
+  wait = 0,
+  limit = 80,
+  update = TRUE,
+  cache = TRUE,
+  api_version = "v23.0",
+  ig_user_id = NULL,
+  fb_user_token = NULL
+)
+```
+
+## Arguments
+
+- ig_username:
+
+  A user name of an Instagram user.
+
+- fields:
+
+  Defaults to all fields publicly available through
+  \`business_discovery\`. See \[the
+  documentation\](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media)
+  for other fields that may be available.
+
+- max_pages:
+
+  Posts are returned in pages of 25 posts each. How many pages should be
+  retrieved? By default, this will try to retrieve all posts.
+
+- wait:
+
+  Defaults to zero. Time in seconds before each request to the API. If
+  you make a very small number of queries, you can leave it to zero. If
+  you make a even just a few dozens query, you'll hit API limits unless
+  you set a wait time. Setting this to 300 (5 minutes) should slow
+  things down just enough (but yes, this means you'll get 25 posts every
+  five minutes, no more and no less).
+
+- limit:
+
+  Defaults to 80, meaning 80 three values determining rate limiting
+  reaches at least 80 returns what it has collected so far. Set to NULL
+  to ignore. For details, see \[the official
+  documentation\](https://developers.facebook.com/docs/graph-api/overview/rate-limiting/).
+
+- cache:
+
+  Defaults to TRUE.
+
+## Details
+
+For details about rate limits, see \[this section of the
+documentation\](https://developers.facebook.com/docs/graph-api/overview/rate-limiting).
+
+\[More details about Business Discovery and relevant
+permissions\](https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/business_discovery/).
+
+In brief, necessary:
+
+\- \`instagram_basic\` - \`instagram_manage_insights\` -
+\`pages_read_engagement\` or \`pages_show_list\`
+
+If the token is from a User whose Page role was granted via the Business
+Manager, one of the following permissions is also required:
+
+\- \`ads_management\` - \`pages_read_engagement\` -
+\`business_management\`

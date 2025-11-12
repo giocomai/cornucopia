@@ -1,0 +1,86 @@
+# Retrieve leads from lead ads
+
+Currently does not cache results.
+
+## Usage
+
+``` r
+cc_get_fb_leads(
+  form_id,
+  fields = c("created_time", "id", "campaign_id", "campaign_name", "adset_id",
+    "adset_name", "ad_id", "ad_name", "form_id", "is_organic", "platform", "field_data"),
+  fb_page_token = NULL,
+  fb_user_token = NULL,
+  max_pages = NULL,
+  api_version = "v22.0"
+)
+```
+
+## Arguments
+
+- form_id:
+
+  Identifier of the lead gen form, presumably an id of about 17 digits.
+
+- fields:
+
+  Defaults to \`c("created_time", "id", "ad_id", "form_id",
+  "field_data")\`-
+
+- fb_page_token:
+
+  Takes precedence over \`fb_user_token\`. See documentation for
+  required permissions.
+
+- fb_user_token:
+
+  Used as a fallback option if \`fb_page_token\` not given. See
+  documentation for required permissions.
+
+- max_pages:
+
+  Maximum number of pages to retrieve (15 responses are included in each
+  page). Defaults to 1000 pages internally.
+
+- api_version:
+
+  Defaults to "v21.0".
+
+## Value
+
+A data frame
+
+## Details
+
+Details about the API:
+https://developers.facebook.com/docs/marketing-api/guides/lead-ads/retrieving
+
+For the exact meaning of fields, see:
+https://www.facebook.com/business/help/974763215942961?id=735435806665862
+
+Either a page or user token can be given. If both are given, page token
+is used.
+
+In either case, be mindful of permission requirements:
+
+To read ad specific fields, such as ad_id, campaign_id, you will need:
+
+\- A Page or User access token requested by a person who can advertise
+on the ad account and on the Page - The ads_management permission - The
+pages_read_engagement permission - The pages_show_list permission - The
+pages_manage_metadata permission - if using webhooks
+
+To read all lead data and ad level data, you will need:
+
+\- A Page or User access token requested by a person who can advertise
+on the ad account and on the Page - The ads_management permission - The
+leads_retrieval permission - The pages_show_list permission - The
+pages_read_engagement permission - The pages_manage_ads permission
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+cc_get_fb_leads(form_id = "12345678912345678")
+} # }
+```

@@ -1,0 +1,88 @@
+# Run the Shiny Application
+
+Run the Shiny Application
+
+## Usage
+
+``` r
+cc_explorer(
+  start_date = cc_get_settings()[["start_date"]],
+  end_date = cc_get_settings()[["end_date"]],
+  fb_user_token = cc_get_settings()[["fb_user_token"]],
+  fb_page_token = cc_get_settings()[["fb_page_token"]],
+  fb_page_id = cc_get_settings()[["fb_page_id"]],
+  fb_business_id = cc_get_settings()[["fb_business_id"]],
+  fb_ad_account_id = cc_get_settings()[["fb_ad_account_id"]],
+  fb_product_catalog_id = cc_get_settings()[["fb_product_catalog_id"]],
+  fb_user_id = cc_get_settings()[["fb_user_id"]],
+  ig_user_id = cc_get_settings()[["ig_user_id"]],
+  ig_user_df = NULL,
+  custom_head_html = "<meta name=\"referrer\" content=\"no-referrer\" />",
+  onStart = NULL,
+  options = list(),
+  enableBookmarking = NULL,
+  uiPattern = "/",
+  ...
+)
+```
+
+## Arguments
+
+- start_date:
+
+  Defaults to 91 days before today
+
+- end_date:
+
+  Defaults to yesterday.
+
+- fb_user_token:
+
+  Facebook user token (not a page token).
+
+- fb_business_id:
+
+  Facebook business id. For details on how to find it, see
+  <https://www.facebook.com/business/help/1181250022022158>
+
+- custom_head_html:
+
+  Chunk of code to be included in the app's \`\<head\>\`. This can be
+  used, e.g., for custom analytics snippets. The default value, \`\<meta
+  name="referrer" content="no-referrer" /\>\` asks the browser not to
+  include the source website when following links to external websites.
+
+- onStart:
+
+  A function that will be called before the app is actually run. This is
+  only needed for `shinyAppObj`, since in the `shinyAppDir` case, a
+  `global.R` file can be used for this purpose.
+
+- options:
+
+  Named options that should be passed to the `runApp` call (these can be
+  any of the following: "port", "launch.browser", "host", "quiet",
+  "display.mode" and "test.mode"). You can also specify `width` and
+  `height` parameters which provide a hint to the embedding environment
+  about the ideal height/width for the app.
+
+- enableBookmarking:
+
+  Can be one of `"url"`, `"server"`, or `"disable"`. The default value,
+  `NULL`, will respect the setting from any previous calls to
+  [`enableBookmarking()`](https://rdrr.io/pkg/shiny/man/enableBookmarking.html).
+  See
+  [`enableBookmarking()`](https://rdrr.io/pkg/shiny/man/enableBookmarking.html)
+  for more information on bookmarking your app.
+
+- uiPattern:
+
+  A regular expression that will be applied to each `GET` request to
+  determine whether the `ui` should be used to handle the request. Note
+  that the entire request path must match the regular expression in
+  order for the match to be considered successful.
+
+- ...:
+
+  arguments to pass to golem_opts. See \`?golem::get_golem_options\` for
+  more details.
