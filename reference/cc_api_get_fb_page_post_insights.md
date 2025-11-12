@@ -8,10 +8,11 @@ See the official documentation for reference:
 ``` r
 cc_api_get_fb_page_post_insights(
   fb_post_id,
-  metrics = cc_valid_fields_fb_post_insights,
+  metric = cc_valid_fields_fb_post_insights,
+  period = "lifetime",
   cache = TRUE,
   update = TRUE,
-  api_version = "v22.0",
+  api_version = "v24.0",
   fb_page_id = NULL,
   fb_page_token = NULL
 )
@@ -25,7 +26,7 @@ cc_api_get_fb_page_post_insights(
   identifiers for your account can be retrieved with
   \`cc_get_fb_page_posts()\`.
 
-- metrics:
+- metric:
 
   Metrics to be retrieved. Consider that depending on the media type,
   different media types are effectively available. Requesting the wrong
