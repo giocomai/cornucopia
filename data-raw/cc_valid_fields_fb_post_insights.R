@@ -1,25 +1,19 @@
 ## code to prepare `cc_valid_fields_fb_post_insights` dataset goes here
 cc_valid_fields_fb_post_insights <- c(
-  "post_engaged_users",
-  "post_engaged_fan",
   "post_clicks",
-  "post_clicks_unique",
+  "post_clicks_by_type",
   "post_impressions",
   "post_impressions_unique",
   "post_impressions_paid",
   "post_impressions_paid_unique",
   "post_impressions_fan",
   "post_impressions_fan_unique",
-  "post_impressions_fan_paid",
-  "post_impressions_fan_paid_unique",
   "post_impressions_organic",
   "post_impressions_organic_unique",
   "post_impressions_viral",
   "post_impressions_viral_unique",
   "post_impressions_nonviral",
   "post_impressions_nonviral_unique",
-  "post_impressions_by_story_type",
-  "post_impressions_by_story_type_unique",
   "post_reactions_like_total",
   "post_reactions_love_total",
   "post_reactions_wow_total",
@@ -27,12 +21,12 @@ cc_valid_fields_fb_post_insights <- c(
   "post_reactions_sorry_total",
   "post_reactions_anger_total",
   "post_reactions_by_type_total",
-  "post_negative_feedback",
-  "post_negative_feedback_unique",
-  "post_media_view",
+  "post_media_view"
+)
 
-  ## Video
 
+## Video
+video <- c(
   "post_video_avg_time_watched",
   "post_video_complete_views_organic",
   "post_video_complete_views_organic_unique",

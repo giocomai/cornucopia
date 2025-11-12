@@ -1,6 +1,6 @@
 Package: cornucopia
 Title: A cornucopia is like a funnel that keeps on giving
-Version: 0.0.0.9023
+Version: 0.0.0.9024
 Authors@R: 
     person("Giorgio", "Comai", , "g@giorgiocomai.eu",
     role = c("aut", "cre", "cph"),
