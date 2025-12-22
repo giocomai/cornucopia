@@ -7,11 +7,13 @@
 #' @export
 #'
 #' @examples
-cc_get_fb_ad_creatives_id <- function(ad_id = NULL,
-                                      ad_account_id = NULL,
-                                      api_version = "v22.0",
-                                      cache = TRUE,
-                                      fb_user_token = NULL) {
+cc_get_fb_ad_creatives_id <- function(
+  ad_id = NULL,
+  ad_account_id = NULL,
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
+  cache = TRUE,
+  fb_user_token = NULL
+) {
   if (is.null(fb_user_token)) {
     fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
@@ -26,10 +28,11 @@ cc_get_fb_ad_creatives_id <- function(ad_id = NULL,
     fb_ad_account_id <- as.character(ad_account_id)
   }
 
-
   if (cache == TRUE) {
     if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
-      cli::cli_abort("Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE.")
+      cli::cli_abort(
+        "Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE."
+      )
     }
     fs::dir_create("cornucopia_db")
 
@@ -37,7 +40,10 @@ cc_get_fb_ad_creatives_id <- function(ad_id = NULL,
       drv = RSQLite::SQLite(),
       fs::path(
         "cornucopia_db",
-        fs::path_ext_set(stringr::str_c("fb_ad_", fb_ad_account_id), ".sqlite") |>
+        fs::path_ext_set(
+          stringr::str_c("fb_ad_", fb_ad_account_id),
+          ".sqlite"
+        ) |>
           fs::path_sanitize()
       )
     )
@@ -77,12 +83,10 @@ cc_get_fb_ad_creatives_id <- function(ad_id = NULL,
 
   ad_id_to_process_v <- ad_id[!(ad_id %in% previous_ad_id_v)]
 
-
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
-
 
   ad_creatives_df <- purrr::map(
     .x = ad_id_to_process_v,
@@ -102,13 +106,20 @@ cc_get_fb_ad_creatives_id <- function(ad_id = NULL,
       current_ad_creatives_df <- purrr::map(
         .x = ad_creative_l[["data"]],
         .f = function(current_ad_creative) {
-          tibble::tibble(creative_id = current_ad_creative |> purrr::pluck("id"))
+          tibble::tibble(
+            creative_id = current_ad_creative |> purrr::pluck("id")
+          )
         }
       ) |>
         purrr::list_rbind() |>
         dplyr::mutate(ad_id = current_ad_id) |>
         dplyr::relocate(ad_id) |>
-        dplyr::mutate(timestamp_retrieved = strftime(as.POSIXlt(Sys.time(), "UTC"), "%Y-%m-%dT%H:%M:%S%z"))
+        dplyr::mutate(
+          timestamp_retrieved = strftime(
+            as.POSIXlt(Sys.time(), "UTC"),
+            "%Y-%m-%dT%H:%M:%S%z"
+          )
+        )
 
       if (cache == TRUE) {
         DBI::dbAppendTable(
@@ -122,7 +133,6 @@ cc_get_fb_ad_creatives_id <- function(ad_id = NULL,
     }
   ) |>
     purrr::list_rbind()
-
 
   if (cache == TRUE) {
     output_df <- dplyr::bind_rows(

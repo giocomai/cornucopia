@@ -7,7 +7,7 @@
 cc_get_instagram_bd_user_basic(
   ig_username,
   cache = TRUE,
-  api_version = "v22.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   ig_user_id = NULL,
   fb_user_token = NULL
 )

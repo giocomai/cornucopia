@@ -17,7 +17,7 @@ cc_get_fb_page_post_insights <- function(
   period = "lifetime",
   cache = TRUE,
   update = TRUE,
-  api_version = "v24.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   fb_page_id = NULL,
   fb_page_token = NULL
 ) {
@@ -37,7 +37,7 @@ cc_get_fb_page_post_insights <- function(
 
   if (is.null(fb_post_id)) {
     cc_get_fb_page_posts(
-      api_version = api_version,
+      meta_api_version = meta_api_version,
       max_pages = NULL,
       fields = names(cc_empty_fb_page_post_df),
       cache = cache,
@@ -57,7 +57,7 @@ cc_get_fb_page_post_insights <- function(
         period = period,
         cache = cache,
         update = update,
-        api_version = api_version,
+        meta_api_version = meta_api_version,
         fb_page_id = fb_page_id,
         fb_page_token = fb_page_token
       )
@@ -93,7 +93,7 @@ cc_api_get_fb_page_post_insights <- function(
   period = "lifetime",
   cache = TRUE,
   update = TRUE,
-  api_version = "v24.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   fb_page_id = NULL,
   fb_page_token = NULL
 ) {
@@ -113,7 +113,7 @@ cc_api_get_fb_page_post_insights <- function(
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   metrics_v <- stringr::str_c(metric, collapse = ",")

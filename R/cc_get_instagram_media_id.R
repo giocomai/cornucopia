@@ -7,15 +7,17 @@
 #' @export
 #'
 #' @examples
-cc_get_instagram_media_id <- function(ig_user_id = NULL,
-                                      api_version = "v22.0",
-                                      fb_user_token = NULL,
-                                      max_pages = NULL,
-                                      cache = TRUE) {
+cc_get_instagram_media_id <- function(
+  ig_user_id = NULL,
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
+  fb_user_token = NULL,
+  max_pages = NULL,
+  cache = TRUE
+) {
   if (is.null(max_pages)) {
     media_count <- cc_get_instagram_user(
       ig_user_id = ig_user_id,
-      api_version = api_version,
+      meta_api_version = meta_api_version,
       fields = "media_count"
     ) |>
       purrr::pluck("media_count")
@@ -36,11 +38,11 @@ cc_get_instagram_media_id <- function(ig_user_id = NULL,
     fb_user_token <- as.character(fb_user_token)
   }
 
-
-
   if (cache == TRUE) {
     if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
-      cli::cli_abort("Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE.")
+      cli::cli_abort(
+        "Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE."
+      )
     }
     fs::dir_create("cornucopia_db")
 
@@ -72,14 +74,13 @@ cc_get_instagram_media_id <- function(ig_user_id = NULL,
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   api_request <- httr2::request(base_url = base_url) |>
     httr2::req_url_path_append(ig_user_id) |>
     httr2::req_url_path_append("media") |>
     httr2::req_url_query(access_token = fb_user_token)
-
 
   # https://github.com/r-lib/httr2/issues/8#issuecomment-866221516
 
@@ -88,49 +89,53 @@ cc_get_instagram_media_id <- function(ig_user_id = NULL,
   i <- 1L
   cli::cli_progress_bar(name = "Retrieving Instagram media:")
 
-  repeat({
-    cli::cli_progress_update(inc = 25)
+  repeat {
+    ({
+      cli::cli_progress_update(inc = 25)
 
-    out[[i]] <- httr2::req_perform(api_request) |>
-      httr2::resp_body_json()
+      out[[i]] <- httr2::req_perform(api_request) |>
+        httr2::resp_body_json()
 
-    if (!is.null(max_pages) && i == max_pages) {
-      break
-    }
-
-    new_id_v <- purrr::map_chr(
-      .x = purrr::pluck(out[[i]], "data"),
-      .f = function(y) {
-        purrr::pluck(y, "id")
+      if (!is.null(max_pages) && i == max_pages) {
+        break
       }
-    )
 
-    really_new_id_v <- new_id_v[!is.element(new_id_v, previous_ig_media_id_df[["ig_media_id"]])]
+      new_id_v <- purrr::map_chr(
+        .x = purrr::pluck(out[[i]], "data"),
+        .f = function(y) {
+          purrr::pluck(y, "id")
+        }
+      )
 
-    if (length(really_new_id_v) == 0) {
-      break
-    } else {
-      if (cache == TRUE) {
-        DBI::dbAppendTable(
-          conn = db,
-          name = current_table,
-          value = tibble::tibble(ig_media_id = really_new_id_v)
-        )
+      really_new_id_v <- new_id_v[
+        !is.element(new_id_v, previous_ig_media_id_df[["ig_media_id"]])
+      ]
+
+      if (length(really_new_id_v) == 0) {
+        break
+      } else {
+        if (cache == TRUE) {
+          DBI::dbAppendTable(
+            conn = db,
+            name = current_table,
+            value = tibble::tibble(ig_media_id = really_new_id_v)
+          )
+        }
       }
-    }
 
-    if (purrr::pluck_exists(out[[i]], "paging", "next") == TRUE) {
-      api_request <- purrr::pluck(out[[i]], "paging", "next") |>
-        httr2::request()
-    } else {
-      break
-    }
+      if (purrr::pluck_exists(out[[i]], "paging", "next") == TRUE) {
+        api_request <- purrr::pluck(out[[i]], "paging", "next") |>
+          httr2::request()
+      } else {
+        break
+      }
 
-    i <- i + 1L
-    if (i > length(out)) {
-      length(out) <- length(out) * 2L
-    }
-  })
+      i <- i + 1L
+      if (i > length(out)) {
+        length(out) <- length(out) * 2L
+      }
+    })
+  }
 
   cli::cli_process_done()
 

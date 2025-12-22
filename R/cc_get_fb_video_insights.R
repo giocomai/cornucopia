@@ -7,7 +7,7 @@
 #' @param metrics
 #' @param cache
 #' @param update
-#' @param api_version
+#' @param meta_api_version
 #' @param fb_page_id
 #' @param fb_page_token
 #'
@@ -15,13 +15,15 @@
 #' @export
 #'
 #' @examples
-cc_get_fb_video_insights <- function(fb_video_id,
-                                     metrics = cc_valid_fields_fb_video_insights,
-                                     cache = TRUE,
-                                     update = TRUE,
-                                     api_version = "v22.0",
-                                     fb_page_id = NULL,
-                                     fb_page_token = NULL) {
+cc_get_fb_video_insights <- function(
+  fb_video_id,
+  metrics = cc_valid_fields_fb_video_insights,
+  cache = TRUE,
+  update = TRUE,
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
+  fb_page_id = NULL,
+  fb_page_token = NULL
+) {
   if (is.null(fb_page_token)) {
     fb_page_token <- cc_get_settings(fb_page_token = fb_page_token) |>
       purrr::pluck("fb_page_token")
@@ -45,7 +47,7 @@ cc_get_fb_video_insights <- function(fb_video_id,
         metrics = metrics,
         cache = cache,
         update = update,
-        api_version = api_version,
+        meta_api_version = meta_api_version,
         fb_page_id = fb_page_id,
         fb_page_token = fb_page_token
       )
@@ -53,7 +55,6 @@ cc_get_fb_video_insights <- function(fb_video_id,
   ) |>
     purrr::list_rbind()
 }
-
 
 
 #' Get information about a single Facebook video directly from the API. Mostly used
@@ -76,13 +77,15 @@ cc_get_fb_video_insights <- function(fb_video_id,
 #' @export
 #'
 #' @examples
-cc_api_get_fb_video_insights <- function(fb_video_id,
-                                         metrics = cc_valid_fields_fb_video_insights,
-                                         cache = TRUE,
-                                         update = TRUE,
-                                         api_version = "v22.0",
-                                         fb_page_id = NULL,
-                                         fb_page_token = NULL) {
+cc_api_get_fb_video_insights <- function(
+  fb_video_id,
+  metrics = cc_valid_fields_fb_video_insights,
+  cache = TRUE,
+  update = TRUE,
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
+  fb_page_id = NULL,
+  fb_page_token = NULL
+) {
   if (is.null(fb_page_token)) {
     fb_page_token <- cc_get_settings(fb_page_token = fb_page_token) |>
       purrr::pluck("fb_page_token")
@@ -97,10 +100,9 @@ cc_api_get_fb_video_insights <- function(fb_video_id,
     fb_page_id <- as.character(fb_page_id)
   }
 
-
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   metrics_v <- stringr::str_c(metrics, collapse = ",")
@@ -139,7 +141,12 @@ cc_api_get_fb_video_insights <- function(fb_video_id,
     purrr::list_rbind() |>
     dplyr::mutate(fb_video_id = fb_video_id) |>
     dplyr::relocate(fb_video_id) |>
-    dplyr::mutate(timestamp_retrieved = strftime(as.POSIXlt(Sys.time(), "UTC"), "%Y-%m-%dT%H:%M:%S%z"))
+    dplyr::mutate(
+      timestamp_retrieved = strftime(
+        as.POSIXlt(Sys.time(), "UTC"),
+        "%Y-%m-%dT%H:%M:%S%z"
+      )
+    )
 
   output_df
 }

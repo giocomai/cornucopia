@@ -23,13 +23,15 @@
 #' \dontrun{
 #' cc_get_fb_ad_campaigns()
 #' }
-cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
-                                   api_version = "v22.0",
-                                   fb_ad_account_id = NULL,
-                                   max_pages = NULL,
-                                   fb_user_token = NULL,
-                                   cache = TRUE,
-                                   update = TRUE) {
+cc_get_fb_ad_campaigns <- function(
+  fields = cc_valid_fields_ad_campaign_group_v,
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
+  fb_ad_account_id = NULL,
+  max_pages = NULL,
+  fb_user_token = NULL,
+  cache = TRUE,
+  update = TRUE
+) {
   if (is.null(token)) {
     fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
@@ -46,7 +48,9 @@ cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
 
   if (cache == TRUE) {
     if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
-      cli::cli_abort("Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE.")
+      cli::cli_abort(
+        "Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE."
+      )
     }
     fs::dir_create("cornucopia_db")
 
@@ -79,10 +83,7 @@ cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
     if (nrow(previous_ad_campaign_df) > 0) {
       previous_ad_campaign_df <- previous_ad_campaign_df |>
         dplyr::group_by(campaign_id) |>
-        dplyr::slice_max(timestamp_retrieved,
-          n = 1,
-          with_ties = FALSE
-        ) |>
+        dplyr::slice_max(timestamp_retrieved, n = 1, with_ties = FALSE) |>
         dplyr::ungroup()
 
       if (update == FALSE) {
@@ -96,7 +97,7 @@ cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   fields_v <- stringr::str_c(fields, collapse = ",")
@@ -114,69 +115,79 @@ cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
       access_token = fb_user_token
     )
 
-  repeat({
-    if (!is.null(max_pages) && i == max_pages) {
-      break
-    }
-
-    cli::cli_progress_update(inc = 25)
-
-    req_json <- httr2::req_perform(req = api_request) |>
-      httr2::resp_body_json()
-
-    out[[i]] <- req_json
-
-    response_l <- req_json |>
-      purrr::pluck("data")
-
-    current_campaigns_df <- purrr::map(
-      .x = response_l,
-      .f = function(x) {
-        x |>
-          tibble::as_tibble()
+  repeat {
+    ({
+      if (!is.null(max_pages) && i == max_pages) {
+        break
       }
-    ) |>
-      purrr::list_rbind() |>
-      dplyr::rename(
-        campaign_id = id,
-        campaign_name = name
+
+      cli::cli_progress_update(inc = 25)
+
+      req_json <- httr2::req_perform(req = api_request) |>
+        httr2::resp_body_json()
+
+      out[[i]] <- req_json
+
+      response_l <- req_json |>
+        purrr::pluck("data")
+
+      current_campaigns_df <- purrr::map(
+        .x = response_l,
+        .f = function(x) {
+          x |>
+            tibble::as_tibble()
+        }
       ) |>
-      dplyr::mutate(timestamp_retrieved = strftime(as.POSIXlt(Sys.time(), "UTC"), "%Y-%m-%dT%H:%M:%S%z"))
-
-    campaigns_l[[i]] <- current_campaigns_df
-
-    if (nrow(current_campaigns_df) == 0) {
-      break
-    } else {
-      if (cache == TRUE) {
-        DBI::dbAppendTable(
-          conn = db,
-          name = current_table,
-          value = current_campaigns_df
+        purrr::list_rbind() |>
+        dplyr::rename(
+          campaign_id = id,
+          campaign_name = name
+        ) |>
+        dplyr::mutate(
+          timestamp_retrieved = strftime(
+            as.POSIXlt(Sys.time(), "UTC"),
+            "%Y-%m-%dT%H:%M:%S%z"
+          )
         )
 
-        if (nrow(dplyr::anti_join(
-          x = current_campaigns_df,
-          y = previous_ad_campaign_df,
-          by = "campaign_id"
-        )) < nrow(current_campaigns_df)) {
-          break
+      campaigns_l[[i]] <- current_campaigns_df
+
+      if (nrow(current_campaigns_df) == 0) {
+        break
+      } else {
+        if (cache == TRUE) {
+          DBI::dbAppendTable(
+            conn = db,
+            name = current_table,
+            value = current_campaigns_df
+          )
+
+          if (
+            nrow(dplyr::anti_join(
+              x = current_campaigns_df,
+              y = previous_ad_campaign_df,
+              by = "campaign_id"
+            )) <
+              nrow(current_campaigns_df)
+          ) {
+            break
+          }
         }
       }
-    }
 
-    if (purrr::pluck_exists(out[[i]], "paging", "next") == TRUE) {
-      api_request <- purrr::pluck(out[[i]], "paging", "next") |>
-        httr2::request()
-    } else {
-      break
-    }
+      if (purrr::pluck_exists(out[[i]], "paging", "next") == TRUE) {
+        api_request <- purrr::pluck(out[[i]], "paging", "next") |>
+          httr2::request()
+      } else {
+        break
+      }
 
-    i <- i + 1L
-    if (i > length(out)) {
-      length(out) <- length(out) * 2L
-    }
-  })
+      i <- i + 1L
+      if (i > length(out)) {
+        length(out) <- length(out) * 2L
+      }
+    })
+  }
 
   cli::cli_process_done()
 
@@ -192,10 +203,7 @@ cc_get_fb_ad_campaigns <- function(fields = cc_valid_fields_ad_campaign_group_v,
         previous_ad_campaign_df
       ) |>
         dplyr::group_by(campaign_id) |>
-        dplyr::slice_max(timestamp_retrieved,
-          n = 1,
-          with_ties = FALSE
-        ) |>
+        dplyr::slice_max(timestamp_retrieved, n = 1, with_ties = FALSE) |>
         dplyr::ungroup()
       DBI::dbDisconnect(db)
     } else {

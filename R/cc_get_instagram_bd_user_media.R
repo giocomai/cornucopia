@@ -59,7 +59,7 @@ cc_get_instagram_bd_user_media <- function(
   limit = 80,
   update = TRUE,
   cache = TRUE,
-  api_version = "v23.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   ig_user_id = NULL,
   fb_user_token = NULL
 ) {
@@ -81,7 +81,7 @@ cc_get_instagram_bd_user_media <- function(
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   users_posts_df <- purrr::map(
@@ -91,7 +91,7 @@ cc_get_instagram_bd_user_media <- function(
       bd_user_basic_df <- cc_get_instagram_bd_user_basic(
         ig_username = current_user,
         cache = cache,
-        api_version = api_version,
+        meta_api_version = meta_api_version,
         ig_user_id = ig_user_id,
         fb_user_token = fb_user_token
       )
@@ -144,7 +144,7 @@ cc_get_instagram_bd_user_media <- function(
         name = cli::cli_text("Retrieving posts for user {.val {current_user}}:")
       )
 
-      repeat
+      repeat {
         ({
           cli::cli_progress_update(inc = 25)
 
@@ -289,6 +289,7 @@ cc_get_instagram_bd_user_media <- function(
 
           Sys.sleep(time = wait)
         })
+      }
 
       out |>
         purrr::list_rbind()

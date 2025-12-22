@@ -16,7 +16,7 @@ cc_get_fb_ad_custom <- function(
   start_date = NULL,
   end_date = NULL,
   only_cached = FALSE,
-  api_version = "v24.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   cache = TRUE,
   ad_account_id = NULL,
   fb_user_token = NULL
@@ -51,7 +51,7 @@ cc_get_fb_ad_custom <- function(
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   api_request <- httr2::request(base_url = base_url) |>

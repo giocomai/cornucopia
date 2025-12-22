@@ -10,7 +10,7 @@ cc_api_get_fb_video_insights(
   metrics = cc_valid_fields_fb_video_insights,
   cache = TRUE,
   update = TRUE,
-  api_version = "v22.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   fb_page_id = NULL,
   fb_page_token = NULL
 )

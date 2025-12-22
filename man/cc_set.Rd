@@ -5,6 +5,7 @@
 \title{Set settings and token for the session}
 \usage{
 cc_set(
+  meta_api_version = "v24.0",
   start_date = NULL,
   end_date = NULL,
   fb_user_token = NULL,
@@ -20,6 +21,9 @@ cc_set(
 )
 }
 \arguments{
+\item{meta_api_version}{Defaults to the latest API at the time this package was
+last updated. Currently, this corresponds to api version 24.0.}
+
 \item{start_date}{Defaults to 91 days before today}
 
 \item{end_date}{Defaults to yesterday.}

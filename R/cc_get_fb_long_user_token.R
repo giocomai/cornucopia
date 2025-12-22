@@ -23,16 +23,18 @@
 #' }
 #' }
 #'
-cc_get_fb_long_user_token <- function(fb_user_token = NULL,
-                                      fb_app_id = NULL,
-                                      fb_app_secret = NULL,
-                                      api_version = "v22.0") {
+cc_get_fb_long_user_token <- function(
+  fb_user_token = NULL,
+  fb_app_id = NULL,
+  fb_app_secret = NULL,
+  meta_api_version = cornucopia::cc_get_meta_api_version()
+) {
   base_url <- stringr::str_c(
     "https://graph.facebook.com/"
   )
 
   api_request <- httr2::request(base_url = base_url) |>
-    httr2::req_url_path_append(api_version) |>
+    httr2::req_url_path_append(meta_api_version) |>
     httr2::req_url_path_append("oauth") |>
     httr2::req_url_path_append("access_token") |>
     httr2::req_url_query(

@@ -41,7 +41,7 @@
 #'   See documentation for required permissions.
 #' @param max_pages Maximum number of pages to retrieve (15 responses are
 #'   included in each page). Defaults to 1000 pages internally.
-#' @param api_version Defaults to "v21.0".
+#' @inheritParams cc_set
 #'
 #' @return A data frame
 #' @export
@@ -50,13 +50,31 @@
 #' \dontrun{
 #' cc_get_fb_leads(form_id = "12345678912345678")
 #' }
-cc_get_fb_leads <- function(form_id,
-                            fields = c("created_time", "id", "campaign_id", "campaign_name", "adset_id", "adset_name", "ad_id", "ad_name", "form_id", "is_organic", "platform", "field_data"),
-                            fb_page_token = NULL,
-                            fb_user_token = NULL,
-                            max_pages = NULL,
-                            api_version = "v22.0") {
-  form_id <- stringr::str_remove(string = form_id, pattern = stringr::fixed("f:"))
+cc_get_fb_leads <- function(
+  form_id,
+  fields = c(
+    "created_time",
+    "id",
+    "campaign_id",
+    "campaign_name",
+    "adset_id",
+    "adset_name",
+    "ad_id",
+    "ad_name",
+    "form_id",
+    "is_organic",
+    "platform",
+    "field_data"
+  ),
+  fb_page_token = NULL,
+  fb_user_token = NULL,
+  max_pages = NULL,
+  meta_api_version = cornucopia::cc_get_meta_api_version()
+) {
+  form_id <- stringr::str_remove(
+    string = form_id,
+    pattern = stringr::fixed("f:")
+  )
 
   if (is.null(fb_page_token)) {
     fb_page_token <- cc_get_settings(fb_page_token = fb_page_token) |>
@@ -79,7 +97,7 @@ cc_get_fb_leads <- function(form_id,
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   fields_v <- stringr::str_flatten(fields, collapse = ",")
@@ -97,66 +115,75 @@ cc_get_fb_leads <- function(form_id,
       fields = fields_v
     )
 
-  repeat({
-    cli::cli_progress_update(inc = 25)
+  repeat {
+    ({
+      cli::cli_progress_update(inc = 25)
 
-    if (!is.null(max_pages) && i == max_pages) {
-      break
-    }
-
-    req_json <- api_request |>
-      httr2::req_error(is_error = \(resp) FALSE) |>
-      httr2::req_perform() |>
-      httr2::resp_body_json()
-
-    if (is.null(req_json[["error"]][["message"]]) == FALSE) {
-      cli::cli_abort(req_json[["error"]][["message"]])
-    }
-
-    out[[i]] <- req_json
-
-    response_l <- req_json |>
-      purrr::pluck("data")
-
-    responses_df <- purrr::map(
-      .x = response_l,
-      .f = function(current_response) {
-        current_response_df <- current_response[1:length(current_response) - 1] |>
-          tibble::as_tibble() |>
-          dplyr::bind_cols(
-            purrr::map(
-              .x = current_response[["field_data"]],
-              .f = function(current_field) {
-                field_df <- tibble::tibble(value = stringr::str_flatten(unlist(current_field[["values"]]), collapse = ";"))
-                names(field_df) <- current_field[["name"]]
-                field_df
-              }
-            ) |>
-              purrr::list_cbind()
-          )
-        current_response_df
+      if (!is.null(max_pages) && i == max_pages) {
+        break
       }
-    ) |>
-      purrr::list_rbind()
 
-    all_responses_l[[i]] <- responses_df
+      req_json <- api_request |>
+        httr2::req_error(is_error = \(resp) FALSE) |>
+        httr2::req_perform() |>
+        httr2::resp_body_json()
 
-    if (nrow(responses_df) == 0) {
-      break
-    }
+      if (is.null(req_json[["error"]][["message"]]) == FALSE) {
+        cli::cli_abort(req_json[["error"]][["message"]])
+      }
 
-    if (purrr::pluck_exists(out[[i]], "paging", "next") == TRUE) {
-      api_request <- purrr::pluck(out[[i]], "paging", "next") |>
-        httr2::request()
-    } else {
-      break
-    }
+      out[[i]] <- req_json
 
-    i <- i + 1L
-    if (i > length(out)) {
-      length(out) <- length(out) * 2L
-    }
-  })
+      response_l <- req_json |>
+        purrr::pluck("data")
+
+      responses_df <- purrr::map(
+        .x = response_l,
+        .f = function(current_response) {
+          current_response_df <- current_response[
+            1:length(current_response) - 1
+          ] |>
+            tibble::as_tibble() |>
+            dplyr::bind_cols(
+              purrr::map(
+                .x = current_response[["field_data"]],
+                .f = function(current_field) {
+                  field_df <- tibble::tibble(
+                    value = stringr::str_flatten(
+                      unlist(current_field[["values"]]),
+                      collapse = ";"
+                    )
+                  )
+                  names(field_df) <- current_field[["name"]]
+                  field_df
+                }
+              ) |>
+                purrr::list_cbind()
+            )
+          current_response_df
+        }
+      ) |>
+        purrr::list_rbind()
+
+      all_responses_l[[i]] <- responses_df
+
+      if (nrow(responses_df) == 0) {
+        break
+      }
+
+      if (purrr::pluck_exists(out[[i]], "paging", "next") == TRUE) {
+        api_request <- purrr::pluck(out[[i]], "paging", "next") |>
+          httr2::request()
+      } else {
+        break
+      }
+
+      i <- i + 1L
+      if (i > length(out)) {
+        length(out) <- length(out) * 2L
+      }
+    })
+  }
 
   cli::cli_process_done()
 

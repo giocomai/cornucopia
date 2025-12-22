@@ -28,13 +28,15 @@
 #' \dontrun{
 #' cc_get_instagram_media_insights()
 #' }
-cc_get_instagram_media_insights <- function(ig_media_id = NULL,
-                                            metrics = NULL,
-                                            api_version = "v22.0",
-                                            ig_user_id = NULL,
-                                            cache = TRUE,
-                                            update = TRUE,
-                                            fb_user_token = NULL) {
+cc_get_instagram_media_insights <- function(
+  ig_media_id = NULL,
+  metrics = NULL,
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
+  ig_user_id = NULL,
+  cache = TRUE,
+  update = TRUE,
+  fb_user_token = NULL
+) {
   if (is.null(ig_user_id)) {
     ig_user_id <- cc_get_settings(ig_user_id = ig_user_id) |>
       purrr::pluck("ig_user_id")
@@ -49,7 +51,7 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
   if (is.null(ig_media_id)) {
     ig_media_id <- cc_get_instagram_media_id(
       ig_user_id = ig_user_id,
-      api_version = api_version,
+      meta_api_version = meta_api_version,
       fb_user_token = fb_user_token,
       cache = cache
     ) |>
@@ -59,25 +61,32 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
   # Group by type of media and process separately
   media_df <- cc_get_instagram_media(
     ig_media_id = ig_media_id,
-    api_version = api_version,
+    meta_api_version = meta_api_version,
     ig_user_id = ig_user_id,
     cache = cache,
     fb_user_token = fb_user_token
   ) |>
-    dplyr::mutate(media_type = stringr::str_to_lower(dplyr::if_else(condition = media_product_type == "REELS",
-      true = "REELS",
-      false = media_type
-    ))) |>
+    dplyr::mutate(
+      media_type = stringr::str_to_lower(dplyr::if_else(
+        condition = media_product_type == "REELS",
+        true = "REELS",
+        false = media_type
+      ))
+    ) |>
     dplyr::mutate(date = lubridate::as_date(timestamp))
 
   # drop early posts as not available
   unavailable_media_df <- media_df |>
     dplyr::filter(date < as.Date("2017-01-01"))
 
-  ig_media_id_available <- ig_media_id[!(ig_media_id %in% unavailable_media_df$ig_media_id)]
+  ig_media_id_available <- ig_media_id[
+    !(ig_media_id %in% unavailable_media_df$ig_media_id)
+  ]
 
   if (length(ig_media_id_available) < length(ig_media_id)) {
-    cli::cli_alert_warning("Media posted before 2017 have been dropped as Insights are not available for earlier posts")
+    cli::cli_alert_warning(
+      "Media posted before 2017 have been dropped as Insights are not available for earlier posts"
+    )
     ig_media_id <- ig_media_id_available
     media_df <- media_df |>
       dplyr::filter(date >= as.Date("2017-01-01"))
@@ -88,10 +97,11 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
     dplyr::count() |>
     dplyr::ungroup()
 
-
   if (cache == TRUE) {
     if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
-      cli::cli_abort("Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE.")
+      cli::cli_abort(
+        "Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE."
+      )
     }
     fs::dir_create("cornucopia_db")
 
@@ -140,7 +150,11 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
         if (nrow(previous_ig_media_df) > 0) {
           previous_ig_media_df <- previous_ig_media_df |>
             dplyr::group_by(ig_media_id) |>
-            dplyr::slice_max(order_by = timestamp_retrieved, n = 1, with_ties = FALSE) |>
+            dplyr::slice_max(
+              order_by = timestamp_retrieved,
+              n = 1,
+              with_ties = FALSE
+            ) |>
             dplyr::ungroup()
 
           if (update == TRUE) {
@@ -173,7 +187,9 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
         previous_ig_media_id_v <- character()
       }
 
-      ig_media_id_to_process_v <- current_type_ig_media_id[!(current_type_ig_media_id %in% previous_ig_media_id_v)]
+      ig_media_id_to_process_v <- current_type_ig_media_id[
+        !(current_type_ig_media_id %in% previous_ig_media_id_v)
+      ]
 
       all_new_df <- purrr::map(
         .progress = stringr::str_c(
@@ -185,7 +201,7 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
           current_media_df <- cc_api_get_instagram_media_insights(
             ig_media_id = current_ig_media_id,
             media_type = current_media_type,
-            api_version = "v22.0",
+            meta_api_version = meta_api_version,
             fb_user_token = fb_user_token
           )
 
@@ -230,7 +246,11 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
     dplyr::relocate(ig_media_id, ig_media_type) |>
     dplyr::relocate(timestamp_retrieved, .after = last_col()) |>
     dplyr::group_by(ig_media_id) |>
-    dplyr::slice_max(order_by = timestamp_retrieved, n = 1, with_ties = FALSE) |>
+    dplyr::slice_max(
+      order_by = timestamp_retrieved,
+      n = 1,
+      with_ties = FALSE
+    ) |>
     dplyr::ungroup()
 }
 
@@ -258,12 +278,14 @@ cc_get_instagram_media_insights <- function(ig_media_id = NULL,
 #' @export
 #'
 #' @examples
-cc_api_get_instagram_media_insights <- function(ig_media_id,
-                                                metrics = NULL,
-                                                media_type = NULL,
-                                                api_version = "v22.0",
-                                                ig_user_id = NULL,
-                                                fb_user_token = NULL) {
+cc_api_get_instagram_media_insights <- function(
+  ig_media_id,
+  metrics = NULL,
+  media_type = NULL,
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
+  ig_user_id = NULL,
+  fb_user_token = NULL
+) {
   if (is.null(fb_user_token)) {
     fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
@@ -280,7 +302,7 @@ cc_api_get_instagram_media_insights <- function(ig_media_id,
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   if (is.null(metrics)) {
@@ -288,7 +310,7 @@ cc_api_get_instagram_media_insights <- function(ig_media_id,
       current_media_df <- cc_get_instagram_media(
         ig_media_id = ig_media_id,
         fields = "media_type",
-        api_version = api_version,
+        meta_api_version = meta_api_version,
         ig_user_id = ig_user_id,
         fb_user_token = fb_user_token
       )
@@ -298,7 +320,10 @@ cc_api_get_instagram_media_insights <- function(ig_media_id,
 
     if (stringr::str_to_lower(media_type) == "reels") {
       metrics <- cc_valid_metrics_ig_media_insights$reels
-    } else if (stringr::str_to_lower(media_type) == "image" | stringr::str_to_lower(media_type) == "video") {
+    } else if (
+      stringr::str_to_lower(media_type) == "image" |
+        stringr::str_to_lower(media_type) == "video"
+    ) {
       metrics <- cc_valid_metrics_ig_media_insights$photo_video
     } else if (stringr::str_to_lower(media_type) == "carousel_album") {
       metrics <- cc_valid_metrics_ig_media_insights$carousel
@@ -307,7 +332,9 @@ cc_api_get_instagram_media_insights <- function(ig_media_id,
     } else if (stringr::str_to_lower(media_type) == "story") {
       metrics <- cc_valid_metrics_ig_media_insights$story
     } else {
-      cli::cli_abort(message = "Unkown {.var media_type}. Provide {.var metrics} explicitly.")
+      cli::cli_abort(
+        message = "Unkown {.var media_type}. Provide {.var metrics} explicitly."
+      )
     }
   }
 
@@ -342,7 +369,12 @@ cc_api_get_instagram_media_insights <- function(ig_media_id,
     purrr::list_cbind() |>
     dplyr::mutate(ig_media_id = ig_media_id) |>
     dplyr::relocate(ig_media_id) |>
-    dplyr::mutate(timestamp_retrieved = strftime(as.POSIXlt(Sys.time(), "UTC"), "%Y-%m-%dT%H:%M:%S%z"))
+    dplyr::mutate(
+      timestamp_retrieved = strftime(
+        as.POSIXlt(Sys.time(), "UTC"),
+        "%Y-%m-%dT%H:%M:%S%z"
+      )
+    )
 
   output_df
 }

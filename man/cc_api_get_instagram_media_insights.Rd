@@ -9,7 +9,7 @@ cc_api_get_instagram_media_insights(
   ig_media_id,
   metrics = NULL,
   media_type = NULL,
-  api_version = "v22.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   ig_user_id = NULL,
   fb_user_token = NULL
 )
@@ -28,7 +28,8 @@ metrics will cause an error. Defaults to NULL. If left to NULL, metrics will be 
 "CAROUSEL_ALBUM". Defaults to NULL. If not given, it will be retrieved with
 `cc_get_instagram_media`. Ignored if `metrics` explicitly given.}
 
-\item{api_version}{Defaults to "v21.0".}
+\item{meta_api_version}{Defaults to the latest API at the time this package was
+last updated. Currently, this corresponds to api version 24.0.}
 
 \item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to
 be confused with legacy Instagram account id.}

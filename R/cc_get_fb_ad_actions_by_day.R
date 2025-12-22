@@ -19,7 +19,7 @@ cc_get_fb_ad_actions_by_day <- function(
   action_breakdowns = NULL,
   cache = FALSE,
   only_cached = FALSE,
-  api_version = "v23.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   ad_account_id = NULL,
   fb_user_token = NULL,
   max_pages = NULL
@@ -103,7 +103,7 @@ cc_get_fb_ad_actions_by_day <- function(
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   all_new_fb_ad_details_df <- purrr::map(

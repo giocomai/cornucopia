@@ -12,7 +12,6 @@
 #'
 #' @param ig_user_id Instagram user id, typically composed of 17 digits. Not to
 #'   be confused with legacy Instagram account id.
-#' @param api_version Defaults to "v21.0".
 #' @param fields Defaults to all available (except
 #'   "shopping_product_tag_eligibility", which requires dedicated permissions).
 #'   Consider reducing if you don't have all relevant permissions.
@@ -26,21 +25,23 @@
 #' \dontrun{
 #' cc_get_instagram_user()
 #' }
-cc_get_instagram_user <- function(ig_user_id = NULL,
-                                  api_version = "v22.0",
-                                  fields = c(
-                                    "id",
-                                    "ig_id",
-                                    "username",
-                                    "name",
-                                    "biography",
-                                    "website",
-                                    "followers_count",
-                                    "follows_count",
-                                    "media_count",
-                                    "profile_picture_url"
-                                  ),
-                                  fb_user_token = NULL) {
+cc_get_instagram_user <- function(
+  ig_user_id = NULL,
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
+  fields = c(
+    "id",
+    "ig_id",
+    "username",
+    "name",
+    "biography",
+    "website",
+    "followers_count",
+    "follows_count",
+    "media_count",
+    "profile_picture_url"
+  ),
+  fb_user_token = NULL
+) {
   if (is.null(ig_user_id)) {
     ig_user_id <- cc_get_settings(ig_user_id = ig_user_id) |>
       purrr::pluck("ig_user_id")
@@ -57,7 +58,7 @@ cc_get_instagram_user <- function(ig_user_id = NULL,
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   fields_v <- stringr::str_c(fields, collapse = ",")

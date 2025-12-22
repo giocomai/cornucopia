@@ -11,7 +11,7 @@ cc_get_fb_ad_custom(
   start_date = NULL,
   end_date = NULL,
   only_cached = FALSE,
-  api_version = "v24.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   cache = TRUE,
   ad_account_id = NULL,
   fb_user_token = NULL

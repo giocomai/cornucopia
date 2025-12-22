@@ -14,7 +14,7 @@ cc_get_fb_ad_frequency_distribution(
   output = c("tibble", "barchart", "list"),
   start_date = NULL,
   end_date = NULL,
-  api_version = "v23.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   ad_account_id = NULL,
   fb_user_token = NULL
 )

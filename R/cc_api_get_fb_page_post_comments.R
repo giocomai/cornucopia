@@ -24,7 +24,7 @@ cc_api_get_fb_page_post_comments <- function(
   period = "lifetime",
   cache = TRUE,
   update = TRUE,
-  api_version = "v24.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   fb_page_id = NULL,
   fb_page_token = NULL
 ) {
@@ -44,7 +44,7 @@ cc_api_get_fb_page_post_comments <- function(
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   metrics_v <- stringr::str_c(metric, collapse = ",")

@@ -6,7 +6,7 @@
 \usage{
 cc_get_instagram_user(
   ig_user_id = NULL,
-  api_version = "v22.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   fields = c("id", "ig_id", "username", "name", "biography", "website",
     "followers_count", "follows_count", "media_count", "profile_picture_url"),
   fb_user_token = NULL
@@ -16,7 +16,8 @@ cc_get_instagram_user(
 \item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to
 be confused with legacy Instagram account id.}
 
-\item{api_version}{Defaults to "v21.0".}
+\item{meta_api_version}{Defaults to the latest API at the time this package was
+last updated. Currently, this corresponds to api version 24.0.}
 
 \item{fields}{Defaults to all available (except
 "shopping_product_tag_eligibility", which requires dedicated permissions).

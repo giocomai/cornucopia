@@ -40,7 +40,7 @@ cc_get_fb_ad_frequency_distribution <- function(
   output = c("tibble", "barchart", "list"),
   start_date = NULL,
   end_date = NULL,
-  api_version = "v23.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   ad_account_id = NULL,
   fb_user_token = NULL
 ) {
@@ -78,7 +78,7 @@ cc_get_fb_ad_frequency_distribution <- function(
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   api_request <- httr2::request(base_url = base_url) |>

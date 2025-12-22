@@ -1,9 +1,9 @@
 #' Get information about your Facebook product catalogs
 #'
-#' See the relevant page in the documentation for available fields and more details
+#' See the relevant page in the documentation for available fields and more
+#' details
 #' https://developers.facebook.com/docs/marketing-api/reference/product-catalog
 #'
-#' @param api_version Defaults to "v21.0".
 #' @param fields Defaults to all available.
 #' @param token Facebook user token (not a page token).
 #' @inheritParams cc_set
@@ -15,22 +15,24 @@
 #' \dontrun{
 #' cc_get_fb_owned_product_catalogs()
 #' }
-cc_get_fb_owned_product_catalogs <- function(fb_business_id = NULL,
-                                             api_version = "v22.0",
-                                             fields = c(
-                                               "id",
-                                               "business",
-                                               "commerce_merchant_settings",
-                                               "da_display_settings",
-                                               "default_image_url",
-                                               "fallback_image_url",
-                                               "feed_count",
-                                               "is_catalog_segment",
-                                               "name",
-                                               "product_count",
-                                               "vertical"
-                                             ),
-                                             token = NULL) {
+cc_get_fb_owned_product_catalogs <- function(
+  fb_business_id = NULL,
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
+  fields = c(
+    "id",
+    "business",
+    "commerce_merchant_settings",
+    "da_display_settings",
+    "default_image_url",
+    "fallback_image_url",
+    "feed_count",
+    "is_catalog_segment",
+    "name",
+    "product_count",
+    "vertical"
+  ),
+  token = NULL
+) {
   if (is.null(fb_business_id)) {
     fb_business_id <- cc_get_settings(fb_business_id = fb_business_id) |>
       purrr::pluck("fb_business_id")
@@ -45,10 +47,9 @@ cc_get_fb_owned_product_catalogs <- function(fb_business_id = NULL,
     fb_user_token <- as.character(token)
   }
 
-
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   fields_v <- stringr::str_c(fields, collapse = ",")

@@ -26,9 +26,11 @@
 #' }
 #' }
 #'
-cc_get_fb_long_page_token <- function(fb_user_id = NULL,
-                                      fb_user_token = NULL,
-                                      api_version = "v22.0") {
+cc_get_fb_long_page_token <- function(
+  fb_user_id = NULL,
+  fb_user_token = NULL,
+  meta_api_version = cornucopia::cc_get_meta_api_version()
+) {
   if (is.null(fb_user_id)) {
     fb_user_id <- cc_get_settings(fb_user_id = fb_user_id) |>
       purrr::pluck("fb_user_id")
@@ -48,7 +50,7 @@ cc_get_fb_long_page_token <- function(fb_user_id = NULL,
   )
 
   api_request <- httr2::request(base_url = base_url) |>
-    httr2::req_url_path_append(api_version) |>
+    httr2::req_url_path_append(meta_api_version) |>
     httr2::req_url_path_append(fb_user_id) |>
     httr2::req_url_path_append("accounts") |>
     httr2::req_url_query(

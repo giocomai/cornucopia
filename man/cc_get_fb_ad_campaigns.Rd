@@ -6,7 +6,7 @@
 \usage{
 cc_get_fb_ad_campaigns(
   fields = cc_valid_fields_ad_campaign_group_v,
-  api_version = "v22.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   fb_ad_account_id = NULL,
   max_pages = NULL,
   fb_user_token = NULL,

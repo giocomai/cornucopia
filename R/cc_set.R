@@ -1,6 +1,7 @@
 #' Set settings and token for the session
 #'
-#'
+#' @param meta_api_version Defaults to the latest API at the time this package was
+#'   last updated. Currently, this corresponds to api version 24.0.
 #' @param start_date Defaults to 91 days before today
 #' @param end_date Defaults to yesterday.
 #' @param fb_user_token Facebook user token different from page token. Can be
@@ -27,6 +28,7 @@
 #' }
 #'
 cc_set <- function(
+  meta_api_version = "v24.0",
   start_date = NULL,
   end_date = NULL,
   fb_user_token = NULL,
@@ -40,6 +42,12 @@ cc_set <- function(
   ga_email = NULL,
   ga_property_id = NULL
 ) {
+  if (is.null(meta_api_version)) {
+    meta_api_version <- Sys.getenv("cornucopia_meta_api_version")
+  } else {
+    Sys.setenv(cornucopia_meta_api_version = as.character(meta_api_version))
+  }
+
   if (is.null(start_date)) {
     start_date <- Sys.getenv("cornucopia_start_date")
   } else {
@@ -161,6 +169,7 @@ cc_set <- function(
 #' }
 #'
 cc_get_settings <- function(
+  meta_api_version = NULL,
   start_date = NULL,
   end_date = NULL,
   fb_user_token = NULL,
@@ -174,6 +183,13 @@ cc_get_settings <- function(
   ga_email = NULL,
   ga_property_id = NULL
 ) {
+  if (is.null(meta_api_version)) {
+    meta_api_version <- Sys.getenv(
+      "cornucopia_meta_api_version",
+      unset = "v24.0"
+    )
+  }
+
   if (is.null(start_date)) {
     start_date <- Sys.getenv("cornucopia_start_date")
   }
@@ -236,6 +252,7 @@ cc_get_settings <- function(
   }
 
   invisible(list(
+    meta_api_version = as.character(meta_api_version),
     start_date = lubridate::as_date(start_date),
     end_date = lubridate::as_date(end_date),
     fb_user_token = as.character(fb_user_token),
@@ -249,4 +266,25 @@ cc_get_settings <- function(
     ga_email = as.character(ga_email),
     ga_property_id = as.character(ga_property_id)
   ))
+}
+
+
+#' Retrieve version of Meta API.
+#'
+#' @inheritParams cc_set
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+#' cc_get_meta_api_version()
+#'
+#' cc_get_meta_api_version("23.0")
+#'
+#' cc_set(meta_api_version = "24.0")
+#'
+#' cc_get_meta_api_version()
+cc_get_meta_api_version <- function(meta_api_version = NULL) {
+  cc_get_settings(meta_api_version = meta_api_version) |>
+    purrr::pluck("meta_api_version")
 }

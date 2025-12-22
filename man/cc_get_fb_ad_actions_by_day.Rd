@@ -10,7 +10,7 @@ cc_get_fb_ad_actions_by_day(
   action_breakdowns = NULL,
   cache = FALSE,
   only_cached = FALSE,
-  api_version = "v23.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   ad_account_id = NULL,
   fb_user_token = NULL,
   max_pages = NULL

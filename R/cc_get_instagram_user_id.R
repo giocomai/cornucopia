@@ -8,9 +8,11 @@
 #' @export
 #'
 #' @examples
-cc_get_instagram_user_id <- function(fb_page_id = NULL,
-                                     fb_user_token = NULL,
-                                     api_version = "v22.0") {
+cc_get_instagram_user_id <- function(
+  fb_page_id = NULL,
+  fb_user_token = NULL,
+  meta_api_version = cornucopia::cc_get_meta_api_version()
+) {
   if (is.null(fb_user_token)) {
     fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
@@ -30,7 +32,7 @@ cc_get_instagram_user_id <- function(fb_page_id = NULL,
   )
 
   api_request <- httr2::request(base_url = base_url) |>
-    httr2::req_url_path_append(api_version) |>
+    httr2::req_url_path_append(meta_api_version) |>
     httr2::req_url_path_append(fb_page_id) |>
     httr2::req_url_query(
       fields = "instagram_business_account",

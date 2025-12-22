@@ -16,22 +16,24 @@
 #'   cc_get_instagram_bd_user(ig_username = "unitednations")
 #' }
 #' }
-cc_get_instagram_bd_user <- function(ig_username,
-                                     fields = c(
-                                       "id",
-                                       "ig_id",
-                                       "username",
-                                       "name",
-                                       "biography",
-                                       "website",
-                                       "followers_count",
-                                       "follows_count",
-                                       "media_count",
-                                       "profile_picture_url"
-                                     ),
-                                     api_version = "v22.0",
-                                     ig_user_id = NULL,
-                                     fb_user_token = NULL) {
+cc_get_instagram_bd_user <- function(
+  ig_username,
+  fields = c(
+    "id",
+    "ig_id",
+    "username",
+    "name",
+    "biography",
+    "website",
+    "followers_count",
+    "follows_count",
+    "media_count",
+    "profile_picture_url"
+  ),
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
+  ig_user_id = NULL,
+  fb_user_token = NULL
+) {
   if (is.null(ig_user_id)) {
     ig_user_id <- cc_get_settings(ig_user_id = ig_user_id) |>
       purrr::pluck("ig_user_id")
@@ -48,7 +50,7 @@ cc_get_instagram_bd_user <- function(ig_username,
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   fields_v <- stringr::str_c(fields, collapse = ",")
@@ -104,11 +106,13 @@ cc_get_instagram_bd_user <- function(ig_username,
 #'   cc_get_instagram_bd_user_basic(ig_username = "unitednations")
 #' }
 #' }
-cc_get_instagram_bd_user_basic <- function(ig_username,
-                                           cache = TRUE,
-                                           api_version = "v22.0",
-                                           ig_user_id = NULL,
-                                           fb_user_token = NULL) {
+cc_get_instagram_bd_user_basic <- function(
+  ig_username,
+  cache = TRUE,
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
+  ig_user_id = NULL,
+  fb_user_token = NULL
+) {
   if (is.null(ig_user_id)) {
     ig_user_id <- cc_get_settings(ig_user_id = ig_user_id) |>
       purrr::pluck("ig_user_id")
@@ -125,7 +129,9 @@ cc_get_instagram_bd_user_basic <- function(ig_username,
 
   if (cache == TRUE) {
     if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
-      cli::cli_abort("Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE.")
+      cli::cli_abort(
+        "Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE."
+      )
     }
     fs::dir_create("cornucopia_db")
 
@@ -158,7 +164,9 @@ cc_get_instagram_bd_user_basic <- function(ig_username,
     previous_ig_bd_users_df <- cc_empty_instagram_ig_bd_users_df
   }
 
-  ig_username_to_process <- unique(ig_username[!ig_username %in% previous_ig_bd_users_df[["username"]]])
+  ig_username_to_process <- unique(ig_username[
+    !ig_username %in% previous_ig_bd_users_df[["username"]]
+  ])
 
   if (length(ig_username_to_process) == 0) {
     return(previous_ig_bd_users_df)
@@ -166,10 +174,13 @@ cc_get_instagram_bd_user_basic <- function(ig_username,
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
-  fields_v <- stringr::str_flatten(colnames(cc_empty_instagram_ig_bd_users_df), collapse = ",")
+  fields_v <- stringr::str_flatten(
+    colnames(cc_empty_instagram_ig_bd_users_df),
+    collapse = ","
+  )
 
   output_df <- purrr::map(
     .progress = TRUE,

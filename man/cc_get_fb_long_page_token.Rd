@@ -7,7 +7,7 @@
 cc_get_fb_long_page_token(
   fb_user_id = NULL,
   fb_user_token = NULL,
-  api_version = "v22.0"
+  meta_api_version = cornucopia::cc_get_meta_api_version()
 )
 }
 \arguments{

@@ -20,10 +20,12 @@
 #' \dontrun{
 #' cc_get_fb_managed_pages()
 #' }
-cc_get_fb_managed_pages <- function(fields = c("id", "name"),
-                                    fb_user_id = NULL,
-                                    fb_user_token = NULL,
-                                    api_version = "v22.0") {
+cc_get_fb_managed_pages <- function(
+  fields = c("id", "name"),
+  fb_user_id = NULL,
+  fb_user_token = NULL,
+  meta_api_version = cornucopia::cc_get_meta_api_version()
+) {
   if (is.null(fb_user_token)) {
     fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
@@ -40,7 +42,7 @@ cc_get_fb_managed_pages <- function(fields = c("id", "name"),
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   api_request <- httr2::request(base_url = base_url) |>

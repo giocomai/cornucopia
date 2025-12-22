@@ -24,13 +24,15 @@
 #' \dontrun{
 #' cc_get_instagram_media()
 #' }
-cc_get_instagram_media <- function(ig_media_id = NULL,
-                                   fields = cc_valid_fields_instagram_media_v,
-                                   api_version = "v22.0",
-                                   ig_user_id = NULL,
-                                   update = TRUE,
-                                   cache = TRUE,
-                                   fb_user_token = NULL) {
+cc_get_instagram_media <- function(
+  ig_media_id = NULL,
+  fields = cc_valid_fields_instagram_media_v,
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
+  ig_user_id = NULL,
+  update = TRUE,
+  cache = TRUE,
+  fb_user_token = NULL
+) {
   if (is.null(ig_user_id)) {
     ig_user_id <- cc_get_settings(ig_user_id = ig_user_id) |>
       purrr::pluck("ig_user_id")
@@ -45,17 +47,18 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
   if (is.null(ig_media_id)) {
     ig_media_id <- cc_get_instagram_media_id(
       ig_user_id = ig_user_id,
-      api_version = api_version,
+      meta_api_version = meta_api_version,
       fb_user_token = fb_user_token,
       cache = cache
     ) |>
       dplyr::pull(ig_media_id)
   }
 
-
   if (cache == TRUE) {
     if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
-      cli::cli_abort("Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE.")
+      cli::cli_abort(
+        "Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE."
+      )
     }
     fs::dir_create("cornucopia_db")
 
@@ -91,7 +94,11 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
     if (nrow(previous_ig_media_df) > 0) {
       previous_ig_media_df <- previous_ig_media_df |>
         dplyr::group_by(ig_media_id) |>
-        dplyr::slice_max(order_by = timestamp_retrieved, n = 1, with_ties = FALSE) |>
+        dplyr::slice_max(
+          order_by = timestamp_retrieved,
+          n = 1,
+          with_ties = FALSE
+        ) |>
         dplyr::ungroup()
 
       if (update == TRUE) {
@@ -121,7 +128,9 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
     previous_ig_media_id_v <- character()
   }
 
-  ig_media_id_to_process_v <- ig_media_id[!(ig_media_id %in% previous_ig_media_id_v)]
+  ig_media_id_to_process_v <- ig_media_id[
+    !(ig_media_id %in% previous_ig_media_id_v)
+  ]
 
   all_new_df <- purrr::map(
     .progress = TRUE,
@@ -130,7 +139,7 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
       current_media_df <- cc_api_get_instagram_media(
         ig_media_id = current_ig_media_id,
         fields = fields,
-        api_version = "v22.0",
+        meta_api_version = meta_api_version,
         fb_user_token = fb_user_token
       )
 
@@ -154,7 +163,11 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
     ) |>
       tibble::as_tibble() |>
       dplyr::group_by(ig_media_id) |>
-      dplyr::slice_max(order_by = timestamp_retrieved, n = 1, with_ties = FALSE) |>
+      dplyr::slice_max(
+        order_by = timestamp_retrieved,
+        n = 1,
+        with_ties = FALSE
+      ) |>
       dplyr::ungroup()
 
     DBI::dbDisconnect(db)
@@ -178,10 +191,12 @@ cc_get_instagram_media <- function(ig_media_id = NULL,
 #' @export
 #'
 #' @examples
-cc_api_get_instagram_media <- function(ig_media_id,
-                                       fields = cc_valid_fields_instagram_media_v,
-                                       api_version = "v22.0",
-                                       fb_user_token = NULL) {
+cc_api_get_instagram_media <- function(
+  ig_media_id,
+  fields = cc_valid_fields_instagram_media_v,
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
+  fb_user_token = NULL
+) {
   if (is.null(fb_user_token)) {
     fb_user_token <- cc_get_settings(fb_user_token = fb_user_token) |>
       purrr::pluck("fb_user_token")
@@ -195,7 +210,7 @@ cc_api_get_instagram_media <- function(ig_media_id,
 
   base_url <- stringr::str_c(
     "https://graph.facebook.com/",
-    api_version
+    meta_api_version
   )
 
   fields_v <- stringr::str_flatten(fields, collapse = ",")
@@ -219,11 +234,18 @@ cc_api_get_instagram_media <- function(ig_media_id,
 
   output_df <- tibble::as_tibble(current_l) |>
     dplyr::rename(ig_media_id = id) |>
-    dplyr::mutate(timestamp_retrieved = strftime(as.POSIXlt(Sys.time(), "UTC"), "%Y-%m-%dT%H:%M:%S%z"))
+    dplyr::mutate(
+      timestamp_retrieved = strftime(
+        as.POSIXlt(Sys.time(), "UTC"),
+        "%Y-%m-%dT%H:%M:%S%z"
+      )
+    )
 
   if ("owner" %in% colnames(output_df)) {
     output_df <- output_df |>
-      dplyr::mutate(owner = as.character(unlist(stringr::str_c(owner, collapse = ";"))))
+      dplyr::mutate(
+        owner = as.character(unlist(stringr::str_c(owner, collapse = ";")))
+      )
   }
 
   output_df <- dplyr::bind_rows(
@@ -233,7 +255,11 @@ cc_api_get_instagram_media <- function(ig_media_id,
 
   fields_filter <- fields[fields != "id"]
 
-  final_output_df <- output_df[c("ig_media_id", fields_filter, "timestamp_retrieved")]
+  final_output_df <- output_df[c(
+    "ig_media_id",
+    fields_filter,
+    "timestamp_retrieved"
+  )]
 
   final_output_df
 }
