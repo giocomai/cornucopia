@@ -15,9 +15,22 @@ cc_get_fb_page_insights(
 )
 }
 \arguments{
-\item{fb_page_token}{}
+\item{metric}{Defaults to `page_impressions`.}
+
+\item{start_date}{Defaults to 91 days before today}
+
+\item{end_date}{Defaults to yesterday.}
+
+\item{fb_page_id}{Facebook page identifier. Can be retrieved with
+[cc_get_fb_managed_pages()].}
+
+\item{fb_page_token}{Facebook page token, different from the user token. Can
+be retrieved with [cc_get_fb_page_token()] or
+[cc_get_fb_long_page_token()].}
 }
 \description{
-Official documentation: \url{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights}
-For avaialable metrics, see: \url{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#availmetrics}
+Official documentation:
+\url{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights}
+For avaialable metrics, see:
+\url{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#availmetrics}
 }

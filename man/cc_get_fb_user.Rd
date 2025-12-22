@@ -15,7 +15,8 @@ cc_get_fb_user(
 )
 }
 \arguments{
-\item{fb_user_token}{Facebook user token (not a page token).}
+\item{fb_user_token}{Facebook user token different from page token. Can be
+retrieved with [cc_get_fb_user_token()] or [cc_get_fb_long_user_token()].}
 }
 \value{
 By default, a data frame with one row and two character columns,

@@ -24,7 +24,15 @@ cc_set(
 
 \item{end_date}{Defaults to yesterday.}
 
-\item{fb_user_token}{Facebook user token (not a page token).}
+\item{fb_user_token}{Facebook user token different from page token. Can be
+retrieved with [cc_get_fb_user_token()] or [cc_get_fb_long_user_token()].}
+
+\item{fb_page_token}{Facebook page token, different from the user token. Can
+be retrieved with [cc_get_fb_page_token()] or
+[cc_get_fb_long_page_token()].}
+
+\item{fb_page_id}{Facebook page identifier. Can be retrieved with
+[cc_get_fb_managed_pages()].}
 
 \item{fb_business_id}{Facebook business id. For details on how to find it,
 see \url{https://www.facebook.com/business/help/1181250022022158}}

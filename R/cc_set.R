@@ -3,7 +3,13 @@
 #'
 #' @param start_date Defaults to 91 days before today
 #' @param end_date Defaults to yesterday.
-#' @param fb_user_token Facebook user token (not a page token).
+#' @param fb_user_token Facebook user token different from page token. Can be
+#'   retrieved with [cc_get_fb_user_token()] or [cc_get_fb_long_user_token()].
+#' @param fb_page_token Facebook page token, different from the user token. Can
+#'   be retrieved with [cc_get_fb_page_token()] or
+#'   [cc_get_fb_long_page_token()].
+#' @param fb_page_id Facebook page identifier. Can be retrieved with
+#'   [cc_get_fb_managed_pages()].
 #' @param fb_business_id Facebook business id. For details on how to find it,
 #'   see \url{https://www.facebook.com/business/help/1181250022022158}
 #' @param ga_email E-mail addressed associated with relevant Google Analytics
@@ -20,24 +26,29 @@
 #' }
 #' }
 #'
-cc_set <- function(start_date = NULL,
-                   end_date = NULL,
-                   fb_user_token = NULL,
-                   fb_page_token = NULL,
-                   fb_page_id = NULL,
-                   fb_business_id = NULL,
-                   fb_ad_account_id = NULL,
-                   fb_product_catalog_id = NULL,
-                   fb_user_id = NULL,
-                   ig_user_id = NULL,
-                   ga_email = NULL,
-                   ga_property_id = NULL) {
+cc_set <- function(
+  start_date = NULL,
+  end_date = NULL,
+  fb_user_token = NULL,
+  fb_page_token = NULL,
+  fb_page_id = NULL,
+  fb_business_id = NULL,
+  fb_ad_account_id = NULL,
+  fb_product_catalog_id = NULL,
+  fb_user_id = NULL,
+  ig_user_id = NULL,
+  ga_email = NULL,
+  ga_property_id = NULL
+) {
   if (is.null(start_date)) {
     start_date <- Sys.getenv("cornucopia_start_date")
   } else {
     Sys.setenv(cornucopia_start_date = as.character(start_date))
   }
-  if ((is.na(start_date == "") & is.na(start_date)) | (is.na(start_date == "") == FALSE & start_date == "")) {
+  if (
+    (is.na(start_date == "") & is.na(start_date)) |
+      (is.na(start_date == "") == FALSE & start_date == "")
+  ) {
     start_date <- Sys.Date() - 91
   }
 
@@ -46,7 +57,10 @@ cc_set <- function(start_date = NULL,
   } else {
     Sys.setenv(cornucopia_end_date = as.character(end_date))
   }
-  if ((is.na(end_date == "") & is.na(end_date)) | (is.na(end_date == "") == FALSE & end_date == "")) {
+  if (
+    (is.na(end_date == "") & is.na(end_date)) |
+      (is.na(end_date == "") == FALSE & end_date == "")
+  ) {
     end_date <- Sys.Date() - 1
   }
 
@@ -83,7 +97,9 @@ cc_set <- function(start_date = NULL,
   if (is.null(fb_product_catalog_id)) {
     fb_product_catalog_id <- Sys.getenv("cornucopia_fb_product_catalog_id")
   } else {
-    Sys.setenv(cornucopia_fb_product_catalog_id = as.character(fb_product_catalog_id))
+    Sys.setenv(
+      cornucopia_fb_product_catalog_id = as.character(fb_product_catalog_id)
+    )
   }
 
   if (is.null(fb_user_id)) {
@@ -109,7 +125,6 @@ cc_set <- function(start_date = NULL,
   } else {
     Sys.setenv(cornucopia_ga_property_id = as.character(ga_property_id))
   }
-
 
   invisible(list(
     start_date = lubridate::as_date(start_date),
@@ -145,22 +160,27 @@ cc_set <- function(start_date = NULL,
 #' }
 #' }
 #'
-cc_get_settings <- function(start_date = NULL,
-                            end_date = NULL,
-                            fb_user_token = NULL,
-                            fb_page_token = NULL,
-                            fb_page_id = NULL,
-                            fb_business_id = NULL,
-                            fb_ad_account_id = NULL,
-                            fb_product_catalog_id = NULL,
-                            fb_user_id = NULL,
-                            ig_user_id = NULL,
-                            ga_email = NULL,
-                            ga_property_id = NULL) {
+cc_get_settings <- function(
+  start_date = NULL,
+  end_date = NULL,
+  fb_user_token = NULL,
+  fb_page_token = NULL,
+  fb_page_id = NULL,
+  fb_business_id = NULL,
+  fb_ad_account_id = NULL,
+  fb_product_catalog_id = NULL,
+  fb_user_id = NULL,
+  ig_user_id = NULL,
+  ga_email = NULL,
+  ga_property_id = NULL
+) {
   if (is.null(start_date)) {
     start_date <- Sys.getenv("cornucopia_start_date")
   }
-  if ((is.na(start_date == "") & is.na(start_date)) | (is.na(start_date == "") == FALSE & start_date == "")) {
+  if (
+    (is.na(start_date == "") & is.na(start_date)) |
+      (is.na(start_date == "") == FALSE & start_date == "")
+  ) {
     start_date <- Sys.Date() - 91
   }
 
@@ -168,7 +188,10 @@ cc_get_settings <- function(start_date = NULL,
     end_date <- Sys.getenv("cornucopia_end_date")
   }
 
-  if ((is.na(end_date == "") & is.na(end_date)) | (is.na(end_date == "") == FALSE & end_date == "")) {
+  if (
+    (is.na(end_date == "") & is.na(end_date)) |
+      (is.na(end_date == "") == FALSE & end_date == "")
+  ) {
     end_date <- Sys.Date() - 1
   }
 

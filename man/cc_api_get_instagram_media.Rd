@@ -19,7 +19,8 @@ A list of identifiers for your account can be retrieved with
 
 \item{api_version}{Defaults to "v21.0".}
 
-\item{fb_user_token}{Facebook user token (not a page token).}
+\item{fb_user_token}{Facebook user token different from page token. Can be
+retrieved with [cc_get_fb_user_token()] or [cc_get_fb_long_user_token()].}
 }
 \description{
 Get information about a single media directly from the API. Mostly used

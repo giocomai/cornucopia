@@ -18,7 +18,8 @@ be confused with legacy Instagram account id.}
 
 \item{api_version}{Defaults to "v21.0".}
 
-\item{fb_user_token}{Facebook user token (not a page token).}
+\item{fb_user_token}{Facebook user token different from page token. Can be
+retrieved with [cc_get_fb_user_token()] or [cc_get_fb_long_user_token()].}
 
 \item{max_pages}{Defaults to NULL. If not given, it retrieves the number of media and calculates max number of pages needed. Hard-coded max number of pages at 1000.}
 }

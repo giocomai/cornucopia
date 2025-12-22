@@ -1,11 +1,12 @@
 #' Get Facebook page insights
 #'
-#' Official documentation: \url{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights}
-#' For avaialable metrics, see: \url{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#availmetrics}
+#' Official documentation:
+#' \url{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights}
+#' For avaialable metrics, see:
+#' \url{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#availmetrics}
 #'
-#' @param metric
-#' @param fb_page_id
-#' @param fb_page_token
+#' @param metric Defaults to `page_impressions`.
+#' @inheritParams cc_set
 #'
 #' @return
 #' @export

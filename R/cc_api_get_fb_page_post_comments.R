@@ -1,73 +1,4 @@
-#' Get Facebook page posts insights
-#'
-#' For reference, see: https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts
-#' defaults to Lifetime period for each post.
-#'
-#' Cache not yet working.
-#'
-#' @inheritParams cc_api_get_fb_page_post_insights
-#'
-#' @return
-#' @export
-#'
-#' @examples
-cc_get_fb_page_post_insights <- function(
-  fb_post_id = NULL,
-  metric = cc_valid_fields_fb_post_insights,
-  period = "lifetime",
-  cache = TRUE,
-  update = TRUE,
-  api_version = "v24.0",
-  fb_page_id = NULL,
-  fb_page_token = NULL
-) {
-  if (is.null(fb_page_token)) {
-    fb_page_token <- cc_get_settings(fb_page_token = fb_page_token) |>
-      purrr::pluck("fb_page_token")
-  } else {
-    fb_page_token <- as.character(fb_page_token)
-  }
-
-  if (is.null(fb_page_id)) {
-    fb_page_id <- cc_get_settings(fb_page_id = fb_page_id) |>
-      purrr::pluck("fb_page_id")
-  } else {
-    fb_page_id <- as.character(fb_page_id)
-  }
-
-  if (is.null(fb_post_id)) {
-    cc_get_fb_page_posts(
-      api_version = api_version,
-      max_pages = NULL,
-      fields = names(cc_empty_fb_page_post_df),
-      cache = cache,
-      fb_page_id = fb_page_id,
-      fb_page_token = fb_page_token
-    ) |>
-      dplyr::pull(id)
-  }
-
-  purrr::map(
-    .x = fb_post_id,
-    .progress = TRUE,
-    .f = function(x) {
-      cc_api_get_fb_page_post_insights(
-        fb_post_id = x,
-        metric = metric,
-        period = period,
-        cache = cache,
-        update = update,
-        api_version = api_version,
-        fb_page_id = fb_page_id,
-        fb_page_token = fb_page_token
-      )
-    }
-  ) |>
-    purrr::list_rbind()
-}
-
-
-#' Get information about a single media directly from the API. Mostly used
+#' Get information about a comments from the API. Mostly used
 #' internally.
 #'
 #' See the official documentation for reference:
@@ -87,7 +18,7 @@ cc_get_fb_page_post_insights <- function(
 #' @export
 #'
 #' @examples
-cc_api_get_fb_page_post_insights <- function(
+cc_api_get_fb_page_post_comments <- function(
   fb_post_id,
   metric = cc_valid_fields_fb_post_insights,
   period = "lifetime",
@@ -132,9 +63,8 @@ cc_api_get_fb_page_post_insights <- function(
     httr2::req_perform() |>
     httr2::resp_body_json()
 
-  if (!is.null(response_l[["error"]][["message"]])) {
-    cli::cli_alert_warning(response_l[["error"]][["message"]])
-    return(NULL)
+  if (is.null(response_l[["error"]][["message"]]) == FALSE) {
+    cli::cli_abort(response_l[["error"]][["message"]])
   }
 
   output_df <- purrr::map(

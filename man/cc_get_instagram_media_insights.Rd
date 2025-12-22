@@ -24,7 +24,8 @@ NULL, a full list is automatically retrieved.}
 \item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to
 be confused with legacy Instagram account id.}
 
-\item{fb_user_token}{Facebook user token (not a page token).}
+\item{fb_user_token}{Facebook user token different from page token. Can be
+retrieved with [cc_get_fb_user_token()] or [cc_get_fb_long_user_token()].}
 }
 \description{
 It retrieves the requested metrics from the APIs and introduces a few

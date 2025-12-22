@@ -18,7 +18,8 @@ to retrieve you Facebook page access token.}
 \item{fb_user_id}{Facebook user id. Defaults to NULL, can be set with
 `cc_set()`. Can be retrieved with `cc_get_fb_user()`.}
 
-\item{fb_user_token}{Facebook user token (not a page token).}
+\item{fb_user_token}{Facebook user token different from page token. Can be
+retrieved with [cc_get_fb_user_token()] or [cc_get_fb_long_user_token()].}
 
 \item{api_version}{Defaults to "v21.0".}
 }
