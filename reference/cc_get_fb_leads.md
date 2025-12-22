@@ -12,7 +12,7 @@ cc_get_fb_leads(
   fb_page_token = NULL,
   fb_user_token = NULL,
   max_pages = NULL,
-  api_version = "v22.0"
+  meta_api_version = cornucopia::cc_get_meta_api_version()
 )
 ```
 
@@ -42,9 +42,10 @@ cc_get_fb_leads(
   Maximum number of pages to retrieve (15 responses are included in each
   page). Defaults to 1000 pages internally.
 
-- api_version:
+- meta_api_version:
 
-  Defaults to "v21.0".
+  Defaults to the latest API at the time this package was last updated.
+  Currently, this corresponds to api version 24.0.
 
 ## Value
 

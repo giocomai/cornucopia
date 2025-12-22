@@ -11,7 +11,7 @@ cc_get_instagram_bd_user(
   ig_username,
   fields = c("id", "ig_id", "username", "name", "biography", "website",
     "followers_count", "follows_count", "media_count", "profile_picture_url"),
-  api_version = "v22.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   ig_user_id = NULL,
   fb_user_token = NULL
 )

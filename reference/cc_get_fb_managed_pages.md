@@ -13,7 +13,7 @@ cc_get_fb_managed_pages(
   fields = c("id", "name"),
   fb_user_id = NULL,
   fb_user_token = NULL,
-  api_version = "v22.0"
+  meta_api_version = cornucopia::cc_get_meta_api_version()
 )
 ```
 
@@ -34,9 +34,10 @@ cc_get_fb_managed_pages(
   Facebook user token different from page token. Can be retrieved with
   \[cc_get_fb_user_token()\] or \[cc_get_fb_long_user_token()\].
 
-- api_version:
+- meta_api_version:
 
-  Defaults to "v21.0".
+  Defaults to the latest API at the time this package was last updated.
+  Currently, this corresponds to api version 24.0.
 
 ## Value
 

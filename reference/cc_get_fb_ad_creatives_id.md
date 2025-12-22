@@ -9,7 +9,7 @@ https://developers.facebook.com/docs/marketing-api/reference/adgroup/adcreatives
 cc_get_fb_ad_creatives_id(
   ad_id = NULL,
   ad_account_id = NULL,
-  api_version = "v22.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   cache = TRUE,
   fb_user_token = NULL
 )

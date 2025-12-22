@@ -6,6 +6,7 @@ Typically set with \`cc_set()\`.
 
 ``` r
 cc_get_settings(
+  meta_api_version = NULL,
   start_date = NULL,
   end_date = NULL,
   fb_user_token = NULL,

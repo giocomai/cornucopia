@@ -10,7 +10,7 @@ cc_get_fb_long_user_token(
   fb_user_token = NULL,
   fb_app_id = NULL,
   fb_app_secret = NULL,
-  api_version = "v22.0"
+  meta_api_version = cornucopia::cc_get_meta_api_version()
 )
 ```
 

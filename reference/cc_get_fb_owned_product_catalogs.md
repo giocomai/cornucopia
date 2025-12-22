@@ -9,7 +9,7 @@ https://developers.facebook.com/docs/marketing-api/reference/product-catalog
 ``` r
 cc_get_fb_owned_product_catalogs(
   fb_business_id = NULL,
-  api_version = "v22.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   fields = c("id", "business", "commerce_merchant_settings", "da_display_settings",
     "default_image_url", "fallback_image_url", "feed_count", "is_catalog_segment",
     "name", "product_count", "vertical"),
@@ -24,9 +24,10 @@ cc_get_fb_owned_product_catalogs(
   Facebook business id. For details on how to find it, see
   <https://www.facebook.com/business/help/1181250022022158>
 
-- api_version:
+- meta_api_version:
 
-  Defaults to "v21.0".
+  Defaults to the latest API at the time this package was last updated.
+  Currently, this corresponds to api version 24.0.
 
 - fields:
 

@@ -8,7 +8,7 @@ documentation:
 
 ``` r
 cc_get_fb_page_posts(
-  api_version = "v24.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   max_pages = NULL,
   fields = names(cc_empty_fb_page_post_df),
   cache = TRUE,
@@ -29,7 +29,7 @@ cc_get_fb_page_posts(
   Lists of fields which return data consistently, see
   \`names(cc_empty_fb_page_post_df)\` for a full list and the official
   documentation for more details
-  <https://developers.facebook.com/docs/graph-api/reference/v21.0/page/feed>.
+  <https://developers.facebook.com/docs/graph-api/reference/v24.0/page/feed>.
   Expect caching to work consistently only if you leave this value
   unchanged. Consider disabling caching if you customise this parameter.
 

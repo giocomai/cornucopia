@@ -6,6 +6,7 @@ Set settings and token for the session
 
 ``` r
 cc_set(
+  meta_api_version = "v24.0",
   start_date = NULL,
   end_date = NULL,
   fb_user_token = NULL,
@@ -22,6 +23,11 @@ cc_set(
 ```
 
 ## Arguments
+
+- meta_api_version:
+
+  Defaults to the latest API at the time this package was last updated.
+  Currently, this corresponds to api version 24.0.
 
 - start_date:
 

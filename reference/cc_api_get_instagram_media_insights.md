@@ -10,7 +10,7 @@ cc_api_get_instagram_media_insights(
   ig_media_id,
   metrics = NULL,
   media_type = NULL,
-  api_version = "v22.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   ig_user_id = NULL,
   fb_user_token = NULL
 )
@@ -40,9 +40,10 @@ cc_api_get_instagram_media_insights(
   with \`cc_get_instagram_media\`. Ignored if \`metrics\` explicitly
   given.
 
-- api_version:
+- meta_api_version:
 
-  Defaults to "v21.0".
+  Defaults to the latest API at the time this package was last updated.
+  Currently, this corresponds to api version 24.0.
 
 - ig_user_id:
 

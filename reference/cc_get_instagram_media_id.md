@@ -7,7 +7,7 @@ Get identifiers of all media published on a profile
 ``` r
 cc_get_instagram_media_id(
   ig_user_id = NULL,
-  api_version = "v22.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   fb_user_token = NULL,
   max_pages = NULL,
   cache = TRUE
@@ -21,9 +21,10 @@ cc_get_instagram_media_id(
   Instagram user id, typically composed of 17 digits. Not to be confused
   with legacy Instagram account id.
 
-- api_version:
+- meta_api_version:
 
-  Defaults to "v21.0".
+  Defaults to the latest API at the time this package was last updated.
+  Currently, this corresponds to api version 24.0.
 
 - fb_user_token:
 

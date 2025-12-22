@@ -8,7 +8,7 @@ Data are not cached locally.
 cc_get_fb_products(
   fb_product_catalog_id = NULL,
   fields = cc_valid_fields_fb_product,
-  api_version = "v22.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   max_pages = NULL,
   token = NULL
 )

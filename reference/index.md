@@ -114,6 +114,8 @@
   : Get files with follower stats exported from LinkedIn
 - [`cc_get_linkedin_stats_visitors()`](https://giocomai.github.io/cornucopia/reference/cc_get_linkedin_stats_visitors.md)
   : Get files with visitors stats exported from LinkedIn
+- [`cc_get_meta_api_version()`](https://giocomai.github.io/cornucopia/reference/cc_get_meta_api_version.md)
+  : Retrieve version of Meta API.
 - [`cc_get_settings()`](https://giocomai.github.io/cornucopia/reference/cc_get_settings.md)
   : Retrieve settings for the session.
 - [`cc_nomnoml()`](https://giocomai.github.io/cornucopia/reference/cc_nomnoml.md)

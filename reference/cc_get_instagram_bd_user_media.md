@@ -16,7 +16,7 @@ cc_get_instagram_bd_user_media(
   limit = 80,
   update = TRUE,
   cache = TRUE,
-  api_version = "v23.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   ig_user_id = NULL,
   fb_user_token = NULL
 )

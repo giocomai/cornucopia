@@ -11,7 +11,7 @@ cc_get_fb_ads_daily(
   level = "campaign",
   start_date = NULL,
   end_date = NULL,
-  api_version = "v22.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   fb_ad_account_id = NULL,
   max_pages = NULL,
   fb_user_token = NULL,

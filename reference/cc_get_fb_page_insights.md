@@ -12,7 +12,7 @@ cc_get_fb_page_insights(
   metric = c("page_impressions"),
   start_date = NULL,
   end_date = NULL,
-  api_version = "v24.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   cache = TRUE,
   fb_page_id = NULL,
   fb_page_token = NULL
@@ -32,6 +32,11 @@ cc_get_fb_page_insights(
 - end_date:
 
   Defaults to yesterday.
+
+- meta_api_version:
+
+  Defaults to the latest API at the time this package was last updated.
+  Currently, this corresponds to api version 24.0.
 
 - fb_page_id:
 

@@ -8,7 +8,7 @@ If you need to retrieve your Instagram user id, consider
 ``` r
 cc_get_instagram_user(
   ig_user_id = NULL,
-  api_version = "v22.0",
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
   fields = c("id", "ig_id", "username", "name", "biography", "website",
     "followers_count", "follows_count", "media_count", "profile_picture_url"),
   fb_user_token = NULL
@@ -22,9 +22,10 @@ cc_get_instagram_user(
   Instagram user id, typically composed of 17 digits. Not to be confused
   with legacy Instagram account id.
 
-- api_version:
+- meta_api_version:
 
-  Defaults to "v21.0".
+  Defaults to the latest API at the time this package was last updated.
+  Currently, this corresponds to api version 24.0.
 
 - fields:
 

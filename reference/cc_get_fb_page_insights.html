@@ -13,7 +13,7 @@ https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#availmet
 
     <a class="navbar-brand me-2" href="../index.html">cornucopia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9025</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +50,7 @@ For avaialable metrics, see:
 <span>  metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"page_impressions"</span><span class="op">)</span>,</span>
 <span>  start_date <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  end_date <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  api_version <span class="op">=</span> <span class="st">"v24.0"</span>,</span>
+<span>  meta_api_version <span class="op">=</span> <span class="fu">cornucopia</span><span class="fu">::</span><span class="fu"><a href="cc_get_meta_api_version.html">cc_get_meta_api_version</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fb_page_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fb_page_token <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -71,6 +71,11 @@ For avaialable metrics, see:
 
 <dt id="arg-end-date">end_date<a class="anchor" aria-label="anchor" href="#arg-end-date"></a></dt>
 <dd><p>Defaults to yesterday.</p></dd>
+
+
+<dt id="arg-meta-api-version">meta_api_version<a class="anchor" aria-label="anchor" href="#arg-meta-api-version"></a></dt>
+<dd><p>Defaults to the latest API at the time this package was
+last updated. Currently, this corresponds to api version 24.0.</p></dd>
 
 
 <dt id="arg-fb-page-id">fb_page_id<a class="anchor" aria-label="anchor" href="#arg-fb-page-id"></a></dt>

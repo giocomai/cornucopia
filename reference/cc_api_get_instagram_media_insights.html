@@ -9,7 +9,7 @@ https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights">
 
     <a class="navbar-brand me-2" href="../index.html">cornucopia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9025</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +44,7 @@ https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights">
 <span>  <span class="va">ig_media_id</span>,</span>
 <span>  metrics <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  media_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  api_version <span class="op">=</span> <span class="st">"v22.0"</span>,</span>
+<span>  meta_api_version <span class="op">=</span> <span class="fu">cornucopia</span><span class="fu">::</span><span class="fu"><a href="cc_get_meta_api_version.html">cc_get_meta_api_version</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  ig_user_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fb_user_token <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -73,8 +73,9 @@ metrics will cause an error. Defaults to NULL. If left to NULL, metrics will be 
 `cc_get_instagram_media`. Ignored if `metrics` explicitly given.</p></dd>
 
 
-<dt id="arg-api-version">api_version<a class="anchor" aria-label="anchor" href="#arg-api-version"></a></dt>
-<dd><p>Defaults to "v21.0".</p></dd>
+<dt id="arg-meta-api-version">meta_api_version<a class="anchor" aria-label="anchor" href="#arg-meta-api-version"></a></dt>
+<dd><p>Defaults to the latest API at the time this package was
+last updated. Currently, this corresponds to api version 24.0.</p></dd>
 
 
 <dt id="arg-ig-user-id">ig_user_id<a class="anchor" aria-label="anchor" href="#arg-ig-user-id"></a></dt>
