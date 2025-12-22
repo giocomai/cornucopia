@@ -21,4 +21,24 @@ cc_get_fb_page_insights(
 
 ## Arguments
 
+- metric:
+
+  Defaults to \`page_impressions\`.
+
+- start_date:
+
+  Defaults to 91 days before today
+
+- end_date:
+
+  Defaults to yesterday.
+
+- fb_page_id:
+
+  Facebook page identifier. Can be retrieved with
+  \[cc_get_fb_managed_pages()\].
+
 - fb_page_token:
+
+  Facebook page token, different from the user token. Can be retrieved
+  with \[cc_get_fb_page_token()\] or \[cc_get_fb_long_page_token()\].

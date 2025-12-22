@@ -28,7 +28,8 @@ cc_check_instagram_media_update(
 
 - fb_user_token:
 
-  Facebook user token (not a page token).
+  Facebook user token different from page token. Can be retrieved with
+  \[cc_get_fb_user_token()\] or \[cc_get_fb_long_user_token()\].
 
 ## Value
 

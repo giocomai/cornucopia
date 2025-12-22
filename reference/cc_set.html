@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cornucopia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9024</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9025</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,19 @@
 
 
 <dt id="arg-fb-user-token">fb_user_token<a class="anchor" aria-label="anchor" href="#arg-fb-user-token"></a></dt>
-<dd><p>Facebook user token (not a page token).</p></dd>
+<dd><p>Facebook user token different from page token. Can be
+retrieved with [cc_get_fb_user_token()] or [cc_get_fb_long_user_token()].</p></dd>
+
+
+<dt id="arg-fb-page-token">fb_page_token<a class="anchor" aria-label="anchor" href="#arg-fb-page-token"></a></dt>
+<dd><p>Facebook page token, different from the user token. Can
+be retrieved with [cc_get_fb_page_token()] or
+[cc_get_fb_long_page_token()].</p></dd>
+
+
+<dt id="arg-fb-page-id">fb_page_id<a class="anchor" aria-label="anchor" href="#arg-fb-page-id"></a></dt>
+<dd><p>Facebook page identifier. Can be retrieved with
+[cc_get_fb_managed_pages()].</p></dd>
 
 
 <dt id="arg-fb-business-id">fb_business_id<a class="anchor" aria-label="anchor" href="#arg-fb-business-id"></a></dt>

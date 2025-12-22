@@ -2,6 +2,9 @@
 
 ## All functions
 
+- [`cc_api_get_fb_page_post_comments()`](https://giocomai.github.io/cornucopia/reference/cc_api_get_fb_page_post_comments.md)
+  : Get information about a comments from the API. Mostly used
+  internally.
 - [`cc_api_get_fb_page_post_insights()`](https://giocomai.github.io/cornucopia/reference/cc_api_get_fb_page_post_insights.md)
   : Get information about a single media directly from the API. Mostly
   used internally.
