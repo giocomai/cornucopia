@@ -383,6 +383,216 @@ the documentation example code that may suggest to include your tokens
 as plaintext: you now know that with `keyring` there is a better way.
 You have been warned.
 
+Here is a script that, if run step by step (read the comments!) should
+make it reasonably quick to store securely either short-term or
+long-term tokens as well as relevant identifiers for your Facebook pages
+and Instagram accounts:
+
+``` r
+library("cornucopia")
+library("keyring")
+
+# set your keyring name - useful if you want to use separate keyrings for separate accounts
+keyring_name <- "your_keyring_name"
+
+# this is to create a new keyring, should be run only once
+keyring::keyring_create(keyring = keyring_name)
+
+# generate a short-lived user token with the required permissions from the following page:
+# https://developers.facebook.com/tools/explorer/
+# likely useful permissions include:
+# business_management; instagram_basic; instagram_manage_insights; pages_read_engagement;
+# pages_manage_metadata; pages_read_user_content; ads_read; read_insights; pages_show_list;
+keyring::key_set(keyring = keyring_name, service = "fb_user_token")
+
+# retrieve and set fb_user_id
+keyring::key_set_with_value(
+  keyring = keyring_name,
+  service = "fb_user_id",
+  password = cc_get_fb_user(
+    fb_user_token = keyring::key_get(
+      keyring = keyring_name,
+      service = "fb_user_token"
+    )
+  ) |>
+    dplyr::pull(id)
+)
+
+# set for the current session fb_user_token and fb_user_id
+cc_set(
+  fb_user_token = keyring::key_get(
+    keyring = keyring_name,
+    service = "fb_user_token"
+  ),
+  fb_user_id = keyring::key_get(
+    keyring = keyring_name,
+    service = "fb_user_id"
+  )
+)
+
+# use the access to retrieve the identifier for the pages you manage
+pages_df <- cc_get_fb_managed_pages()
+
+
+# this will store the page identifier for each page,
+# then retrieve the token, and store it as well.
+# in order to retrieve it, use the full page name
+# consider keeping only the pages you need
+pages_df
+
+purrr::walk(
+  .progress = TRUE,
+  .x = purrr::transpose(.l = pages_df),
+  .f = \(current_page) {
+    keyring::key_set_with_value(
+      keyring = keyring_name,
+      service = "fb_page_id",
+      username = current_page[["name"]],
+      password = current_page[["id"]]
+    )
+
+    current_page_token <- cc_get_fb_page_token(
+      fb_user_id = keyring::key_get(
+        keyring = keyring_name,
+        service = "fb_user_id"
+      ),
+      fb_user_token = keyring::key_get(
+        keyring = keyring_name,
+        service = "fb_user_token"
+      ),
+      page_id = keyring::key_get(
+        keyring = keyring_name,
+        service = "fb_page_id",
+        username = current_page[["name"]]
+      )
+    )
+
+    keyring::key_set_with_value(
+      keyring = keyring_name,
+      service = "fb_page_token",
+      username = current_page[["name"]],
+      password = current_page_token
+    )
+
+    Sys.sleep(1)
+
+    current_ig_user_id <- cc_get_instagram_user_id(
+      fb_page_id = keyring::key_get(
+        keyring = keyring_name,
+        service = "fb_page_id",
+        username = current_page[["name"]]
+      )
+    )
+
+    if (!is.null(current_ig_user_id)) {
+      current_ig_username <- cc_get_instagram_user(
+        ig_user_id = current_ig_user_id,
+        fb_user_token = keyring::key_get(
+          keyring = keyring_name,
+          service = "fb_user_token"
+        )
+      ) |>
+        dplyr::pull(username)
+
+      keyring::key_set_with_value(
+        keyring = keyring_name,
+        service = "ig_user_id",
+        username = current_ig_username,
+        password = current_ig_user_id
+      )
+    }
+  }
+)
+
+# if you only need short-lived tokens, that may be all you need
+# but to get long-lived tokens, you'll need your
+# fb_app_id and fb_app_secret
+# they can be retrieved from your app page:
+# https://developers.facebook.com/apps/
+
+# keyring::key_set_with_value(keyring = keyring_name,
+#                             service = "fb_app_id",
+#                             username = "cornucopiar",
+#                             password = "your_fb_app_id_here")
+#
+# keyring::key_set_with_value(keyring = keyring_name,
+#                             service = "fb_app_secret",
+#                             username = "cornucopiar",
+#                             password = "your_fb_app_secret_here")
+
+long_user_token <- cc_get_fb_long_user_token(
+  fb_user_token = keyring::key_get(
+    keyring = keyring_name,
+    service = "fb_user_token"
+  ),
+  fb_app_id = keyring::key_get(
+    keyring = keyring_name,
+    service = "fb_app_id",
+    username = "cornucopiar" # use your app name here
+  ),
+  fb_app_secret = keyring::key_get(
+    keyring = keyring_name,
+    service = "fb_app_secret",
+    username = "cornucopiar" # use your app name here
+  )
+)
+
+# then retrieve your long-lived page tokens
+long_page_token_df <- cc_get_fb_long_page_token(
+  fb_user_id = keyring::key_get(
+    keyring = keyring_name,
+    service = "fb_user_id"
+  ),
+  fb_user_token = long_user_token
+)
+
+# then store them
+
+# first the long-user token
+
+keyring::key_set_with_value(
+  keyring = keyring_name,
+  service = "fb_user_token",
+  password = long_user_token
+)
+
+# then the page tokens
+purrr::walk(
+  .progress = TRUE,
+  .x = purrr::transpose(.l = long_page_token_df),
+  .f = \(current_long_page_token) {
+    keyring::key_set_with_value(
+      keyring = keyring_name,
+      service = "fb_page_id",
+      username = current_long_page_token[["page_name"]],
+      password = current_long_page_token[["page_id"]]
+    )
+
+    keyring::key_set_with_value(
+      keyring = keyring_name,
+      service = "fb_page_token",
+      username = current_long_page_token[["page_name"]],
+      password = current_long_page_token[["access_token"]]
+    )
+  }
+)
+
+
+cc_set(
+  fb_user_token = keyring::key_get(
+    keyring = keyring_name,
+    service = "fb_user_token"
+  ),
+  fb_user_id = keyring::key_get(
+    keyring = keyring_name,
+    service = "fb_user_id"
+  )
+)
+
+# then add all the other identifiers and tokens as needed:
+# they should all be stored in the local keyring
+```
+
 #### Once you’ve got your tokens
 
 Now that you have these tokens, you probably want to set them and let
@@ -629,6 +839,15 @@ the United Nation, you would run:
 
 ``` r
 cc_get_instagram_bd_user(ig_username = "unitednations")
+```
+
+To retrieve information about individual posts, you would proceed as
+follows:
+
+(caching not yet implemented)
+
+``` r
+cc_get_instagram_bd_user_media(ig_username = "unitednations", max_pages = 1)
 ```
 
 ### Retrieve leads from Meta ads
