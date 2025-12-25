@@ -40,7 +40,10 @@ cc_set <- function(
   fb_user_id = NULL,
   ig_user_id = NULL,
   ga_email = NULL,
-  ga_property_id = NULL
+  ga_property_id = NULL,
+  woocommerce_api_version = "v3",
+  woocommerce_username = NULL,
+  woocommerce_password = NULL
 ) {
   if (is.null(meta_api_version)) {
     meta_api_version <- Sys.getenv("cornucopia_meta_api_version")
@@ -134,7 +137,32 @@ cc_set <- function(
     Sys.setenv(cornucopia_ga_property_id = as.character(ga_property_id))
   }
 
+  if (is.null(woocommerce_api_version)) {
+    woocommerce_api_version <- Sys.getenv("cornucopia_woocommerce_api_version")
+  } else {
+    Sys.setenv(
+      cornucopia_woocommerce_api_version = as.character(woocommerce_api_version)
+    )
+  }
+
+  if (is.null(woocommerce_username)) {
+    woocommerce_username <- Sys.getenv("cornucopia_woocommerce_username")
+  } else {
+    Sys.setenv(
+      cornucopia_woocommerce_username = as.character(woocommerce_username)
+    )
+  }
+
+  if (is.null(woocommerce_password)) {
+    woocommerce_password <- Sys.getenv("cornucopia_woocommerce_password")
+  } else {
+    Sys.setenv(
+      cornucopia_woocommerce_password = as.character(woocommerce_password)
+    )
+  }
+
   invisible(list(
+    meta_api_version = as.character(meta_api_version),
     start_date = lubridate::as_date(start_date),
     end_date = lubridate::as_date(end_date),
     fb_user_token = as.character(fb_user_token),
@@ -146,7 +174,10 @@ cc_set <- function(
     fb_user_id = as.character(fb_user_id),
     ig_user_id = as.character(ig_user_id),
     ga_email = as.character(ga_email),
-    ga_property_id = as.character(ga_property_id)
+    ga_property_id = as.character(ga_property_id),
+    woocommerce_api_version = as.character(woocommerce_api_version),
+    woocommerce_username = as.character(woocommerce_username),
+    woocommerce_password = as.character(woocommerce_password)
   ))
 }
 
@@ -181,7 +212,10 @@ cc_get_settings <- function(
   fb_user_id = NULL,
   ig_user_id = NULL,
   ga_email = NULL,
-  ga_property_id = NULL
+  ga_property_id = NULL,
+  woocommerce_api_version = NULL,
+  woocommerce_username = NULL,
+  woocommerce_password = NULL
 ) {
   if (is.null(meta_api_version)) {
     meta_api_version <- Sys.getenv(
@@ -251,6 +285,21 @@ cc_get_settings <- function(
     ga_property_id <- Sys.getenv("cornucopia_ga_property_id")
   }
 
+  if (is.null(woocommerce_api_version)) {
+    woocommerce_api_version <- Sys.getenv(
+      "cornucopia_woocommerce_api_version",
+      unset = "v24.0"
+    )
+  }
+
+  if (is.null(woocommerce_username)) {
+    woocommerce_username <- Sys.getenv("cornucopia_woocommerce_username")
+  }
+
+  if (is.null(woocommerce_password)) {
+    woocommerce_password <- Sys.getenv("cornucopia_woocommerce_password")
+  }
+
   invisible(list(
     meta_api_version = as.character(meta_api_version),
     start_date = lubridate::as_date(start_date),
@@ -264,7 +313,10 @@ cc_get_settings <- function(
     fb_user_id = as.character(fb_user_id),
     ig_user_id = as.character(ig_user_id),
     ga_email = as.character(ga_email),
-    ga_property_id = as.character(ga_property_id)
+    ga_property_id = as.character(ga_property_id),
+    woocommerce_api_version = as.character(woocommerce_api_version),
+    woocommerce_username = as.character(woocommerce_username),
+    woocommerce_password = as.character(woocommerce_password)
   ))
 }
 
@@ -284,7 +336,31 @@ cc_get_settings <- function(
 #' cc_set(meta_api_version = "24.0")
 #'
 #' cc_get_meta_api_version()
+#'
+#' cc_get_meta_api_version("23.0")
 cc_get_meta_api_version <- function(meta_api_version = NULL) {
   cc_get_settings(meta_api_version = meta_api_version) |>
     purrr::pluck("meta_api_version")
+}
+
+#' Retrieve version of Woocommerce API.
+#'
+#' @inheritParams cc_set
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+#' cc_get_woocommerce_api_version()
+#'
+#' cc_get_woocommerce_api_version("v3")
+#'
+#' cc_set(woocommerce_api_version = "v2")
+#'
+#' cc_get_woocommerce_api_version()
+#'
+#' cc_set(woocommerce_api_version = "v3")
+cc_get_woocommerce_api_version <- function(woocommerce_api_version = NULL) {
+  cc_get_settings(woocommerce_api_version = woocommerce_api_version) |>
+    purrr::pluck("woocommerce_api_version")
 }

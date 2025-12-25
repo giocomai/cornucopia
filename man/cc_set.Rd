@@ -17,7 +17,10 @@ cc_set(
   fb_user_id = NULL,
   ig_user_id = NULL,
   ga_email = NULL,
-  ga_property_id = NULL
+  ga_property_id = NULL,
+  woocommerce_api_version = "v3",
+  woocommerce_username = NULL,
+  woocommerce_password = NULL
 )
 }
 \arguments{

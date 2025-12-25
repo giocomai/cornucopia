@@ -21,4 +21,6 @@ cc_get_meta_api_version("23.0")
 cc_set(meta_api_version = "24.0")
 
 cc_get_meta_api_version()
+
+cc_get_meta_api_version("23.0")
 }
