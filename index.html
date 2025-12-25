@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">cornucopia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -566,6 +566,75 @@
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_fb_leads.html">cc_get_fb_leads</a></span><span class="op">(</span>form_id <span class="op">=</span> <span class="st">"insert_form_id_here"</span><span class="op">)</span></span></code></pre></div>
 <p>You can of course feed these data into your own workflows, e.g. uploading them to Google Sheets with <a href="https://github.com/tidyverse/googlesheets4/" class="external-link"><code>googlesheets4</code></a>, and even do this recurrently, by running e.g. the script every hour as faciliated by packages such as <a href="https://github.com/bnosac/cronR" class="external-link"><code>cronR</code></a> or <a href="https://github.com/bnosac/taskscheduleR" class="external-link"><code>taskscheduleR</code></a>.</p>
 </div>
+<div class="section level3">
+<h3 id="visualising-campaign-structure">Visualising campaign structure<a class="anchor" aria-label="anchor" href="#visualising-campaign-structure"></a>
+</h3>
+<p>If the campaign structure is not exceedingly complex, it may be possible to visualise its structure giving it the shape of a flowchart. The following function, previously included in the package and later dropped in order to reduce dependencies, allows to achieve this simply by passing to it an <code>ads_df</code> data frame as retrieved with <code><a href="reference/cc_get_fb_ads.html">cc_get_fb_ads()</a></code>.</p>
+<p>In order to work, it requires the separate package <code>nomnomlgraph</code> which can be installed with <code>remotes::install_github("giocomai/nomnomlgraph")</code>.</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co">#' Show ad campaign structure in a nomnmonl graph</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @param direction Defaults to "right". Can be "down". Passed to `nomnoml`.</span></span>
+<span><span class="co">#' @param drop_vertical_bar Defaults to FALSE. If TRUE, replaces vertical bar</span></span>
+<span><span class="co">#'   (which in `nomnoml` can be used to separate a block in subsections) with</span></span>
+<span><span class="co">#'   "-".</span></span>
+<span><span class="va">cc_nomnoml</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">ads_df</span>,</span>
+<span>                       <span class="va">direction</span> <span class="op">=</span> <span class="st">"right"</span>,</span>
+<span>                       <span class="va">drop_vertical_bar</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                       <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">nodes_df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span></span>
+<span>      .data <span class="op">=</span> <span class="va">ads_df</span>,</span>
+<span>      id <span class="op">=</span> <span class="va">campaign_id</span>,</span>
+<span>      text <span class="op">=</span> <span class="va">campaign_name</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span></span>
+<span>      .data <span class="op">=</span> <span class="va">ads_df</span>,</span>
+<span>      id <span class="op">=</span> <span class="va">adset_id</span>,</span>
+<span>      text <span class="op">=</span> <span class="va">adset_name</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span></span>
+<span>      .data <span class="op">=</span> <span class="va">ads_df</span>,</span>
+<span>      id <span class="op">=</span> <span class="va">ad_id</span>,</span>
+<span>      text <span class="op">=</span> <span class="va">ad_name</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">drop_vertical_bar</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">nodes_df</span> <span class="op">&lt;-</span> <span class="va">nodes_df</span> <span class="op">|&gt;</span></span>
+<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>text <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html" class="external-link">str_replace_all</a></span><span class="op">(</span></span>
+<span>        string <span class="op">=</span> <span class="va">text</span>,</span>
+<span>        pattern <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html" class="external-link">fixed</a></span><span class="op">(</span><span class="st">"|"</span><span class="op">)</span>,</span>
+<span>        replacement <span class="op">=</span> <span class="st">"-"</span></span>
+<span>      <span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span>  <span class="va">edges_df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span></span>
+<span>      .data <span class="op">=</span> <span class="va">ads_df</span>,</span>
+<span>      from <span class="op">=</span> <span class="va">campaign_id</span>,</span>
+<span>      to <span class="op">=</span> <span class="va">adset_id</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span></span>
+<span>      .data <span class="op">=</span> <span class="va">ads_df</span>,</span>
+<span>      from <span class="op">=</span> <span class="va">adset_id</span>,</span>
+<span>      to <span class="op">=</span> <span class="va">ad_id</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>association <span class="op">=</span> <span class="st">"-"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu">nomnomlgraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nomnomlgraph/man/nn_graph.html" class="external-link">nn_graph</a></span><span class="op">(</span></span>
+<span>    nodes <span class="op">=</span> <span class="va">nodes_df</span>,</span>
+<span>    edges <span class="op">=</span> <span class="va">edges_df</span>,</span>
+<span>    direction <span class="op">=</span> <span class="va">direction</span>,</span>
+<span>    <span class="va">...</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="linkedin">LinkedIn<a class="anchor" aria-label="anchor" href="#linkedin"></a>
@@ -581,19 +650,19 @@
 <p>The user just needs to download relevant files and store them in a folder, without paying attention to anything else, really. Files for more than one page can be included in the same folder and no special attention needs to be dedicated to the time period included: <code>cornucopia</code> will always strive to include data for the longest possible period, always preferring the most recent data available. For this reason, it is usually easiest to export data about the last 365 days, and let this package deal with the rest.</p>
 <p>Export files for all sorts of a statics from your LinkedIn page. They will have file names such as “pagename_followers_1684688073420.xls”. Throw all of them in a folder, that we’ll call “LinkedIn_stats”.</p>
 <p>You can then retrieve some basic information about these files using:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_linkedin_stats_files.html">cc_get_linkedin_stats_files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"LinkedIn_stats"</span><span class="op">)</span></span></code></pre></div>
 <p>This allows to see when a file was exported, what is the name of the page, and what type of statistics it includes: all of this information can be gathered from the file name.</p>
 <p>Each of the statistics types exported from LinkedIn has its own data format, and indeed there is little consistency in these files, if not for the ridiculous insistence on including dates in the ridiculous US date format (month-day-year), no matter where you are in the world.</p>
 <p>Anyway… we can now move on to the specific functions for each type of statistics. The following functions parse all relevant files and merge the data preferring the most recently downloaded data over older files (this may be irrelevant in many cases, but may well have some impact in statistics associated with a given post).</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">followers_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cc_get_linkedin_stats_followers.html">cc_get_linkedin_stats_followers</a></span><span class="op">(</span></span>
 <span>  path <span class="op">=</span> <span class="st">"LinkedIn_stats"</span>,</span>
 <span>  page <span class="op">=</span> <span class="st">"example-page"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Once we have these data, we can of course process them as we usually would. But for the sake of this post, we are imagining a workflow that requires us to upload these files to a Google Sheet, in order to facilitate data retrieval through Google Looker Studio.</p>
 <p>We can do this manually, but, of course, we’d much rather use a set of convenience functions that will process data and upload them automatically to the same Google Sheet, updating the dataset if one was previously uploaded.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_drive_upload_linkedin_stats_followers.html">cc_drive_upload_linkedin_stats_followers</a></span><span class="op">(</span></span>
 <span>  path <span class="op">=</span> <span class="st">"LinkedIn_stats"</span>,</span>
 <span>  page_name <span class="op">=</span> <span class="st">"example-page"</span></span>
@@ -614,7 +683,7 @@
 </h2>
 <p>Only the most tentative integration with Google Analytics has so far been implemented, relying on <a href="https://cran.r-project.org/web/packages/googleAnalyticsR/index.html" class="external-link">googleAnalyticsR</a>.</p>
 <p>If you are interested in the ratio (possibly, calculated as a rolling average), consider something such as the following.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_set.html">cc_set</a></span><span class="op">(</span></span>
 <span>  ga_email <span class="op">=</span> <span class="st">"example@example.com"</span>,</span>
 <span>  ga_property_id <span class="op">=</span> <span class="fl">123456789</span></span>

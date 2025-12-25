@@ -118,8 +118,6 @@
   : Retrieve version of Meta API.
 - [`cc_get_settings()`](https://giocomai.github.io/cornucopia/reference/cc_get_settings.md)
   : Retrieve settings for the session.
-- [`cc_nomnoml()`](https://giocomai.github.io/cornucopia/reference/cc_nomnoml.md)
-  : Show ad campaign structure in a nomnmonl graph
 - [`cc_read_fb_ads_by_date()`](https://giocomai.github.io/cornucopia/reference/cc_read_fb_ads_by_date.md)
   : Reads locally stored dated files, typically generated with
   \`cc_get_fb_ads_by_date\`

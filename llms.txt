@@ -874,6 +874,84 @@ do this recurrently, by running e.g. the script every hour as faciliated
 by packages such as [`cronR`](https://github.com/bnosac/cronR) or
 [`taskscheduleR`](https://github.com/bnosac/taskscheduleR).
 
+### Visualising campaign structure
+
+If the campaign structure is not exceedingly complex, it may be possible
+to visualise its structure giving it the shape of a flowchart. The
+following function, previously included in the package and later dropped
+in order to reduce dependencies, allows to achieve this simply by
+passing to it an `ads_df` data frame as retrieved with
+[`cc_get_fb_ads()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_ads.md).
+
+In order to work, it requires the separate package `nomnomlgraph` which
+can be installed with
+`remotes::install_github("giocomai/nomnomlgraph")`.
+
+``` r
+
+#' Show ad campaign structure in a nomnmonl graph
+#'
+#' @param direction Defaults to "right". Can be "down". Passed to `nomnoml`.
+#' @param drop_vertical_bar Defaults to FALSE. If TRUE, replaces vertical bar
+#'   (which in `nomnoml` can be used to separate a block in subsections) with
+#'   "-".
+cc_nomnoml <- function(ads_df,
+                       direction = "right",
+                       drop_vertical_bar = FALSE,
+                       ...) {
+  nodes_df <- dplyr::bind_rows(
+    dplyr::distinct(
+      .data = ads_df,
+      id = campaign_id,
+      text = campaign_name
+    ),
+    dplyr::distinct(
+      .data = ads_df,
+      id = adset_id,
+      text = adset_name
+    ),
+    dplyr::distinct(
+      .data = ads_df,
+      id = ad_id,
+      text = ad_name
+    )
+  )
+
+
+  if (drop_vertical_bar == TRUE) {
+    nodes_df <- nodes_df |>
+      dplyr::mutate(text = stringr::str_replace_all(
+        string = text,
+        pattern = stringr::fixed("|"),
+        replacement = "-"
+      ))
+  }
+
+
+
+  edges_df <- dplyr::bind_rows(
+    dplyr::distinct(
+      .data = ads_df,
+      from = campaign_id,
+      to = adset_id
+    ),
+    dplyr::distinct(
+      .data = ads_df,
+      from = adset_id,
+      to = ad_id
+    )
+  ) |>
+    dplyr::mutate(association = "-")
+
+  nomnomlgraph::nn_graph(
+    nodes = nodes_df,
+    edges = edges_df,
+    direction = direction,
+    ...
+  )
+}
+```
+
 ## LinkedIn
 
 LinkedIn does not allow for exporting statistics about pages or ads
@@ -1115,8 +1193,6 @@ I despise ad-tech, but I’ve got work to do.
   : Retrieve version of Meta API.
 - [`cc_get_settings()`](https://giocomai.github.io/cornucopia/reference/cc_get_settings.md)
   : Retrieve settings for the session.
-- [`cc_nomnoml()`](https://giocomai.github.io/cornucopia/reference/cc_nomnoml.md)
-  : Show ad campaign structure in a nomnmonl graph
 - [`cc_read_fb_ads_by_date()`](https://giocomai.github.io/cornucopia/reference/cc_read_fb_ads_by_date.md)
   : Reads locally stored dated files, typically generated with
   \`cc_get_fb_ads_by_date\`
