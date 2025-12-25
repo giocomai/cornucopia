@@ -28,4 +28,7 @@ cc_set(meta_api_version = "24.0")
 
 cc_get_meta_api_version()
 #> [1] "24.0"
+
+cc_get_meta_api_version("23.0")
+#> [1] "23.0"
 ```
