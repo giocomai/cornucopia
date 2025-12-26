@@ -1,8 +1,8 @@
 #' Retrieve information about other users through `business_discovery`
 #'
-#' Consider that only information about posts of creative or business users may be available.
+#' Consider that only information about posts of creative of business users may be available.
 #' Given restrictions on the rate limit, you are likely to hit rate limits quite soon.
-#' Wait one hour and try again.
+#' Wait one hour and try again. See `wait` and `limit` parameters for more options.
 #'
 #' For details about rate limits, see [this section of the documentation](https://developers.facebook.com/docs/graph-api/overview/rate-limiting).
 #'
@@ -22,8 +22,16 @@
 #'
 #' @param ig_username A user name of an Instagram user.
 #' @param fields Defaults to all fields publicly available through
-#'   `business_discovery`. See [the documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media)
+#'   `business_discovery`. See [the
+#'   documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media)
 #'   for other fields that may be available.
+#' @param mode Defaults to "update", available options include "full" and
+#'   "only_cached". If set to "full", and some media have been previously
+#'   retrieved, it tries to continue from the previous request as long as all
+#'   available media have been retrieved. If set to "update", it retrieves the
+#'   latest media, even if previously retrieved, to update relevant fields.
+#'   "only_cached" retrieves only cached data; for each media, it outputs only
+#'   the most recently retrived data.
 #' @param wait Defaults to zero. Time in seconds before each request to the API.
 #'   If you make a very small number of queries, you can leave it to zero. If
 #'   you make a even just a few dozens query, you'll hit API limits unless you
@@ -36,16 +44,31 @@
 #'   see [the official documentation](https://developers.facebook.com/docs/graph-api/overview/rate-limiting/).
 #' @inheritParams cc_get_fb_page_posts
 #'
-#' @return
+#' @return A data frame with the selected fields as columns, and a row for each post of the selected Instagram account.
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' cc_get_instagram_bd_user_media(
+#'   ig_username = "unitednations",
+#'   max_pages = 3
+#' )
+#'
+#' # the following retrieves older posts, starting from where it left off
+#' cc_get_instagram_bd_user_media(
+#'   ig_username = "unitednations",
+#'   mode = "full",
+#'   max_pages = 3
+#' )
+#' }
 cc_get_instagram_bd_user_media <- function(
   ig_username,
+  mode = c("update", "full", "only_cached"),
   fields = c(
     "username",
     "timestamp",
     "like_count",
+    "view_count",
     "comments_count",
     "caption",
     "media_product_type",
@@ -63,6 +86,10 @@ cc_get_instagram_bd_user_media <- function(
   ig_user_id = NULL,
   fb_user_token = NULL
 ) {
+  if (!(mode[[1]] %in% c("update", "full", "only_cached"))) {
+    cli::cli_abort("Invalid {.var mode}. Check documentation.")
+  }
+
   if (is.null(ig_user_id)) {
     ig_user_id <- cc_get_settings(ig_user_id = ig_user_id) |>
       purrr::pluck("ig_user_id")
@@ -96,6 +123,15 @@ cc_get_instagram_bd_user_media <- function(
         fb_user_token = fb_user_token
       )
 
+      after_string_path <- fs::path(
+        "cornucopia_db",
+        fs::path_ext_set(
+          stringr::str_c("bd_user_media_", bd_user_basic_df$id),
+          ".txt"
+        ) |>
+          fs::path_sanitize()
+      )
+
       if (cache) {
         current_user_id <- bd_user_basic_df[["id"]]
 
@@ -113,32 +149,75 @@ cc_get_instagram_bd_user_media <- function(
           )
         )
 
-        if (DBI::dbExistsTable(conn = db, name = "media")) {
+        if (DBI::dbExistsTable(conn = db, name = "ig_bd_media")) {
           # TODO
           # check previous data
+
+          previous_ig_bd_media_df <- DBI::dbReadTable(
+            conn = db,
+            name = "ig_bd_media"
+          ) |>
+            dplyr::arrange(dplyr::desc(timestamp_retrieved)) |>
+            dplyr::distinct(ig_media_id, .keep_all = TRUE) |>
+            dplyr::arrange(dplyr::desc(timestamp)) |>
+            dplyr::collect() |>
+            tibble::as_tibble()
+
+          if (mode[[1]] == "only_cached") {
+            return(previous_ig_bd_media_df)
+          }
         } else {
-          # TODO
-          # create empty table
+          # no need to create empty table
         }
       }
 
-      out <- vector("list", max_pages %||% 1000)
-      posts_l <- vector("list", max_pages %||% 1000)
+      out <- vector("list", max_pages %||% 10000)
+      posts_l <- vector("list", max_pages %||% 10000)
 
       i <- 1L
 
-      api_request <- httr2::request(base_url = base_url) |>
-        httr2::req_url_path_append(ig_user_id) |>
-        httr2::req_url_query(
-          fields = stringr::str_c(
-            "business_discovery.username(",
-            current_user,
-            "){media{",
-            stringr::str_flatten(fields, collapse = ","),
-            "}}"
-          ),
-          access_token = fb_user_token
-        )
+      after_string_available <- fs::file_exists(path = after_string_path)
+
+      if (mode[[1]] == "full" & after_string_available) {
+        after_string <- readr::read_lines(file = after_string_path)
+
+        if (after_string == "Earliest page reached") {
+          cli::cli_inform(
+            message = c(
+              i = "No older posts available, returning cached data."
+            )
+          )
+          return(previous_ig_bd_media_df)
+        }
+
+        api_request <- httr2::request(base_url = base_url) |>
+          httr2::req_url_path_append(ig_user_id) |>
+          httr2::req_url_query(
+            fields = stringr::str_c(
+              "business_discovery.username(",
+              current_user,
+              "){media.after(",
+              after_string,
+              "){",
+              stringr::str_flatten(fields, collapse = ","),
+              "}}"
+            ),
+            access_token = fb_user_token
+          )
+      } else {
+        api_request <- httr2::request(base_url = base_url) |>
+          httr2::req_url_path_append(ig_user_id) |>
+          httr2::req_url_query(
+            fields = stringr::str_c(
+              "business_discovery.username(",
+              current_user,
+              "){media{",
+              stringr::str_flatten(fields, collapse = ","),
+              "}}"
+            ),
+            access_token = fb_user_token
+          )
+      }
 
       cli::cli_progress_bar(
         name = cli::cli_text("Retrieving posts for user {.val {current_user}}:")
@@ -152,7 +231,7 @@ cc_get_instagram_bd_user_media <- function(
             httr2::req_error(is_error = \(resp) FALSE) |>
             httr2::req_perform()
 
-          if (is.null(limit) == FALSE) {
+          if (!is.null(limit)) {
             limits_l <- resp$headers$`x-app-usage` |>
               jsonlite::parse_json(simplifyVector = TRUE)
             if (sum(limits_l > limit) >= 1) {
@@ -220,6 +299,15 @@ cc_get_instagram_bd_user_media <- function(
               dplyr::mutate(like_count = NA_integer_)
           }
 
+          if (
+            "view_count" %in%
+              fields &
+              !"view_count" %in% colnames(current_post_set_details_df)
+          ) {
+            current_post_set_details_df <- current_post_set_details_df |>
+              dplyr::mutate(view_count = NA_integer_)
+          }
+
           output_df <- current_post_set_details_df[c(
             "ig_media_id",
             fields_filter,
@@ -227,6 +315,15 @@ cc_get_instagram_bd_user_media <- function(
           )]
 
           out[[i]] <- output_df
+
+          if (cache) {
+            DBI::dbWriteTable(
+              conn = db,
+              name = "ig_bd_media",
+              value = output_df,
+              append = TRUE
+            )
+          }
 
           if (
             purrr::pluck_exists(
@@ -236,8 +333,7 @@ cc_get_instagram_bd_user_media <- function(
               "paging",
               "cursors",
               "after"
-            ) ==
-              TRUE
+            )
           ) {
             after_string <- purrr::pluck(
               req,
@@ -265,16 +361,13 @@ cc_get_instagram_bd_user_media <- function(
 
             readr::write_lines(
               x = after_string,
-              file = fs::path(
-                "cornucopia_db",
-                fs::path_ext_set(
-                  stringr::str_c("bd_user_media_", bd_user_basic_df$id),
-                  ".txt"
-                ) |>
-                  fs::path_sanitize()
-              )
+              file = after_string_path
             )
           } else {
+            readr::write_lines(
+              x = "Earliest page reached",
+              file = after_string_path
+            )
             break
           }
 
@@ -291,8 +384,19 @@ cc_get_instagram_bd_user_media <- function(
         })
       }
 
-      out |>
+      newly_retrieved <- out |>
         purrr::list_rbind()
+
+      if (mode[[1]] == "full") {
+        dplyr::bind_rows(newly_retrieved, previous_ig_bd_media_df) |>
+          dplyr::arrange(dplyr::desc(timestamp_retrieved)) |>
+          dplyr::distinct(ig_media_id, .keep_all = TRUE) |>
+          dplyr::arrange(dplyr::desc(timestamp)) |>
+          dplyr::collect() |>
+          tibble::as_tibble()
+      } else {
+        newly_retrieved
+      }
     }
   ) |>
     purrr::list_rbind()
@@ -314,6 +418,10 @@ cc_get_instagram_bd_user_media <- function(
   #   )
   #
   #   DBI::dbDisconnect(db)
+  # }
+
+  # if (cache) {
+  #   DBI::dbDisconnect(conn = db)
   # }
 
   users_posts_df

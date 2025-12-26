@@ -654,11 +654,22 @@ cc_get_instagram_bd_user(ig_username = "unitednations")
 
 To retrieve information about individual posts, you would proceed as follows:
 
-(caching not yet implemented)
 
 ```{r cc_get_instagram_bd_user_media, eval = FALSE}
 cc_get_instagram_bd_user_media(ig_username = "unitednations", max_pages = 1)
 ```
+
+Considering restrictive rate limits imposed by the API, you are likely to hit them quite soon: if stuck, wait for a hour, and they should reset. 
+
+By default, caching is enabled, so all retrieved data are stored. 
+
+The function `cc_get_instagram_bd_user_media()` has three main modes:
+
+- default is `mode = "update"`: it starts retrieving posts from the most recent; even if they have previously been retrieved, it checks them again in order to provide the latest available data
+- in order to retrieve all posts, starting with the earliest available, you would set `mode = "full"`: if `cc_get_instagram_bd_user_media()` has been run previously, it starts from the oldest retrieved post and goes backward. N.B. more recent posts are not retrieved!
+- cached data can be retrieved with  `mode = "only_cached"`; no new queries are made when this mode is set.
+
+Considering setting `max_pages` to limit how many posts are retrieved (each page returned from the API includes information about 25 posts).
 
 
 ### Retrieve leads from Meta ads

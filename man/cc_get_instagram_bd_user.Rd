@@ -17,7 +17,8 @@ cc_get_instagram_bd_user(
 \item{ig_username}{A user name of an Instagram user.}
 
 \item{fields}{Defaults to all fields publicly available through
-`business_discovery`. See [the documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media)
+`business_discovery`. See [the
+documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media)
 for other fields that may be available.}
 }
 \description{
