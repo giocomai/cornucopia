@@ -1,16 +1,19 @@
 # Retrieve information about other users through \`business_discovery\`
 
-Consider that only information about posts of creative or business users
+Consider that only information about posts of creative of business users
 may be available. Given restrictions on the rate limit, you are likely
-to hit rate limits quite soon. Wait one hour and try again.
+to hit rate limits quite soon. Wait one hour and try again. See \`wait\`
+and \`limit\` parameters for more options.
 
 ## Usage
 
 ``` r
 cc_get_instagram_bd_user_media(
   ig_username,
-  fields = c("username", "timestamp", "like_count", "comments_count", "caption",
-    "media_product_type", "media_type", "media_url", "thumbnail_url", "permalink"),
+  mode = c("update", "full", "only_cached"),
+  fields = c("username", "timestamp", "like_count", "view_count", "comments_count",
+    "caption", "media_product_type", "media_type", "media_url", "thumbnail_url",
+    "permalink"),
   max_pages = NULL,
   wait = 0,
   limit = 80,
@@ -27,6 +30,14 @@ cc_get_instagram_bd_user_media(
 - ig_username:
 
   A user name of an Instagram user.
+
+- mode:
+
+  Defaults to "update", available options include "full". If set to
+  "full", and some media have been previously retrieved, it tries to
+  continue from the previous request as long as all available media have
+  been retrieved. If set to "update", it retrieves the latest media,
+  even if previously retrieved, to update relevant fields.
 
 - fields:
 
@@ -60,6 +71,11 @@ cc_get_instagram_bd_user_media(
 
   Defaults to TRUE.
 
+## Value
+
+A data frame with the selected fields as columns, and a row for each
+post of the selected Instagram account.
+
 ## Details
 
 For details about rate limits, see \[this section of the
@@ -78,3 +94,21 @@ Manager, one of the following permissions is also required:
 
 \- \`ads_management\` - \`pages_read_engagement\` -
 \`business_management\`
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+cc_get_instagram_bd_user_media(
+  ig_username = "unitednations",
+  max_pages = 3
+)
+
+# the following retrieves older posts, starting from where it left off
+cc_get_instagram_bd_user_media(
+  ig_username = "unitednations",
+  mode = "full",
+  max_pages = 3
+)
+} # }
+```

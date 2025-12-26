@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">cornucopia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,7 +96,7 @@
 <span><span class="va">dates_l</span><span class="op">$</span><span class="va">start_date</span></span>
 <span><span class="co">#&gt; [1] "2023-01-01"</span></span></code></pre></div>
 <p>Here is a full list of parameters that can be set with <code><a href="reference/cc_set.html">cc_set()</a></code>:</p>
-<p><code>start_date</code>, <code>end_date</code>, <code>fb_user_token</code>, <code>fb_page_token</code>, <code>fb_page_id</code>, <code>fb_business_id</code>, <code>fb_ad_account_id</code>, <code>fb_product_catalog_id</code>, <code>fb_user_id</code>, <code>ig_user_id</code>, <code>ga_email</code>, <code>ga_property_id</code></p>
+<p><code>meta_api_version</code>, <code>start_date</code>, <code>end_date</code>, <code>fb_user_token</code>, <code>fb_page_token</code>, <code>fb_page_id</code>, <code>fb_business_id</code>, <code>fb_ad_account_id</code>, <code>fb_product_catalog_id</code>, <code>fb_user_id</code>, <code>ig_user_id</code>, <code>ga_email</code>, <code>ga_property_id</code>, <code>woocommerce_api_version</code>, <code>woocommerce_username</code>, <code>woocommerce_password</code></p>
 </div>
 <div class="section level2">
 <h2 id="meta--facebook--instagram">Meta / Facebook / Instagram<a class="anchor" aria-label="anchor" href="#meta--facebook--instagram"></a>
@@ -553,9 +553,17 @@
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_instagram_bd_user.html">cc_get_instagram_bd_user</a></span><span class="op">(</span>ig_username <span class="op">=</span> <span class="st">"unitednations"</span><span class="op">)</span></span></code></pre></div>
 <p>To retrieve information about individual posts, you would proceed as follows:</p>
-<p>(caching not yet implemented)</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cc_get_instagram_bd_user_media.html">cc_get_instagram_bd_user_media</a></span><span class="op">(</span>ig_username <span class="op">=</span> <span class="st">"unitednations"</span>, max_pages <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<p>Considering restrictive rate limits imposed by the API, you are likely to hit them quite soon: if stuck, wait for a hour, and they should reset.</p>
+<p>By default, caching is enabled, so all retrieved data are stored.</p>
+<p>The function <code><a href="reference/cc_get_instagram_bd_user_media.html">cc_get_instagram_bd_user_media()</a></code> has three main modes:</p>
+<ul>
+<li>default is <code>mode = "update"</code>: it starts retrieving posts from the most recent; even if they have previously been retrieved, it checks them again in order to provide the latest available data</li>
+<li>in order to retrieve all posts, starting with the earliest available, you would set <code>mode = "full"</code>: if <code><a href="reference/cc_get_instagram_bd_user_media.html">cc_get_instagram_bd_user_media()</a></code> has been run previously, it starts from the oldest retrieved post and goes backward. N.B. more recent posts are not retrieved!</li>
+<li>cached data can be retrieved with <code>mode = "only_cached"</code>; no new queries are made when this mode is set.</li>
+</ul>
+<p>Considering setting <code>max_pages</code> to limit how many posts are retrieved (each page returned from the API includes information about 25 posts).</p>
 </div>
 <div class="section level3">
 <h3 id="retrieve-leads-from-meta-ads">Retrieve leads from Meta ads<a class="anchor" aria-label="anchor" href="#retrieve-leads-from-meta-ads"></a>

@@ -85,10 +85,11 @@ dates_l$start_date
 Here is a full list of parameters that can be set with
 [`cc_set()`](https://giocomai.github.io/cornucopia/reference/cc_set.md):
 
-`start_date`, `end_date`, `fb_user_token`, `fb_page_token`,
-`fb_page_id`, `fb_business_id`, `fb_ad_account_id`,
+`meta_api_version`, `start_date`, `end_date`, `fb_user_token`,
+`fb_page_token`, `fb_page_id`, `fb_business_id`, `fb_ad_account_id`,
 `fb_product_catalog_id`, `fb_user_id`, `ig_user_id`, `ga_email`,
-`ga_property_id`
+`ga_property_id`, `woocommerce_api_version`, `woocommerce_username`,
+`woocommerce_password`
 
 ## Meta / Facebook / Instagram
 
@@ -843,11 +844,33 @@ cc_get_instagram_bd_user(ig_username = "unitednations")
 To retrieve information about individual posts, you would proceed as
 follows:
 
-(caching not yet implemented)
-
 ``` r
 cc_get_instagram_bd_user_media(ig_username = "unitednations", max_pages = 1)
 ```
+
+Considering restrictive rate limits imposed by the API, you are likely
+to hit them quite soon: if stuck, wait for a hour, and they should
+reset.
+
+By default, caching is enabled, so all retrieved data are stored.
+
+The function
+[`cc_get_instagram_bd_user_media()`](https://giocomai.github.io/cornucopia/reference/cc_get_instagram_bd_user_media.md)
+has three main modes:
+
+- default is `mode = "update"`: it starts retrieving posts from the most
+  recent; even if they have previously been retrieved, it checks them
+  again in order to provide the latest available data
+- in order to retrieve all posts, starting with the earliest available,
+  you would set `mode = "full"`: if
+  [`cc_get_instagram_bd_user_media()`](https://giocomai.github.io/cornucopia/reference/cc_get_instagram_bd_user_media.md)
+  has been run previously, it starts from the oldest retrieved post and
+  goes backward. N.B. more recent posts are not retrieved!
+- cached data can be retrieved with `mode = "only_cached"`; no new
+  queries are made when this mode is set.
+
+Considering setting `max_pages` to limit how many posts are retrieved
+(each page returned from the API includes information about 25 posts).
 
 ### Retrieve leads from Meta ads
 
