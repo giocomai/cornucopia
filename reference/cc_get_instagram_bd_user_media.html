@@ -11,7 +11,7 @@ Wait one hour and try again. See `wait` and `limit` parameters for more options.
 
     <a class="navbar-brand me-2" href="../index.html">cornucopia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9005</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,11 +69,13 @@ Wait one hour and try again. See `wait` and `limit` parameters for more options.
 
 
 <dt id="arg-mode">mode<a class="anchor" aria-label="anchor" href="#arg-mode"></a></dt>
-<dd><p>Defaults to "update", available options include "full". If set to
-"full", and some media have been previously retrieved, it tries to continue
-from the previous request as long as all available media have been
-retrieved. If set to "update", it retrieves the latest media, even if
-previously retrieved, to update relevant fields.</p></dd>
+<dd><p>Defaults to "update", available options include "full" and
+"only_cached". If set to "full", and some media have been previously
+retrieved, it tries to continue from the previous request as long as all
+available media have been retrieved. If set to "update", it retrieves the
+latest media, even if previously retrieved, to update relevant fields.
+"only_cached" retrieves only cached data; for each media, it outputs only
+the most recently retrived data.</p></dd>
 
 
 <dt id="arg-fields">fields<a class="anchor" aria-label="anchor" href="#arg-fields"></a></dt>

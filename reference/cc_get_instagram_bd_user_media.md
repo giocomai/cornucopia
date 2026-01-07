@@ -33,11 +33,13 @@ cc_get_instagram_bd_user_media(
 
 - mode:
 
-  Defaults to "update", available options include "full". If set to
-  "full", and some media have been previously retrieved, it tries to
-  continue from the previous request as long as all available media have
-  been retrieved. If set to "update", it retrieves the latest media,
-  even if previously retrieved, to update relevant fields.
+  Defaults to "update", available options include "full" and
+  "only_cached". If set to "full", and some media have been previously
+  retrieved, it tries to continue from the previous request as long as
+  all available media have been retrieved. If set to "update", it
+  retrieves the latest media, even if previously retrieved, to update
+  relevant fields. "only_cached" retrieves only cached data; for each
+  media, it outputs only the most recently retrived data.
 
 - fields:
 
