@@ -13,7 +13,7 @@
 #' @examples
 cc_get_fb_page_post_insights <- function(
   fb_post_id = NULL,
-  metric = cc_valid_fields_fb_post_insights,
+  metric = cornucopia::cc_valid_fields_fb_post_insights,
   period = "lifetime",
   cache = TRUE,
   update = TRUE,
@@ -89,7 +89,7 @@ cc_get_fb_page_post_insights <- function(
 #' @examples
 cc_api_get_fb_page_post_insights <- function(
   fb_post_id,
-  metric = cc_valid_fields_fb_post_insights,
+  metric = cornucopia::cc_valid_fields_fb_post_insights,
   period = "lifetime",
   cache = TRUE,
   update = TRUE,
