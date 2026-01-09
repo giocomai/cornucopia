@@ -9,7 +9,7 @@ defaults to Lifetime period for each post.
 ``` r
 cc_get_fb_page_post_insights(
   fb_post_id = NULL,
-  metric = cc_valid_fields_fb_post_insights,
+  metric = cornucopia::cc_valid_fields_fb_post_insights,
   period = "lifetime",
   cache = TRUE,
   update = TRUE,
