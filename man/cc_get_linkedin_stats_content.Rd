@@ -9,13 +9,17 @@ cc_get_linkedin_stats_content(path, page_name, export_csv = FALSE)
 \arguments{
 \item{path}{Base path where all xls files exported from LinkedIn are stored.}
 
-\item{page_name}{Name of the page. If unsure about the exact form, see the relevant column of `cc_get_linkedin_stats_files()`}
+\item{page_name}{Name of the page. If unsure about the exact form, see the
+relevant column of `cc_get_linkedin_stats_files()`}
 
-\item{export_csv}{Defaults to TRUE. If TRUE, exports content stats in a csv file in a folder with the same name as the base path, but with "_processed" appended.}
+\item{export_csv}{Defaults to TRUE. If TRUE, exports content stats in a csv
+file in a folder with the same name as the base path, but with "_processed"
+appended.}
 }
 \value{
 A data frame.
 }
 \description{
-N.B. Only the "Metrics" sheet is processed, as other sheets give overall statistics, not limited to the relevant time period.
+N.B. Only the "Metrics" sheet is processed, as other sheets give overall
+statistics, not limited to the relevant time period.
 }
