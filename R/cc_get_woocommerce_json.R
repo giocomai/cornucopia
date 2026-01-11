@@ -49,9 +49,10 @@ cc_get_woocommerce_json <- function(
     .progress = TRUE,
     .x = as.character(id_to_process),
     .f = \(id) {
-      current_file <- fs::path(order_folder, fs::path_ext_set(id, "rds"))
+      current_file <- fs::path(cache_folder, fs::path_ext_set(id, "rds"))
 
       req <- httr2::request(woocommerce_base_url) |>
+        httr2::req_url_path_append(woocommerce_api_version) |>
         httr2::req_url_path_append(type[[1]]) |>
         httr2::req_url_path_append(id) |>
         httr2::req_auth_basic(
