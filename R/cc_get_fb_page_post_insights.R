@@ -188,13 +188,15 @@ cc_api_get_fb_page_post_insights <- function(
           period = current_element_l[["period"]]
         ) |>
         dplyr::relocate(
-          fb_post_id,
-          metric_title,
-          metric_description,
-          metric_name,
-          metric_value_name,
-          metric_value,
-          period
+          dplyr::all_of(
+            "fb_post_id",
+            "metric_title",
+            "metric_description",
+            "metric_name",
+            "metric_value_name",
+            "metric_value",
+            "period"
+          )
         ) |>
         dplyr::mutate(
           timestamp_retrieved = strftime(

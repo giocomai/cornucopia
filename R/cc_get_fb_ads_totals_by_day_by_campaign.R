@@ -9,11 +9,13 @@
 #' @export
 #'
 #' @examples
-cc_get_fb_ad_spend_totals_by_day_by_campaign <- function(ads_df = NULL,
-                                                         start_date = NULL,
-                                                         end_date = NULL,
-                                                         before = 3,
-                                                         after = 3) {
+cc_get_fb_ad_spend_totals_by_day_by_campaign <- function(
+  ads_df = NULL,
+  start_date = NULL,
+  end_date = NULL,
+  before = 3,
+  after = 3
+) {
   dates_l <- cc_get_settings(
     start_date = start_date,
     end_date = end_date
@@ -30,11 +32,13 @@ cc_get_fb_ad_spend_totals_by_day_by_campaign <- function(ads_df = NULL,
     dplyr::distinct(campaign_id, campaign_name)
 
   dplyr::left_join(
-    x = tibble::tibble(date = seq.Date(
-      from = as.Date(start_date),
-      to = as.Date(end_date),
-      by = "day"
-    )),
+    x = tibble::tibble(
+      date = seq.Date(
+        from = as.Date(start_date),
+        to = as.Date(end_date),
+        by = "day"
+      )
+    ),
     y = ads_df,
     multiple = "all",
     by = "date"
@@ -47,10 +51,7 @@ cc_get_fb_ad_spend_totals_by_day_by_campaign <- function(ads_df = NULL,
       .groups = "drop"
     ) |>
     dplyr::mutate(date = lubridate::as_date(date)) |>
-    tidyr::complete(date,
-      campaign_id,
-      fill = list(spend_per_day = 0)
-    ) |>
+    tidyr::complete(date, campaign_id, fill = list(spend_per_day = 0)) |>
     dplyr::group_by(campaign_id) |>
     dplyr::mutate(
       rolling_spend_per_day = slider::slide_index_dbl(
@@ -66,5 +67,5 @@ cc_get_fb_ad_spend_totals_by_day_by_campaign <- function(ads_df = NULL,
       y = campaign_names_df,
       by = "campaign_id"
     ) |>
-    dplyr::relocate(campaign_id, campaign_name)
+    dplyr::relocate(dplyr::all_of("campaign_id", "campaign_name"))
 }

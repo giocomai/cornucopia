@@ -243,8 +243,11 @@ cc_get_instagram_media_insights <- function(
       purrr::list_rbind(),
     all_types_output_df
   ) |>
-    dplyr::relocate(ig_media_id, ig_media_type) |>
-    dplyr::relocate(timestamp_retrieved, .after = last_col()) |>
+    dplyr::relocate(dplyr::all_of("ig_media_id", "ig_media_type")) |>
+    dplyr::relocate(
+      dplyr::all_of("timestamp_retrieved"),
+      .after = last_col()
+    ) |>
     dplyr::group_by(ig_media_id) |>
     dplyr::slice_max(
       order_by = timestamp_retrieved,
@@ -368,7 +371,7 @@ cc_api_get_instagram_media_insights <- function(
   }) |>
     purrr::list_cbind() |>
     dplyr::mutate(ig_media_id = ig_media_id) |>
-    dplyr::relocate(ig_media_id) |>
+    dplyr::relocate(dplyr::all_of("ig_media_id")) |>
     dplyr::mutate(
       timestamp_retrieved = strftime(
         as.POSIXlt(Sys.time(), "UTC"),

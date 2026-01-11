@@ -159,12 +159,12 @@ cc_get_fb_ad_actions_by_day <- function(
                 dplyr::mutate(
                   date = response_for_current_date[["date_start"]]
                 ) |>
-                dplyr::relocate(date)
+                dplyr::relocate(dplyr::all_of("date"))
             }
           ) |>
             purrr::list_rbind() |>
             dplyr::mutate(ad_id = current_ad_id) |>
-            dplyr::relocate(ad_id)
+            dplyr::relocate(dplyr::all_of("ad_id"))
 
           if (ncol(new_fb_ad_details_pre_df) < 4) {
             new_fb_ad_details_df <- cc_empty_fb_ad_actions

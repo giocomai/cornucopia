@@ -140,7 +140,7 @@ cc_api_get_fb_video_insights <- function(
   ) |>
     purrr::list_rbind() |>
     dplyr::mutate(fb_video_id = fb_video_id) |>
-    dplyr::relocate(fb_video_id) |>
+    dplyr::relocate(dplyr::all_of("fb_video_id")) |>
     dplyr::mutate(
       timestamp_retrieved = strftime(
         as.POSIXlt(Sys.time(), "UTC"),

@@ -283,7 +283,7 @@ cc_get_instagram_bd_user_media <- function(
                 "%Y-%m-%dT%H:%M:%S%z"
               )
             ) |>
-            dplyr::relocate(ig_media_id)
+            dplyr::relocate(dplyr::all_of("ig_media_id"))
 
           if (!"thumbnail_url" %in% colnames(current_post_set_details_df)) {
             current_post_set_details_df <- current_post_set_details_df |>

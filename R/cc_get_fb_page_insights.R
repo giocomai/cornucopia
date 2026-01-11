@@ -196,12 +196,14 @@ cc_get_fb_page_insights <- function(
               period = current_element_l[["period"]]
             ) |>
             dplyr::relocate(
-              date,
-              metric_title,
-              metric_name,
-              metric_value_name,
-              metric_value,
-              period
+              dplyr::all_of(
+                "date",
+                "metric_title",
+                "metric_name",
+                "metric_value_name",
+                "metric_value",
+                "period"
+              )
             )
         }
       ) |>

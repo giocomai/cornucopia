@@ -113,7 +113,7 @@ cc_get_fb_ad_creatives_id <- function(
       ) |>
         purrr::list_rbind() |>
         dplyr::mutate(ad_id = current_ad_id) |>
-        dplyr::relocate(ad_id) |>
+        dplyr::relocate(dplyr::all_of("ad_id")) |>
         dplyr::mutate(
           timestamp_retrieved = strftime(
             as.POSIXlt(Sys.time(), "UTC"),
