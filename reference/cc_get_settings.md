@@ -19,6 +19,7 @@ cc_get_settings(
   ig_user_id = NULL,
   ga_email = NULL,
   ga_property_id = NULL,
+  woocommerce_base_url = NULL,
   woocommerce_api_version = NULL,
   woocommerce_username = NULL,
   woocommerce_password = NULL

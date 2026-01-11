@@ -8,6 +8,10 @@ Retrieve version of Woocommerce API.
 cc_get_woocommerce_api_version(woocommerce_api_version = NULL)
 ```
 
+## Value
+
+The API version as a character vector of length 1.
+
 ## Examples
 
 ``` r

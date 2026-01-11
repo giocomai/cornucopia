@@ -1218,6 +1218,8 @@ I despise ad-tech, but I’ve got work to do.
   : Retrieve settings for the session.
 - [`cc_get_woocommerce_api_version()`](https://giocomai.github.io/cornucopia/reference/cc_get_woocommerce_api_version.md)
   : Retrieve version of Woocommerce API.
+- [`cc_get_woocommerce_base_url()`](https://giocomai.github.io/cornucopia/reference/cc_get_woocommerce_base_url.md)
+  : Retrieve base url of Woocommerce API.
 - [`cc_read_fb_ads_by_date()`](https://giocomai.github.io/cornucopia/reference/cc_read_fb_ads_by_date.md)
   : Reads locally stored dated files, typically generated with
   \`cc_get_fb_ads_by_date\`
