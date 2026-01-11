@@ -9,7 +9,7 @@ defaults to Lifetime period for each video
 ``` r
 cc_get_fb_video_insights(
   fb_video_id,
-  metrics = cc_valid_fields_fb_video_insights,
+  metrics = cornucopia::cc_valid_fields_fb_video_insights,
   cache = TRUE,
   update = TRUE,
   meta_api_version = cornucopia::cc_get_meta_api_version(),
