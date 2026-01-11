@@ -1216,6 +1216,8 @@ I despise ad-tech, but I’ve got work to do.
   : Retrieve version of Meta API.
 - [`cc_get_settings()`](https://giocomai.github.io/cornucopia/reference/cc_get_settings.md)
   : Retrieve settings for the session.
+- [`cc_get_woocommerce()`](https://giocomai.github.io/cornucopia/reference/cc_get_woocommerce.md)
+  : Retrieve and extract in a data frame either orders or client items
 - [`cc_get_woocommerce_api_version()`](https://giocomai.github.io/cornucopia/reference/cc_get_woocommerce_api_version.md)
   : Retrieve version of Woocommerce API.
 - [`cc_get_woocommerce_base_url()`](https://giocomai.github.io/cornucopia/reference/cc_get_woocommerce_base_url.md)
