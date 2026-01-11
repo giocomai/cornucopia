@@ -17,7 +17,7 @@
 #' @examples
 cc_get_fb_video_insights <- function(
   fb_video_id,
-  metrics = cc_valid_fields_fb_video_insights,
+  metrics = cornucopia::cc_valid_fields_fb_video_insights,
   cache = TRUE,
   update = TRUE,
   meta_api_version = cornucopia::cc_get_meta_api_version(),
@@ -79,7 +79,7 @@ cc_get_fb_video_insights <- function(
 #' @examples
 cc_api_get_fb_video_insights <- function(
   fb_video_id,
-  metrics = cc_valid_fields_fb_video_insights,
+  metrics = cornucopia::cc_valid_fields_fb_video_insights,
   cache = TRUE,
   update = TRUE,
   meta_api_version = cornucopia::cc_get_meta_api_version(),

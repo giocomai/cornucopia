@@ -249,7 +249,7 @@ cc_api_get_instagram_media <- function(
   }
 
   output_df <- dplyr::bind_rows(
-    cc_empty_instagram_media_df,
+    cornucopia::cc_empty_instagram_media_df,
     output_df
   )
 

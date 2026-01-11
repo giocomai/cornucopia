@@ -322,18 +322,18 @@ cc_api_get_instagram_media_insights <- function(
     }
 
     if (stringr::str_to_lower(media_type) == "reels") {
-      metrics <- cc_valid_metrics_ig_media_insights$reels
+      metrics <- cornucopia::cc_valid_metrics_ig_media_insights$reels
     } else if (
       stringr::str_to_lower(media_type) == "image" |
         stringr::str_to_lower(media_type) == "video"
     ) {
-      metrics <- cc_valid_metrics_ig_media_insights$photo_video
+      metrics <- cornucopia::cc_valid_metrics_ig_media_insights$photo_video
     } else if (stringr::str_to_lower(media_type) == "carousel_album") {
-      metrics <- cc_valid_metrics_ig_media_insights$carousel
+      metrics <- cornucopia::cc_valid_metrics_ig_media_insights$carousel
     } else if (stringr::str_to_lower(media_type) == "reels") {
-      metrics <- cc_valid_metrics_ig_media_insights$reels
+      metrics <- cornucopia::cc_valid_metrics_ig_media_insights$reels
     } else if (stringr::str_to_lower(media_type) == "story") {
-      metrics <- cc_valid_metrics_ig_media_insights$story
+      metrics <- cornucopia::cc_valid_metrics_ig_media_insights$story
     } else {
       cli::cli_abort(
         message = "Unkown {.var media_type}. Provide {.var metrics} explicitly."
