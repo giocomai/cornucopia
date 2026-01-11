@@ -22,7 +22,8 @@ cc_get_settings(
   woocommerce_base_url = NULL,
   woocommerce_api_version = NULL,
   woocommerce_username = NULL,
-  woocommerce_password = NULL
+  woocommerce_password = NULL,
+  woocommerce_cache_folder = NULL
 )
 ```
 

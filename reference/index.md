@@ -122,6 +122,8 @@
   : Retrieve version of Woocommerce API.
 - [`cc_get_woocommerce_base_url()`](https://giocomai.github.io/cornucopia/reference/cc_get_woocommerce_base_url.md)
   : Retrieve base url of Woocommerce API.
+- [`cc_get_woocommerce_json()`](https://giocomai.github.io/cornucopia/reference/cc_get_woocommerce_json.md)
+  : Retrieve and store locally either orders or client items
 - [`cc_read_fb_ads_by_date()`](https://giocomai.github.io/cornucopia/reference/cc_read_fb_ads_by_date.md)
   : Reads locally stored dated files, typically generated with
   \`cc_get_fb_ads_by_date\`
