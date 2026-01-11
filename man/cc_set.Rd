@@ -21,7 +21,8 @@ cc_set(
   woocommerce_base_url = NULL,
   woocommerce_api_version = "v3",
   woocommerce_username = NULL,
-  woocommerce_password = NULL
+  woocommerce_password = NULL,
+  woocommerce_cache_folder = "woocommerce_cache"
 )
 }
 \arguments{

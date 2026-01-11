@@ -44,7 +44,8 @@ cc_set <- function(
   woocommerce_base_url = NULL,
   woocommerce_api_version = "v3",
   woocommerce_username = NULL,
-  woocommerce_password = NULL
+  woocommerce_password = NULL,
+  woocommerce_cache_folder = "woocommerce_cache"
 ) {
   if (is.null(meta_api_version)) {
     meta_api_version <- Sys.getenv("cornucopia_meta_api_version")
@@ -170,6 +171,18 @@ cc_set <- function(
     )
   }
 
+  if (is.null(woocommerce_cache_folder)) {
+    woocommerce_cache_folder <- Sys.getenv(
+      "cornucopia_woocommerce_cache_folder"
+    )
+  } else {
+    Sys.setenv(
+      cornucopia_woocommerce_cache_folder = as.character(
+        woocommerce_cache_folder
+      )
+    )
+  }
+
   invisible(list(
     meta_api_version = as.character(meta_api_version),
     start_date = lubridate::as_date(start_date),
@@ -187,7 +200,8 @@ cc_set <- function(
     woocommerce_base_url = as.character(woocommerce_base_url),
     woocommerce_api_version = as.character(woocommerce_api_version),
     woocommerce_username = as.character(woocommerce_username),
-    woocommerce_password = as.character(woocommerce_password)
+    woocommerce_password = as.character(woocommerce_password),
+    woocommerce_cache_folder = as.character(woocommerce_cache_folder)
   ))
 }
 
@@ -226,7 +240,8 @@ cc_get_settings <- function(
   woocommerce_base_url = NULL,
   woocommerce_api_version = NULL,
   woocommerce_username = NULL,
-  woocommerce_password = NULL
+  woocommerce_password = NULL,
+  woocommerce_cache_folder = NULL
 ) {
   if (is.null(meta_api_version)) {
     meta_api_version <- Sys.getenv(
@@ -315,6 +330,13 @@ cc_get_settings <- function(
     woocommerce_password <- Sys.getenv("cornucopia_woocommerce_password")
   }
 
+  if (is.null(woocommerce_cache_folder)) {
+    woocommerce_cache_folder <- Sys.getenv(
+      "cornucopia_woocommerce_cache_folder",
+      unset = "woocommerce_cache"
+    )
+  }
+
   invisible(list(
     meta_api_version = as.character(meta_api_version),
     start_date = lubridate::as_date(start_date),
@@ -332,7 +354,8 @@ cc_get_settings <- function(
     woocommerce_base_url = as.character(woocommerce_base_url),
     woocommerce_api_version = as.character(woocommerce_api_version),
     woocommerce_username = as.character(woocommerce_username),
-    woocommerce_password = as.character(woocommerce_password)
+    woocommerce_password = as.character(woocommerce_password),
+    woocommerce_cache_folder = as.character(woocommerce_cache_folder)
   ))
 }
 
