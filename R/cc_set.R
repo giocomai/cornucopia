@@ -299,7 +299,7 @@ cc_get_settings <- function(
   if (is.null(woocommerce_api_version)) {
     woocommerce_api_version <- Sys.getenv(
       "cornucopia_woocommerce_api_version",
-      unset = "v24.0"
+      unset = "v3"
     )
   }
 
