@@ -6,6 +6,9 @@
 \usage{
 cc_get_woocommerce_api_version(woocommerce_api_version = NULL)
 }
+\value{
+The API version as a character vector of length 1.
+}
 \description{
 Retrieve version of Woocommerce API.
 }

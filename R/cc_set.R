@@ -41,6 +41,7 @@ cc_set <- function(
   ig_user_id = NULL,
   ga_email = NULL,
   ga_property_id = NULL,
+  woocommerce_base_url = NULL,
   woocommerce_api_version = "v3",
   woocommerce_username = NULL,
   woocommerce_password = NULL
@@ -137,6 +138,14 @@ cc_set <- function(
     Sys.setenv(cornucopia_ga_property_id = as.character(ga_property_id))
   }
 
+  if (is.null(woocommerce_base_url)) {
+    woocommerce_base_url <- Sys.getenv("cornucopia_woocommerce_base_url")
+  } else {
+    Sys.setenv(
+      cornucopia_woocommerce_base_url = as.character(woocommerce_base_url)
+    )
+  }
+
   if (is.null(woocommerce_api_version)) {
     woocommerce_api_version <- Sys.getenv("cornucopia_woocommerce_api_version")
   } else {
@@ -175,6 +184,7 @@ cc_set <- function(
     ig_user_id = as.character(ig_user_id),
     ga_email = as.character(ga_email),
     ga_property_id = as.character(ga_property_id),
+    woocommerce_base_url = as.character(woocommerce_base_url),
     woocommerce_api_version = as.character(woocommerce_api_version),
     woocommerce_username = as.character(woocommerce_username),
     woocommerce_password = as.character(woocommerce_password)
@@ -213,6 +223,7 @@ cc_get_settings <- function(
   ig_user_id = NULL,
   ga_email = NULL,
   ga_property_id = NULL,
+  woocommerce_base_url = NULL,
   woocommerce_api_version = NULL,
   woocommerce_username = NULL,
   woocommerce_password = NULL
@@ -292,6 +303,10 @@ cc_get_settings <- function(
     )
   }
 
+  if (is.null(woocommerce_base_url)) {
+    woocommerce_base_url <- Sys.getenv("cornucopia_woocommerce_base_url")
+  }
+
   if (is.null(woocommerce_username)) {
     woocommerce_username <- Sys.getenv("cornucopia_woocommerce_username")
   }
@@ -314,6 +329,7 @@ cc_get_settings <- function(
     ig_user_id = as.character(ig_user_id),
     ga_email = as.character(ga_email),
     ga_property_id = as.character(ga_property_id),
+    woocommerce_base_url = as.character(woocommerce_base_url),
     woocommerce_api_version = as.character(woocommerce_api_version),
     woocommerce_username = as.character(woocommerce_username),
     woocommerce_password = as.character(woocommerce_password)
@@ -347,7 +363,7 @@ cc_get_meta_api_version <- function(meta_api_version = NULL) {
 #'
 #' @inheritParams cc_set
 #'
-#' @returns
+#' @returns The API version as a character vector of length 1.
 #' @export
 #'
 #' @examples
@@ -363,4 +379,28 @@ cc_get_meta_api_version <- function(meta_api_version = NULL) {
 cc_get_woocommerce_api_version <- function(woocommerce_api_version = NULL) {
   cc_get_settings(woocommerce_api_version = woocommerce_api_version) |>
     purrr::pluck("woocommerce_api_version")
+}
+
+
+#' Retrieve base url of Woocommerce API.
+#'
+#' Typically it follows a pattern such as: `https://www.example.com/wp-json/wc/`.
+#' Do not include the API version (e.g. `v3`), which is set separately.
+#'
+#' @inheritParams cc_set
+#'
+#' @returns The base url as a character vector of length 1.
+#' @export
+#'
+#' @examples
+#' cc_get_woocommerce_base_url()
+#'
+#' cc_get_woocommerce_base_url("https://www.example.com/wp-json/wc/")
+#'
+#' cc_set(woocommerce_base_url = "https://www.example.com/custom/wp-json/wc/")
+#'
+#' cc_get_woocommerce_base_url()
+cc_get_woocommerce_base_url <- function(woocommerce_base_url = NULL) {
+  cc_get_settings(woocommerce_base_url = woocommerce_base_url) |>
+    purrr::pluck("woocommerce_base_url")
 }
