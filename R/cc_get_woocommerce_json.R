@@ -33,6 +33,7 @@ cc_get_woocommerce_json <- function(
 ) {
   cache_folder <- fs::path(woocommerce_cache_folder, type[[1]])
   previous_files_v <- fs::dir_ls(path = cache_folder)
+  id <- as.character(id)
 
   if (length(previous_files_v) == 0) {
     id_to_process <- id
