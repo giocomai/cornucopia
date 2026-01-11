@@ -7,7 +7,7 @@ internally.}
 \usage{
 cc_api_get_instagram_media(
   ig_media_id,
-  fields = cc_valid_fields_instagram_media_v,
+  fields = cornucopia::cc_valid_fields_instagram_media_v,
   meta_api_version = cornucopia::cc_get_meta_api_version(),
   fb_user_token = NULL
 )

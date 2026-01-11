@@ -193,7 +193,7 @@ cc_get_instagram_media <- function(
 #' @examples
 cc_api_get_instagram_media <- function(
   ig_media_id,
-  fields = cc_valid_fields_instagram_media_v,
+  fields = cornucopia::cc_valid_fields_instagram_media_v,
   meta_api_version = cornucopia::cc_get_meta_api_version(),
   fb_user_token = NULL
 ) {
@@ -233,7 +233,7 @@ cc_api_get_instagram_media <- function(
   }
 
   output_df <- tibble::as_tibble(current_l) |>
-    dplyr::rename(ig_media_id = id) |>
+    dplyr::rename(ig_media_id = "id") |>
     dplyr::mutate(
       timestamp_retrieved = strftime(
         as.POSIXlt(Sys.time(), "UTC"),
