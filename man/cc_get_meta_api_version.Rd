@@ -10,6 +10,10 @@ cc_get_meta_api_version(meta_api_version = NULL)
 \item{meta_api_version}{Defaults to the latest API at the time this package was
 last updated. Currently, this corresponds to api version 24.0.}
 }
+\value{
+The META API version set for the current session as a character
+  vector of length 1.
+}
 \description{
 Retrieve version of Meta API.
 }

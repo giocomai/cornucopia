@@ -364,7 +364,8 @@ cc_get_settings <- function(
 #'
 #' @inheritParams cc_set
 #'
-#' @returns
+#' @returns The META API version set for the current session as a character
+#'   vector of length 1.
 #' @export
 #'
 #' @examples
@@ -386,7 +387,8 @@ cc_get_meta_api_version <- function(meta_api_version = NULL) {
 #'
 #' @inheritParams cc_set
 #'
-#' @returns The API version as a character vector of length 1.
+#' @returns The Woocommerce API version set for the current session as a
+#'   character vector of length 1.
 #' @export
 #'
 #' @examples
