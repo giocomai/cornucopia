@@ -15,6 +15,11 @@ cc_get_meta_api_version(meta_api_version = NULL)
   Defaults to the latest API at the time this package was last updated.
   Currently, this corresponds to api version 24.0.
 
+## Value
+
+The META API version set for the current session as a character vector
+of length 1.
+
 ## Examples
 
 ``` r
