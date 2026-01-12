@@ -244,7 +244,10 @@ cc_api_get_instagram_media <- function(
   if ("owner" %in% colnames(output_df)) {
     output_df <- output_df |>
       dplyr::mutate(
-        owner = as.character(unlist(stringr::str_c(owner, collapse = ";")))
+        owner = as.character(unlist(stringr::str_c(
+          .data[["owner"]],
+          collapse = ";"
+        )))
       )
   }
 

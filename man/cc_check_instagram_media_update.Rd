@@ -2,7 +2,8 @@
 % Please edit documentation in R/cc_check_ig_media_update.R
 \name{cc_check_instagram_media_update}
 \alias{cc_check_instagram_media_update}
-\title{Check when information about Instagram media should be updated based on a simple heuristic}
+\title{Check when information about Instagram media should be updated based on a
+simple heuristic}
 \usage{
 cc_check_instagram_media_update(
   ig_media_id = NULL,

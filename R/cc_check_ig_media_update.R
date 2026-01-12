@@ -1,4 +1,5 @@
-#' Check when information about Instagram media should be updated based on a simple heuristic
+#' Check when information about Instagram media should be updated based on a
+#' simple heuristic
 #'
 #' Update is set to TRUE if:
 #'
@@ -16,10 +17,12 @@
 #' @export
 #'
 #' @examples
-cc_check_instagram_media_update <- function(ig_media_id = NULL,
-                                            ig_user_id = NULL,
-                                            insights = FALSE,
-                                            fb_user_token = NULL) {
+cc_check_instagram_media_update <- function(
+  ig_media_id = NULL,
+  ig_user_id = NULL,
+  insights = FALSE,
+  fb_user_token = NULL
+) {
   if (is.null(ig_user_id)) {
     ig_user_id <- cc_get_settings(ig_user_id = ig_user_id) |>
       purrr::pluck("ig_user_id")
@@ -39,7 +42,7 @@ cc_check_instagram_media_update <- function(ig_media_id = NULL,
     fb_user_token = fb_user_token
   )
 
-  if (insights == TRUE) {
+  if (insights) {
     insights_df <- cc_get_instagram_media_insights(
       ig_media_id = ig_media_id,
       ig_user_id = ig_user_id,
@@ -47,10 +50,10 @@ cc_check_instagram_media_update <- function(ig_media_id = NULL,
       update = FALSE,
       fb_user_token = fb_user_token
     ) |>
-      dplyr::select(ig_media_id, timestamp_retrieved)
+      dplyr::select(dplyr::all_of(c("ig_media_id", "timestamp_retrieved")))
 
     media_df <- media_df |>
-      dplyr::select(-timestamp_retrieved) |>
+      dplyr::select(!"timestamp_retrieved") |>
       dplyr::left_join(
         y = insights_df,
         by = "ig_media_id"
@@ -60,12 +63,13 @@ cc_check_instagram_media_update <- function(ig_media_id = NULL,
   today <- Sys.Date()
 
   media_dates_df <- media_df |>
-    dplyr::transmute(ig_media_id,
-      date_created = lubridate::as_date(timestamp),
-      date_retrieved = lubridate::as_date(timestamp_retrieved)
+    dplyr::transmute(
+      ig_media_id,
+      date_created = lubridate::as_date(.data[["timestamp"]]),
+      date_retrieved = lubridate::as_date(.data[["timestamp_retrieved"]])
     ) |>
-    dplyr::arrange(dplyr::desc(date_retrieved)) |>
-    dplyr::distinct(ig_media_id, .keep_all = TRUE) |>
+    dplyr::arrange(dplyr::desc(.data[["date_retrieved"]])) |>
+    dplyr::distinct(.data[["ig_media_id"]], .keep_all = TRUE) |>
     dplyr::mutate(
       created_last7 = ((today - date_created) <= 7),
       created_last31 = ((today - date_created) <= 31),
