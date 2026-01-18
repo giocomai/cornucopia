@@ -171,13 +171,7 @@ cc_get_fb_page_posts <- function(
           combo_items_df
         }
       ) |>
-        purrr::list_rbind() |>
-        dplyr::mutate(
-          timestamp_retrieved = strftime(
-            as.POSIXlt(Sys.time(), "UTC"),
-            "%Y-%m-%dT%H:%M:%S%z"
-          )
-        )
+        purrr::list_rbind()
 
       if (cache) {
         really_new_post_df <- new_post_df |>
