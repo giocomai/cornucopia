@@ -243,7 +243,7 @@ cc_get_instagram_media_insights <- function(
       purrr::list_rbind(),
     all_types_output_df
   ) |>
-    dplyr::relocate(dplyr::all_of("ig_media_id", "ig_media_type")) |>
+    dplyr::relocate(dplyr::all_of(c("ig_media_id", "ig_media_type"))) |>
     dplyr::relocate(
       dplyr::all_of("timestamp_retrieved"),
       .after = last_col()

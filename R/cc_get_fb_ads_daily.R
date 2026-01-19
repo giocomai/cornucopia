@@ -230,7 +230,7 @@ cc_get_fb_ads_daily <- function(
                   id = x[[1]],
                   name = x[[2]]
                 ) |>
-                dplyr::relocate(dplyr::all_of("date", "id", "name"))
+                dplyr::relocate(dplyr::all_of(c("date", "id", "name")))
 
               names(extracted_data_df)[2] <- names(x)[[1]]
               names(extracted_data_df)[3] <- names(x)[[2]]

@@ -67,5 +67,5 @@ cc_get_fb_ad_spend_totals_by_day_by_campaign <- function(
       y = campaign_names_df,
       by = "campaign_id"
     ) |>
-    dplyr::relocate(dplyr::all_of("campaign_id", "campaign_name"))
+    dplyr::relocate(dplyr::all_of(c("campaign_id", "campaign_name")))
 }
