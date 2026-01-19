@@ -1,4 +1,5 @@
-## code to prepare `cc_valid_fields_fb_post_insights` dataset goes here
+# https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts
+
 cc_valid_fields_fb_post_insights <- c(
   "post_clicks",
   "post_clicks_by_type",
