@@ -1,8 +1,7 @@
 # Get Facebook page posts insights
 
-For reference, see:
-https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts
-defaults to Lifetime period for each post.
+For reference, see the [official
+documentation](https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts).
 
 ## Usage
 
@@ -41,5 +40,11 @@ cc_get_fb_page_post_insights(
   Defaults to TRUE.
 
 ## Details
+
+N.B. Even if not detailed in the documentation "page_impressions\*"
+metrics have been deprecated on 15 November 2025. See [the official
+update](https://developers.facebook.com/docs/platforminsights/page/deprecated-metrics).
+
+Defaults to Lifetime period for each post.
 
 Cache not yet working.

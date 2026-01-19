@@ -1,7 +1,7 @@
 # Takes all action results for all days when an ad is active
 
-For action breakdowns, see:
-https://developers.facebook.com/docs/marketing-api/insights/breakdowns/
+For action breakdowns, see [the official Marketing API, Insights API
+documentation](https://developers.facebook.com/docs/marketing-api/insights/breakdowns/).
 
 ## Usage
 
