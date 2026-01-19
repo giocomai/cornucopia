@@ -102,7 +102,13 @@ cc_get_fb_page_posts <- function(
   }
 
   if (only_cached) {
-    return(previous_fb_post_df)
+    if (process_json) {
+      output_df <- previous_fb_post_df |>
+        cc_process_json()
+    } else {
+      output_df <- previous_fb_post_df
+    }
+    return(output_df)
   }
 
   base_url <- stringr::str_c(
@@ -171,7 +177,13 @@ cc_get_fb_page_posts <- function(
           combo_items_df
         }
       ) |>
-        purrr::list_rbind()
+        purrr::list_rbind() |>
+        dplyr::mutate(
+          timestamp_retrieved = strftime(
+            as.POSIXlt(Sys.time(), "UTC"),
+            "%Y-%m-%dT%H:%M:%S%z"
+          )
+        )
 
       if (cache) {
         really_new_post_df <- new_post_df |>
