@@ -28,9 +28,17 @@ metrics will cause an error. Defaults to NULL. If left to NULL, metrics will be 
 \item{cache}{Defaults to TRUE.}
 }
 \description{
-For reference, see: https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts
-defaults to Lifetime period for each post.
+For reference, see the
+\href{https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts}{official
+documentation}.
 }
 \details{
+N.B. Even if not detailed in the documentation "page_impressions*" metrics
+have been deprecated on 15 November 2025. See
+\href{https://developers.facebook.com/docs/platforminsights/page/deprecated-metrics}{the
+official update}.
+
+Defaults to Lifetime period for each post.
+
 Cache not yet working.
 }

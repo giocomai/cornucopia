@@ -21,7 +21,9 @@ cc_get_fb_ad_actions_by_day(
 be retrieved.}
 }
 \description{
-For action breakdowns, see: https://developers.facebook.com/docs/marketing-api/insights/breakdowns/
+For action breakdowns, see
+\href{https://developers.facebook.com/docs/marketing-api/insights/breakdowns/}{the
+official Marketing API, Insights API documentation}.
 }
 \details{
 Draft: caching disabled by default as only partly functional;

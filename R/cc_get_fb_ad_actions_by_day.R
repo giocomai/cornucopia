@@ -1,6 +1,8 @@
 #' Takes all action results for all days when an ad is active
 #'
-#' For action breakdowns, see: https://developers.facebook.com/docs/marketing-api/insights/breakdowns/
+#' For action breakdowns, see
+#' \href{https://developers.facebook.com/docs/marketing-api/insights/breakdowns/}{the
+#' official Marketing API, Insights API documentation}.
 #'
 #' Draft: caching disabled by default as only partly functional;
 #' Not yet fully tested with ads running longer than 25 days
