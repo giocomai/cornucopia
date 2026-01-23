@@ -1,15 +1,13 @@
 # Get Facebook page insights
 
-Official documentation:
-<https://developers.facebook.com/docs/graph-api/reference/v24.0/insights>
-For avaialable metrics, see:
-<https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#availmetrics>
+For reference, see the [official
+documentation](https://developers.facebook.com/docs/graph-api/reference/v24.0/insights).
 
 ## Usage
 
 ``` r
 cc_get_fb_page_insights(
-  metric = c("page_impressions"),
+  metric = c("page_media_view"),
   start_date = NULL,
   end_date = NULL,
   meta_api_version = cornucopia::cc_get_meta_api_version(),
@@ -23,7 +21,7 @@ cc_get_fb_page_insights(
 
 - metric:
 
-  Defaults to \`page_impressions\`.
+  Defaults to \`page_media_view\`.
 
 - start_date:
 
@@ -47,3 +45,13 @@ cc_get_fb_page_insights(
 
   Facebook page token, different from the user token. Can be retrieved
   with \[cc_get_fb_page_token()\] or \[cc_get_fb_long_page_token()\].
+
+## Details
+
+Find the whole list of available metrics in the [dedicated section of
+the official
+documentation](https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#availmetrics).
+
+N.B. Even if not detailed in the documentation "page_impressions\*"
+metrics have been deprecated on 15 November 2025. See [the official
+update](https://developers.facebook.com/docs/platforminsights/page/deprecated-metrics).
