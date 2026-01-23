@@ -1,11 +1,21 @@
 #' Get Facebook page insights
 #'
-#' Official documentation:
-#' \url{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights}
-#' For avaialable metrics, see:
-#' \url{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#availmetrics}
 #'
-#' @param metric Defaults to `page_impressions`.
+#' For reference, see the
+#' \href{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights}{official
+#' documentation}.
+#'
+#' Find the whole list of available metrics in the
+#' \href{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#availmetrics}{dedicated
+#' section of the official documentation}.
+#'
+#' N.B. Even if not detailed in the documentation "page_impressions*" metrics
+#' have been deprecated on 15 November 2025. See
+#' \href{https://developers.facebook.com/docs/platforminsights/page/deprecated-metrics}{the
+#' official update}.
+#'
+#'
+#' @param metric Defaults to `page_media_view`.
 #' @inheritParams cc_set
 #'
 #' @return
@@ -14,7 +24,7 @@
 #' @examples
 cc_get_fb_page_insights <- function(
   metric = c(
-    "page_impressions"
+    "page_media_view"
   ),
   start_date = NULL,
   end_date = NULL,
