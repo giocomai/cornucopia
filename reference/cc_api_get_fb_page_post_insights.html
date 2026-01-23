@@ -59,20 +59,27 @@
 <dl><dt id="arg-fb-post-id">fb_post_id<a class="anchor" aria-label="anchor" href="#arg-fb-post-id"></a></dt>
 <dd><p>Instagram media identifier, must be a vector of length 1.
 A list of identifiers for your account can be retrieved with
-`cc_get_fb_page_posts()`.</p></dd>
+[cc_get_fb_page_posts()].</p></dd>
 
 
 <dt id="arg-metric">metric<a class="anchor" aria-label="anchor" href="#arg-metric"></a></dt>
 <dd><p>Metrics to be retrieved. Consider that depending on the media
 type, different media types are effectively available. Requesting the wrong
-metrics will cause an error. Defaults to NULL. If left to NULL, metrics will be chosen based on the media type. See the official documentation for reference:
-<a href="https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts" class="external-link"> https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts</a></p></dd>
+metrics will cause an error. Defaults to NULL. If left to NULL, metrics
+will be chosen based on the media type. See <a href="https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts" class="external-link">the
+official documentation</a> for reference.</p></dd>
 
 
 <dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
 <dd><p>Defaults to TRUE.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>A data frame, with the folowing columns: "fb_post_id",
+  "metric_title", "metric_description", "metric_name", "metric_value_name",
+  "metric_value", "period", and "timestamp_retrieved".</p>
+    </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
