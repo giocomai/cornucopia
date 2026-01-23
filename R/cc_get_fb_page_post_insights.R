@@ -15,7 +15,9 @@
 #'
 #' @inheritParams cc_api_get_fb_page_post_insights
 #'
-#' @return
+#' @return A data frame, with the folowing columns: "fb_post_id",
+#'   "metric_title", "metric_description", "metric_name", "metric_value_name",
+#'   "metric_value", "period", and "timestamp_retrieved".
 #' @export
 #'
 #' @examples
@@ -44,7 +46,7 @@ cc_get_fb_page_post_insights <- function(
   }
 
   if (is.null(fb_post_id)) {
-    cc_get_fb_page_posts(
+    fb_post_id <- cc_get_fb_page_posts(
       meta_api_version = meta_api_version,
       max_pages = NULL,
       fields = names(cc_empty_fb_page_post_df),
@@ -55,8 +57,18 @@ cc_get_fb_page_post_insights <- function(
       dplyr::pull(id)
   }
 
+  if (is.data.frame(fb_post_id)) {
+    if ("id" %in% colnames(fb_post_id)) {
+      fb_post_id <- fb_post_id[["id"]]
+    } else {
+      cli::cli_abort(
+        message = "{.var fb_post_id} must be a vector, or a data frame with a column named {.val id}"
+      )
+    }
+  }
+
   purrr::map(
-    .x = fb_post_id,
+    .x = as.character(fb_post_id),
     .progress = TRUE,
     .f = function(x) {
       cc_api_get_fb_page_post_insights(
@@ -83,15 +95,20 @@ cc_get_fb_page_post_insights <- function(
 #'
 #' @param fb_post_id Instagram media identifier, must be a vector of length 1.
 #'   A list of identifiers for your account can be retrieved with
-#'   `cc_get_fb_page_posts()`.
+#'   [cc_get_fb_page_posts()].
 #' @param metric Metrics to be retrieved. Consider that depending on the media
 #'   type, different media types are effectively available. Requesting the wrong
-#'   metrics will cause an error. Defaults to NULL. If left to NULL, metrics will be chosen based on the media type. See the official documentation for reference:
-#'   \url{ https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts}
+#'   metrics will cause an error. Defaults to NULL. If left to NULL, metrics
+#'   will be chosen based on the media type. See \href{
+#'   https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts}{the
+#'   official documentation} for reference.
+#'
 #'
 #' @inheritParams cc_get_fb_page_posts
 #'
-#' @return
+#' @return A data frame, with the folowing columns: "fb_post_id",
+#'   "metric_title", "metric_description", "metric_name", "metric_value_name",
+#'   "metric_value", "period", and "timestamp_retrieved".
 #' @export
 #'
 #' @examples
