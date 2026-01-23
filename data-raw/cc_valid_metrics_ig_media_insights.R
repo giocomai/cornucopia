@@ -4,7 +4,7 @@
 
 cc_valid_metrics_ig_media_insights <- list(
   carousel_album = c(
-    "impressions",
+    #  "impressions",
     "reach",
     "views",
     "saved",
@@ -12,7 +12,7 @@ cc_valid_metrics_ig_media_insights <- list(
   ),
   photo_video = c(
     "total_interactions",
-    "impressions",
+    #  "impressions",
     "reach",
     "saved",
     "views"
@@ -27,7 +27,7 @@ cc_valid_metrics_ig_media_insights <- list(
     "total_interactions"
   ),
   story = c(
-    "impressions",
+    #  "impressions",
     "reach",
     "replies",
     "follows",
@@ -38,7 +38,7 @@ cc_valid_metrics_ig_media_insights <- list(
     "total_interactions"
   ),
   posts = c(
-    "impressions",
+    #  "impressions",
     "reach",
     "views",
     "likes",

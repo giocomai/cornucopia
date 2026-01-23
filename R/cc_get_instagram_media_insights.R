@@ -44,8 +44,10 @@ cc_get_instagram_media_insights <- function(
     ig_user_id <- as.character(ig_user_id)
   }
 
-  if (ig_user_id == "" & cache == TRUE) {
-    cli::cli_abort("`ig_user_id` must be given when `cache` is set to TRUE.")
+  if (ig_user_id == "" & cache) {
+    cli::cli_abort(
+      "{.arg ig_user_id} must be given when {.arg cache} is set to {.val TRUE}."
+    )
   }
 
   if (is.null(ig_media_id)) {
