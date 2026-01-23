@@ -5,7 +5,7 @@
 cc_empty_instagram_media_insights <- list(
   video = tibble::tibble(
     ig_media_id = character(),
-    impressions = numeric(),
+    # impressions = numeric(),
     reach = numeric(),
     video_views = numeric(),
     saved = numeric(),
@@ -14,7 +14,7 @@ cc_empty_instagram_media_insights <- list(
   ),
   image = tibble::tibble(
     ig_media_id = character(),
-    impressions = numeric(),
+    # impressions = numeric(),
     reach = numeric(),
     views = numeric(),
     saved = numeric(),
@@ -34,7 +34,7 @@ cc_empty_instagram_media_insights <- list(
   ),
   carousel_album = tibble::tibble(
     ig_media_id = character(),
-    impressions = numeric(),
+    # impressions = numeric(),
     reach = numeric(),
     views = numeric(),
     saved = numeric(),

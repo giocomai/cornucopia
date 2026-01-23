@@ -16,7 +16,7 @@ cc_get_instagram_media_insights(
 }
 \arguments{
 \item{ig_media_id}{Instagram media identifier. A list of identifiers for your
-account can be retrieved with `cc_get_instagram_media_id()`. If left to
+account can be retrieved with [cc_get_instagram_media_id()]. If left to
 NULL, a full list is automatically retrieved.}
 
 \item{meta_api_version}{Defaults to the latest API at the time this package was
@@ -40,11 +40,13 @@ adjustments:
 - all valid fields for the given API endpoint are always requested and cached locally; only requested fields are effectively returned (but `ig_media_id` and `timestamp_retrieved` are always included as first and last column)
 
 N.B.: different media types have different fields: hence the `NA`s in columns
-for which data are unavailable for the given media type.
-N.B.: all media posted before 2017 are discarded by default, as Instagram API throw an error for earlier posts
+for which data are unavailable for the given media type. N.B.: all media
+posted before 2017 are discarded by default, as Instagram API throw an error
+for earlier posts
 
-For details, see:
-https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights
+For details, see
+\href{https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights}{the
+official documentation}.
 }
 \examples{
 \dontrun{
