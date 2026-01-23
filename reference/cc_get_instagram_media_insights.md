@@ -22,7 +22,7 @@ cc_get_instagram_media_insights(
 - ig_media_id:
 
   Instagram media identifier. A list of identifiers for your account can
-  be retrieved with \`cc_get_instagram_media_id()\`. If left to NULL, a
+  be retrieved with \[cc_get_instagram_media_id()\]. If left to NULL, a
   full list is automatically retrieved.
 
 - meta_api_version:
@@ -59,8 +59,8 @@ columns for which data are unavailable for the given media type. N.B.:
 all media posted before 2017 are discarded by default, as Instagram API
 throw an error for earlier posts
 
-For details, see:
-https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights
+For details, see [the official
+documentation](https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights).
 
 ## Examples
 

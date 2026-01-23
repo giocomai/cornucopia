@@ -57,7 +57,7 @@ adjustments:</p>
 
 <dl><dt id="arg-ig-media-id">ig_media_id<a class="anchor" aria-label="anchor" href="#arg-ig-media-id"></a></dt>
 <dd><p>Instagram media identifier. A list of identifiers for your
-account can be retrieved with `cc_get_instagram_media_id()`. If left to
+account can be retrieved with [cc_get_instagram_media_id()]. If left to
 NULL, a full list is automatically retrieved.</p></dd>
 
 
@@ -84,10 +84,12 @@ retrieved with [cc_get_fb_user_token()] or [cc_get_fb_long_user_token()].</p></d
 - it ensures that the output always included all requested fields, if they are valid; e.g. `is_shared_to_feed` and `media_url` may be omitted by the API (see documentation) but this function always includes the relevant column (and returns a NA value if no value is given)
 - all valid fields for the given API endpoint are always requested and cached locally; only requested fields are effectively returned (but `ig_media_id` and `timestamp_retrieved` are always included as first and last column)</p>
 <p>N.B.: different media types have different fields: hence the `NA`s in columns
-for which data are unavailable for the given media type.
-N.B.: all media posted before 2017 are discarded by default, as Instagram API throw an error for earlier posts</p>
-<p>For details, see:
-https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights</p>
+for which data are unavailable for the given media type. N.B.: all media
+posted before 2017 are discarded by default, as Instagram API throw an error
+for earlier posts</p>
+<p>For details, see
+<a href="https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights" class="external-link">the
+official documentation</a>.</p>
     </div>
 
     <div class="section level2">
