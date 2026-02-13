@@ -20,7 +20,7 @@ cc_api_get_instagram_media(
 
   Instagram media identifier, must be a vector of length 1. A list of
   identifiers for your account can be retrieved with
-  \`cc_get_instagram_media_id()\`.
+  \[cc_get_instagram_media_id()\].
 
 - meta_api_version:
 

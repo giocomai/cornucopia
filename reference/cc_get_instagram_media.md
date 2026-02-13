@@ -22,8 +22,8 @@ cc_get_instagram_media(
 - ig_media_id:
 
   Instagram media identifier. A list of identifiers for your account can
-  be retrieved with \`cc_get_instagram_media_id()\`. If left to NULL, a
-  full list is automatically retrieved.
+  be retrieved with \[cc_get_instagram_media_id()\]. If left to
+  \`NULL\`, a full list is automatically retrieved.
 
 - meta_api_version:
 
@@ -56,7 +56,7 @@ locally; only requested fields are effectively returned (but
 and last column)
 
 For details, see:
-https://developers.facebook.com/docs/instagram-api/reference/ig-media
+<https://developers.facebook.com/docs/instagram-api/reference/ig-media>
 
 ## Examples
 

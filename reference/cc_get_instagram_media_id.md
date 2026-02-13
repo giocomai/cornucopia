@@ -33,9 +33,9 @@ cc_get_instagram_media_id(
 
 - max_pages:
 
-  Defaults to NULL. If not given, it retrieves the number of media and
-  calculates max number of pages needed. Hard-coded max number of pages
-  at 1000.
+  Defaults to \`NULL\`. If not given, it retrieves the number of media
+  and calculates max number of pages needed. Hard-coded max number of
+  pages at 1000.
 
 ## Value
 

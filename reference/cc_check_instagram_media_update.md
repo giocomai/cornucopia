@@ -18,8 +18,8 @@ cc_check_instagram_media_update(
 - ig_media_id:
 
   Instagram media identifier. A list of identifiers for your account can
-  be retrieved with \`cc_get_instagram_media_id()\`. If left to NULL, a
-  full list is automatically retrieved.
+  be retrieved with \[cc_get_instagram_media_id()\]. If left to
+  \`NULL\`, a full list is automatically retrieved.
 
 - ig_user_id:
 
