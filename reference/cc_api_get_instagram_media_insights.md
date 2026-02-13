@@ -22,23 +22,23 @@ cc_api_get_instagram_media_insights(
 
   Instagram media identifier, must be a vector of length 1. A list of
   identifiers for your account can be retrieved with
-  \`cc_get_instagram_media_id()\`.
+  \[cc_get_instagram_media_id()\].
 
 - metrics:
 
   Metrics to be retrieved. Consider that depending on the media type,
   different media types are effectively available. Requesting the wrong
-  metrics will cause an error. Defaults to NULL. If left to NULL,
-  metrics will be chosen based on the media type. See the official
-  documentation for reference:
+  metrics will cause an error. Defaults to \`NULL\`. If left to
+  \`NULL\`, metrics will be chosen based on the media type. See the
+  official documentation for reference:
   <https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights>
 
 - media_type:
 
   Media type. Valid values include "IMAGE", "VIDEO", "REELS", and
-  "CAROUSEL_ALBUM". Defaults to NULL. If not given, it will be retrieved
-  with \`cc_get_instagram_media\`. Ignored if \`metrics\` explicitly
-  given.
+  "CAROUSEL_ALBUM". Defaults to \`NULL\`. If not given, it will be
+  retrieved with \[cc_get_instagram_media()\]. Ignored if \`metrics\`
+  explicitly given.
 
 - meta_api_version:
 

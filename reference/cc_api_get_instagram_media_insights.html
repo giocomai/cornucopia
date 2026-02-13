@@ -57,20 +57,20 @@ https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights">
 <dl><dt id="arg-ig-media-id">ig_media_id<a class="anchor" aria-label="anchor" href="#arg-ig-media-id"></a></dt>
 <dd><p>Instagram media identifier, must be a vector of length 1.
 A list of identifiers for your account can be retrieved with
-`cc_get_instagram_media_id()`.</p></dd>
+[cc_get_instagram_media_id()].</p></dd>
 
 
 <dt id="arg-metrics">metrics<a class="anchor" aria-label="anchor" href="#arg-metrics"></a></dt>
 <dd><p>Metrics to be retrieved. Consider that depending on the media
 type, different media types are effectively available. Requesting the wrong
-metrics will cause an error. Defaults to NULL. If left to NULL, metrics will be chosen based on the media type. See the official documentation for reference:
+metrics will cause an error. Defaults to `NULL`. If left to `NULL`, metrics will be chosen based on the media type. See the official documentation for reference:
 <a href="https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights" class="external-link">https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights</a></p></dd>
 
 
 <dt id="arg-media-type">media_type<a class="anchor" aria-label="anchor" href="#arg-media-type"></a></dt>
 <dd><p>Media type. Valid values include "IMAGE", "VIDEO", "REELS", and
-"CAROUSEL_ALBUM". Defaults to NULL. If not given, it will be retrieved with
-`cc_get_instagram_media`. Ignored if `metrics` explicitly given.</p></dd>
+"CAROUSEL_ALBUM". Defaults to `NULL`. If not given, it will be retrieved with
+[cc_get_instagram_media()]. Ignored if `metrics` explicitly given.</p></dd>
 
 
 <dt id="arg-meta-api-version">meta_api_version<a class="anchor" aria-label="anchor" href="#arg-meta-api-version"></a></dt>
