@@ -23,6 +23,8 @@
 - [`cc_date_to_json()`](https://giocomai.github.io/cornucopia/reference/cc_date_to_json.md)
   : Output date in a format that can be passed as custom date to the
   Facebok API.
+- [`cc_download_instagram_media()`](https://giocomai.github.io/cornucopia/reference/cc_download_instagram_media.md)
+  : Downloads Instagram media or thumbnails
 - [`cc_drive_upload_linkedin_stats_content()`](https://giocomai.github.io/cornucopia/reference/cc_drive_upload_linkedin_stats_content.md)
   : Upload to Google Sheets Metrics statistics exported from LinkedIn
 - [`cc_drive_upload_linkedin_stats_followers()`](https://giocomai.github.io/cornucopia/reference/cc_drive_upload_linkedin_stats_followers.md)
