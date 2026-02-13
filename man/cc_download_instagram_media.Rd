@@ -13,11 +13,15 @@ cc_download_instagram_media(
 )
 }
 \arguments{
-\item{media_df}{Defaults to `NULL`. If given, expected to be a data frame generated with [cc_get_instagram_media()].}
+\item{media_df}{Defaults to `NULL`. If given, expected to be a data frame
+generated with [cc_get_instagram_media()].}
 
-\item{type}{Defaults to "media", type of media to download. The only alternative valid value is "thumbnail".}
+\item{type}{Defaults to "media", type of media to download. The only
+alternative valid value is "thumbnail".}
 
-\item{path}{Path to the folder where files will be downloaded; defaults to either `ig_media` or `ig_thumbnail`, depending on `type`. If the path does not exist, it will be created.}
+\item{path}{Path to the folder where files will be downloaded; defaults to
+either `ig_media` or `ig_thumbnail`, depending on `type`. If the path does
+not exist, it will be created.}
 
 \item{wait}{Defaults to 1. Time to wait between downloading each file.}
 
