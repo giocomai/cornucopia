@@ -212,6 +212,10 @@ cc_get_instagram_media_insights <- function(
             fb_user_token = fb_user_token
           )
 
+          if (is.null(current_media_df)) {
+            return(NULL)
+          }
+
           if (cache) {
             DBI::dbAppendTable(
               conn = db,
@@ -225,7 +229,7 @@ cc_get_instagram_media_insights <- function(
       ) |>
         purrr::list_rbind()
 
-      if (cache == TRUE) {
+      if (cache) {
         output_df <- dplyr::bind_rows(
           previous_ig_media_df |> dplyr::collect(),
           all_new_df
@@ -241,7 +245,7 @@ cc_get_instagram_media_insights <- function(
   ) |>
     purrr::list_rbind()
 
-  if (cache == TRUE) {
+  if (cache) {
     DBI::dbDisconnect(db)
   }
 
@@ -273,14 +277,14 @@ cc_get_instagram_media_insights <- function(
 #'
 #' @param ig_media_id Instagram media identifier, must be a vector of length 1.
 #'   A list of identifiers for your account can be retrieved with
-#'   `cc_get_instagram_media_id()`.
+#'   [cc_get_instagram_media_id()].
 #' @param metrics Metrics to be retrieved. Consider that depending on the media
 #'   type, different media types are effectively available. Requesting the wrong
-#'   metrics will cause an error. Defaults to NULL. If left to NULL, metrics will be chosen based on the media type. See the official documentation for reference:
+#'   metrics will cause an error. Defaults to `NULL`. If left to `NULL`, metrics will be chosen based on the media type. See the official documentation for reference:
 #'   \url{https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights}
 #' @param media_type Media type. Valid values include "IMAGE", "VIDEO", "REELS", and
-#'   "CAROUSEL_ALBUM". Defaults to NULL. If not given, it will be retrieved with
-#'   `cc_get_instagram_media`. Ignored if `metrics` explicitly given.
+#'   "CAROUSEL_ALBUM". Defaults to `NULL`. If not given, it will be retrieved with
+#'   [cc_get_instagram_media()]. Ignored if `metrics` explicitly given.
 #'
 #' @inheritParams cc_get_instagram_media
 #'
@@ -364,8 +368,10 @@ cc_api_get_instagram_media_insights <- function(
 
   current_l <- httr2::resp_body_json(req)
 
-  if (is.null(current_l[["error"]][["message"]]) == FALSE) {
-    cli::cli_alert_warning(current_l[["error"]][["message"]])
+  if (!is.null(current_l[["error"]][["message"]])) {
+    cli::cli_alert_warning(
+      text = 'ig_media_id {ig_media_id}: {current_l[["error"]][["message"]]}'
+    )
     return(invisible(NULL))
   }
 

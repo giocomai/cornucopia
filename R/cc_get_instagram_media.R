@@ -228,7 +228,7 @@ cc_api_get_instagram_media <- function(
 
   current_l <- httr2::resp_body_json(req)
 
-  if (is.null(current_l[["error"]][["message"]]) == FALSE) {
+  if (!is.null(current_l[["error"]][["message"]])) {
     cli::cli_abort(current_l[["error"]][["message"]])
   }
 

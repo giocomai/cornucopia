@@ -61,7 +61,7 @@ cc_get_instagram_media_id <- function(
 
     current_table <- "ig_media_id"
 
-    if (DBI::dbExistsTable(conn = db, name = current_table) == FALSE) {
+    if (!DBI::dbExistsTable(conn = db, name = current_table)) {
       DBI::dbWriteTable(
         conn = db,
         name = current_table,

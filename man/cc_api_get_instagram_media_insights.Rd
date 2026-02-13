@@ -17,16 +17,16 @@ cc_api_get_instagram_media_insights(
 \arguments{
 \item{ig_media_id}{Instagram media identifier, must be a vector of length 1.
 A list of identifiers for your account can be retrieved with
-`cc_get_instagram_media_id()`.}
+[cc_get_instagram_media_id()].}
 
 \item{metrics}{Metrics to be retrieved. Consider that depending on the media
 type, different media types are effectively available. Requesting the wrong
-metrics will cause an error. Defaults to NULL. If left to NULL, metrics will be chosen based on the media type. See the official documentation for reference:
+metrics will cause an error. Defaults to `NULL`. If left to `NULL`, metrics will be chosen based on the media type. See the official documentation for reference:
 \url{https://developers.facebook.com/docs/instagram-api/reference/ig-media/insights}}
 
 \item{media_type}{Media type. Valid values include "IMAGE", "VIDEO", "REELS", and
-"CAROUSEL_ALBUM". Defaults to NULL. If not given, it will be retrieved with
-`cc_get_instagram_media`. Ignored if `metrics` explicitly given.}
+"CAROUSEL_ALBUM". Defaults to `NULL`. If not given, it will be retrieved with
+[cc_get_instagram_media()]. Ignored if `metrics` explicitly given.}
 
 \item{meta_api_version}{Defaults to the latest API at the time this package was
 last updated. Currently, this corresponds to api version 24.0.}
