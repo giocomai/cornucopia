@@ -58,7 +58,8 @@ cc_download_instagram_media <- function(
     ) |>
     dplyr::mutate(
       media_path = fs::path(path, stringr::str_c(filename, ".", extension))
-    )
+    ) |>
+    tidyr::drop_na("media_path")
 
   available_files_df <- tibble::tibble(media_path = fs::dir_ls(path = path))
 
