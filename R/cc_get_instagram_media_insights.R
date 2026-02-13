@@ -102,8 +102,8 @@ cc_get_instagram_media_insights <- function(
     dplyr::count() |>
     dplyr::ungroup()
 
-  if (cache == TRUE) {
-    if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
+  if (cache) {
+    if (!requireNamespace("RSQLite", quietly = TRUE)) {
       cli::cli_abort(
         "Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE."
       )
@@ -123,14 +123,16 @@ cc_get_instagram_media_insights <- function(
   all_types_output_df <- purrr::map(
     .x = media_by_type |> dplyr::pull(media_type) |> stringr::str_to_lower(),
     .f = function(current_media_type) {
-      if (cache == TRUE) {
-        current_table <- stringr::str_c(
-          "ig_media_insights",
-          "_",
-          current_media_type
+      if (cache) {
+        current_table <- stringr::str_flatten(
+          string = c(
+            "ig_media_insights",
+            current_media_type
+          ),
+          collapse = "_"
         )
 
-        if (DBI::dbExistsTable(conn = db, name = current_table) == FALSE) {
+        if (!DBI::dbExistsTable(conn = db, name = current_table)) {
           DBI::dbWriteTable(
             conn = db,
             name = current_table,
@@ -162,7 +164,7 @@ cc_get_instagram_media_insights <- function(
             ) |>
             dplyr::ungroup()
 
-          if (update == TRUE) {
+          if (update) {
             update_df <- cc_check_instagram_media_update(
               ig_media_id = unique(previous_ig_media_df$ig_media_id),
               ig_user_id = ig_user_id,
@@ -210,7 +212,7 @@ cc_get_instagram_media_insights <- function(
             fb_user_token = fb_user_token
           )
 
-          if (cache == TRUE) {
+          if (cache) {
             DBI::dbAppendTable(
               conn = db,
               name = current_table,

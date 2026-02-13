@@ -7,7 +7,7 @@ cc_empty_instagram_media_insights <- list(
     ig_media_id = character(),
     # impressions = numeric(),
     reach = numeric(),
-    video_views = numeric(),
+    views = numeric(),
     saved = numeric(),
     total_interactions = numeric(),
     timestamp_retrieved = character()
