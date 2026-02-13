@@ -14,8 +14,8 @@ cc_check_instagram_media_update(
 }
 \arguments{
 \item{ig_media_id}{Instagram media identifier. A list of identifiers for your
-account can be retrieved with `cc_get_instagram_media_id()`. If left to
-NULL, a full list is automatically retrieved.}
+account can be retrieved with [cc_get_instagram_media_id()]. If left to
+`NULL`, a full list is automatically retrieved.}
 
 \item{ig_user_id}{Instagram user id, typically composed of 17 digits. Not to
 be confused with legacy Instagram account id.}

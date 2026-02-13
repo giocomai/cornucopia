@@ -1,9 +1,12 @@
 #' Get identifiers of all media published on a profile
 #'
-#' @param max_pages Defaults to NULL. If not given, it retrieves the number of media and calculates max number of pages needed. Hard-coded max number of pages at 1000.
+#' @param max_pages Defaults to `NULL`. If not given, it retrieves the number of
+#'   media and calculates max number of pages needed. Hard-coded max number of
+#'   pages at 1000.
 #' @inheritParams cc_get_instagram_user
 #'
-#' @return A tibble with one column named `ig_media_id` with identifiers of Instagram media.
+#' @return A tibble with one column named `ig_media_id` with identifiers of
+#'   Instagram media.
 #' @export
 #'
 #' @examples
@@ -18,6 +21,7 @@ cc_get_instagram_media_id <- function(
     media_count <- cc_get_instagram_user(
       ig_user_id = ig_user_id,
       meta_api_version = meta_api_version,
+      fb_user_token = fb_user_token,
       fields = "media_count"
     ) |>
       purrr::pluck("media_count")
@@ -38,8 +42,8 @@ cc_get_instagram_media_id <- function(
     fb_user_token <- as.character(fb_user_token)
   }
 
-  if (cache == TRUE) {
-    if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
+  if (cache) {
+    if (!requireNamespace("RSQLite", quietly = TRUE)) {
       cli::cli_abort(
         "Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE."
       )
@@ -96,10 +100,6 @@ cc_get_instagram_media_id <- function(
       out[[i]] <- httr2::req_perform(api_request) |>
         httr2::resp_body_json()
 
-      if (!is.null(max_pages) && i == max_pages) {
-        break
-      }
-
       new_id_v <- purrr::map_chr(
         .x = purrr::pluck(out[[i]], "data"),
         .f = function(y) {
@@ -114,7 +114,7 @@ cc_get_instagram_media_id <- function(
       if (length(really_new_id_v) == 0) {
         break
       } else {
-        if (cache == TRUE) {
+        if (cache) {
           DBI::dbAppendTable(
             conn = db,
             name = current_table,
@@ -123,10 +123,14 @@ cc_get_instagram_media_id <- function(
         }
       }
 
-      if (purrr::pluck_exists(out[[i]], "paging", "next") == TRUE) {
+      if (purrr::pluck_exists(out[[i]], "paging", "next")) {
         api_request <- purrr::pluck(out[[i]], "paging", "next") |>
           httr2::request()
       } else {
+        break
+      }
+
+      if (!is.null(max_pages) && i == max_pages) {
         break
       }
 
@@ -159,7 +163,7 @@ cc_get_instagram_media_id <- function(
   ) |>
     purrr::list_rbind()
 
-  if (cache == TRUE) {
+  if (cache) {
     output_df <- dplyr::bind_rows(
       previous_ig_media_id_df,
       media_id_df

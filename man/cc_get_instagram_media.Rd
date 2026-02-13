@@ -16,8 +16,8 @@ cc_get_instagram_media(
 }
 \arguments{
 \item{ig_media_id}{Instagram media identifier. A list of identifiers for your
-account can be retrieved with `cc_get_instagram_media_id()`. If left to
-NULL, a full list is automatically retrieved.}
+account can be retrieved with [cc_get_instagram_media_id()]. If left to
+`NULL`, a full list is automatically retrieved.}
 
 \item{meta_api_version}{Defaults to the latest API at the time this package was
 last updated. Currently, this corresponds to api version 24.0.}
@@ -40,7 +40,7 @@ adjustments:
 - all valid fields for the given API endpoint are always requested and cached locally; only requested fields are effectively returned (but `ig_media_id` and `timestamp_retrieved` are always included as first and last column)
 
 For details, see:
-https://developers.facebook.com/docs/instagram-api/reference/ig-media
+\url{https://developers.facebook.com/docs/instagram-api/reference/ig-media}
 }
 \examples{
 \dontrun{

@@ -10,11 +10,11 @@
 #' - all valid fields for the given API endpoint are always requested and cached locally; only requested fields are effectively returned (but `ig_media_id` and `timestamp_retrieved` are always included as first and last column)
 #'
 #' For details, see:
-#' https://developers.facebook.com/docs/instagram-api/reference/ig-media
+#' \url{https://developers.facebook.com/docs/instagram-api/reference/ig-media}
 #'
 #' @param ig_media_id Instagram media identifier. A list of identifiers for your
-#'   account can be retrieved with `cc_get_instagram_media_id()`. If left to
-#'   NULL, a full list is automatically retrieved.
+#'   account can be retrieved with [cc_get_instagram_media_id()]. If left to
+#'   `NULL`, a full list is automatically retrieved.
 #' @inheritParams cc_get_instagram_media_id
 #'
 #' @return
@@ -40,7 +40,7 @@ cc_get_instagram_media <- function(
     ig_user_id <- as.character(ig_user_id)
   }
 
-  if (ig_user_id == "" & cache == TRUE) {
+  if (ig_user_id == "" & cache) {
     cli::cli_abort("`ig_user_id` must be given when `cache` is set to TRUE.")
   }
 
@@ -54,8 +54,8 @@ cc_get_instagram_media <- function(
       dplyr::pull(ig_media_id)
   }
 
-  if (cache == TRUE) {
-    if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
+  if (cache) {
+    if (!requireNamespace("RSQLite", quietly = TRUE)) {
       cli::cli_abort(
         "Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE."
       )
@@ -101,7 +101,7 @@ cc_get_instagram_media <- function(
         ) |>
         dplyr::ungroup()
 
-      if (update == TRUE) {
+      if (update) {
         update_df <- cc_check_instagram_media_update(
           ig_media_id = unique(previous_ig_media_df$ig_media_id),
           ig_user_id = ig_user_id,
@@ -143,7 +143,7 @@ cc_get_instagram_media <- function(
         fb_user_token = fb_user_token
       )
 
-      if (cache == TRUE) {
+      if (cache) {
         DBI::dbAppendTable(
           conn = db,
           name = current_table,
@@ -156,7 +156,7 @@ cc_get_instagram_media <- function(
   ) |>
     purrr::list_rbind()
 
-  if (cache == TRUE) {
+  if (cache) {
     output_df <- dplyr::bind_rows(
       previous_ig_media_df |> dplyr::collect(),
       all_new_df
@@ -184,7 +184,7 @@ cc_get_instagram_media <- function(
 #'
 #' @param ig_media_id Instagram media identifier, must be a vector of length 1.
 #'   A list of identifiers for your account can be retrieved with
-#'   `cc_get_instagram_media_id()`.
+#'   [cc_get_instagram_media_id()].
 #' @inheritParams cc_get_instagram_media
 #'
 #' @return
