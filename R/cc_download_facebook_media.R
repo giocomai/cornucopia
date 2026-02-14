@@ -69,10 +69,22 @@ cc_download_facebook_media <- function(
     .x = media_to_download_df[[url_column]],
     .y = media_to_download_df[["media_path"]],
     .f = function(current_url, current_path) {
-      download.file(
-        url = current_url,
-        destfile = current_path
+      error_message <- tryCatch(
+        download.file(
+          url = current_url,
+          destfile = current_path
+        ),
+        error = function(e) {
+          e
+        }
       )
+
+      if (inherits(x = error_message, what = "error")) {
+        cli::cli_alert_warning(
+          "Could not download file related to post with id: {.val {fs::path_file(current_path) |> fs::path_ext_remove()}}"
+        )
+      }
+
       Sys.sleep(time = wait)
     }
   )
