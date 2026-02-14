@@ -6,13 +6,13 @@
 #'
 #' As some fields return objects that can be read as lists, rather than simple
 #' strings, the data are cached locally as json. To have them processed as
-#' lists, set `process_json` to TRUE.
+#' lists, set `process_json` to `TRUE`.
 #'
 #' @param max_pages Posts are returned in pages of 25 posts each. How many pages
 #'   should be retrieved? By default, this will try to retrieve all posts.
-#' @param cache Defaults to TRUE.
-#' @param only_cached Defaults to FALSE. If TRUE, only data cached locally will
-#'   be retrieved.
+#' @param cache Defaults to `TRUE`.
+#' @param only_cached Defaults to `FALSE`. If `TRUE`, only data cached locally
+#'   will be retrieved.
 #' @param fields Lists of fields which return data consistently, see
 #'   `cc_fb_page_post_fields[["fields"]]` for a full list and the
 #'   \href{https://developers.facebook.com/docs/graph-api/reference/v24.0/page/feed}{official
@@ -20,9 +20,10 @@
 #'
 #'   Expect caching to work consistently only if you leave this value unchanged.
 #'   Consider disabling caching if you customise this parameter.
-#' @param process_json Defaults to TRUE. If TRUE, fields returning objects (not
-#'   strigs) are returned in list columns in the output data frame. If FALSE,
-#'   they are returned as json-formatted strings, to be further processed.
+#' @param process_json Defaults to `TRUE`. If `TRUE`, fields returning objects
+#'   (not strings) are returned in list columns in the output data frame. If
+#'   `FALSE`, they are returned as json-formatted strings, to be further
+#'   processed.
 #' @return A data frame, with the same columns as `cc_empty_fb_page_post_df`;
 #'   each column in the returned data frame is of class character.
 #' @export
@@ -66,7 +67,7 @@ cc_get_fb_page_posts <- function(
   }
 
   if (cache) {
-    if (requireNamespace("RSQLite", quietly = TRUE) == FALSE) {
+    if (!requireNamespace("RSQLite", quietly = TRUE)) {
       cli::cli_abort(
         "Package `RSQLite` needs to be installed when `cache` is set to TRUE. Please install `RSQLite` or set cache to FALSE."
       )
@@ -141,7 +142,7 @@ cc_get_fb_page_posts <- function(
         httr2::req_perform() |>
         httr2::resp_body_json()
 
-      if (is.null(current_response[["error"]][["message"]]) == FALSE) {
+      if (!is.null(current_response[["error"]][["message"]])) {
         cli::cli_abort(current_response[["error"]][["message"]])
       }
 

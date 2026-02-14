@@ -27,7 +27,7 @@ will be chosen based on the media type. See \href{
 https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts}{the
 official documentation} for reference.}
 
-\item{cache}{Defaults to TRUE.}
+\item{cache}{Defaults to `TRUE`.}
 }
 \value{
 A data frame, with the folowing columns: "fb_post_id",

@@ -51,7 +51,7 @@ three values determining rate limiting reaches at least 80%, the function
 returns what it has collected so far. Set to NULL to ignore. For details,
 see [the official documentation](https://developers.facebook.com/docs/graph-api/overview/rate-limiting/).}
 
-\item{cache}{Defaults to TRUE.}
+\item{cache}{Defaults to `TRUE`.}
 }
 \value{
 A data frame with the selected fields as columns, and a row for each post of the selected Instagram account.

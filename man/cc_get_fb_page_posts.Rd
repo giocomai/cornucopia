@@ -28,14 +28,15 @@ should be retrieved? By default, this will try to retrieve all posts.}
   Expect caching to work consistently only if you leave this value unchanged.
   Consider disabling caching if you customise this parameter.}
 
-\item{process_json}{Defaults to TRUE. If TRUE, fields returning objects (not
-strigs) are returned in list columns in the output data frame. If FALSE,
-they are returned as json-formatted strings, to be further processed.}
+\item{process_json}{Defaults to `TRUE`. If `TRUE`, fields returning objects
+(not strings) are returned in list columns in the output data frame. If
+`FALSE`, they are returned as json-formatted strings, to be further
+processed.}
 
-\item{cache}{Defaults to TRUE.}
+\item{cache}{Defaults to `TRUE`.}
 
-\item{only_cached}{Defaults to FALSE. If TRUE, only data cached locally will
-be retrieved.}
+\item{only_cached}{Defaults to `FALSE`. If `TRUE`, only data cached locally
+will be retrieved.}
 }
 \value{
 A data frame, with the same columns as `cc_empty_fb_page_post_df`;
@@ -49,7 +50,7 @@ documentation}.
 \details{
 As some fields return objects that can be read as lists, rather than simple
 strings, the data are cached locally as json. To have them processed as
-lists, set `process_json` to TRUE.
+lists, set `process_json` to `TRUE`.
 }
 \examples{
 \dontrun{
