@@ -21,7 +21,7 @@
 #' }
 cc_download_facebook_media <- function(
   posts_df = NULL,
-  type = c("full_picture"),
+  type = c("full_picture", "attachment"),
   path = NULL,
   wait = 1,
   ...
@@ -47,7 +47,7 @@ cc_download_facebook_media <- function(
     filename_df <- posts_df |>
       dplyr::select(dplyr::all_of(c("id", "full_picture"))) |>
       tidyr::drop_na("full_picture") |>
-      dplyr::rename(filename = "id", full_picture_url = full_picture) |>
+      dplyr::rename(filename = "id", full_picture_url = "full_picture") |>
       dplyr::mutate(
         extension = .data[[url_column]] |>
           stringr::str_remove(pattern = "\\?.*$") |>
@@ -57,6 +57,39 @@ cc_download_facebook_media <- function(
         media_path = fs::path(path, stringr::str_c(filename, ".", extension))
       ) |>
       tidyr::drop_na("media_path")
+  } else if (current_type == "attachment") {
+    filename_df <- posts_df |>
+      dplyr::select(dplyr::all_of(c("id", "attachments"))) |>
+      tidyr::unnest("attachments") |>
+      tidyr::unnest("attachments") |>
+      tidyr::unnest("media") |>
+      dplyr::select(dplyr::all_of(c("id", "media"))) |>
+      dplyr::mutate(
+        media = purrr::map(.x = .data[["media"]], .f = \(x) {
+          if (is.character(x)) {
+            temp_media_df <- tibble::tibble(src = x)
+          } else {
+            temp_media_df <- x |>
+              tibble::as_tibble()
+          }
+          temp_media_df
+        })
+      ) |>
+      tidyr::unnest("media") |>
+      dplyr::relocate(dplyr::all_of(c("id", "src"))) |>
+      dplyr::rename(filename = "id", attachment_url = "src") |>
+      dplyr::mutate(
+        extension = .data[[url_column]] |>
+          stringr::str_remove(pattern = "\\?.*$") |>
+          fs::path_ext()
+      ) |>
+      dplyr::mutate(
+        media_path = fs::path(path, stringr::str_c(filename, ".", extension))
+      ) |>
+      tidyr::drop_na("media_path") |>
+      dplyr::group_by(filename) |>
+      dplyr::mutate(i = dplyr::row_number()) |>
+      tidyr::unite(col = "filename", dplyr::all_of(c("filename", "i")))
   }
 
   available_files_df <- tibble::tibble(media_path = fs::dir_ls(path = path))
