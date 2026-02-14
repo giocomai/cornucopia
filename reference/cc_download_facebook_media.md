@@ -7,7 +7,7 @@ Downloads media or previews of Facebook posts
 ``` r
 cc_download_facebook_media(
   posts_df = NULL,
-  type = c("full_picture"),
+  type = c("full_picture", "attachment"),
   path = NULL,
   wait = 1,
   ...
