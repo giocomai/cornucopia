@@ -71,7 +71,7 @@ cc_get_instagram_bd_user_media(
 
 - cache:
 
-  Defaults to TRUE.
+  Defaults to \`TRUE\`.
 
 ## Value
 

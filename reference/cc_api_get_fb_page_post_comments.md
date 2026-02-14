@@ -37,4 +37,4 @@ cc_api_get_fb_page_post_comments(
 
 - cache:
 
-  Defaults to TRUE.
+  Defaults to \`TRUE\`.

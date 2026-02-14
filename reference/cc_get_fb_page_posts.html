@@ -75,18 +75,19 @@ should be retrieved? By default, this will try to retrieve all posts.</p></dd>
 
 
 <dt id="arg-process-json">process_json<a class="anchor" aria-label="anchor" href="#arg-process-json"></a></dt>
-<dd><p>Defaults to TRUE. If TRUE, fields returning objects (not
-strigs) are returned in list columns in the output data frame. If FALSE,
-they are returned as json-formatted strings, to be further processed.</p></dd>
+<dd><p>Defaults to `TRUE`. If `TRUE`, fields returning objects
+(not strings) are returned in list columns in the output data frame. If
+`FALSE`, they are returned as json-formatted strings, to be further
+processed.</p></dd>
 
 
 <dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
-<dd><p>Defaults to TRUE.</p></dd>
+<dd><p>Defaults to `TRUE`.</p></dd>
 
 
 <dt id="arg-only-cached">only_cached<a class="anchor" aria-label="anchor" href="#arg-only-cached"></a></dt>
-<dd><p>Defaults to FALSE. If TRUE, only data cached locally will
-be retrieved.</p></dd>
+<dd><p>Defaults to `FALSE`. If `TRUE`, only data cached locally
+will be retrieved.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -98,7 +99,7 @@ be retrieved.</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>As some fields return objects that can be read as lists, rather than simple
 strings, the data are cached locally as json. To have them processed as
-lists, set `process_json` to TRUE.</p>
+lists, set `process_json` to `TRUE`.</p>
     </div>
 
     <div class="section level2">

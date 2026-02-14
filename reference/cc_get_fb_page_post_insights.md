@@ -37,7 +37,7 @@ cc_get_fb_page_post_insights(
 
 - cache:
 
-  Defaults to TRUE.
+  Defaults to \`TRUE\`.
 
 ## Value
 

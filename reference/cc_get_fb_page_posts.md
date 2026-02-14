@@ -38,17 +38,18 @@ cc_get_fb_page_posts(
 
 - process_json:
 
-  Defaults to TRUE. If TRUE, fields returning objects (not strigs) are
-  returned in list columns in the output data frame. If FALSE, they are
-  returned as json-formatted strings, to be further processed.
+  Defaults to \`TRUE\`. If \`TRUE\`, fields returning objects (not
+  strings) are returned in list columns in the output data frame. If
+  \`FALSE\`, they are returned as json-formatted strings, to be further
+  processed.
 
 - cache:
 
-  Defaults to TRUE.
+  Defaults to \`TRUE\`.
 
 - only_cached:
 
-  Defaults to FALSE. If TRUE, only data cached locally will be
+  Defaults to \`FALSE\`. If \`TRUE\`, only data cached locally will be
   retrieved.
 
 ## Value
@@ -60,7 +61,7 @@ each column in the returned data frame is of class character.
 
 As some fields return objects that can be read as lists, rather than
 simple strings, the data are cached locally as json. To have them
-processed as lists, set \`process_json\` to TRUE.
+processed as lists, set \`process_json\` to \`TRUE\`.
 
 ## Examples
 
