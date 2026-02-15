@@ -3,14 +3,26 @@
 See the official documentation for reference:
 <https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts>
 
+For reference, see the [official
+documentation](https://developers.facebook.com/docs/graph-api/reference/page-post/comments).
+
 ## Usage
 
 ``` r
 cc_api_get_fb_page_post_comments(
   fb_post_id,
-  metric = cornucopia::cc_valid_fields_fb_post_insights,
-  period = "lifetime",
   cache = TRUE,
+  cache_connection = NULL,
+  update = TRUE,
+  meta_api_version = cornucopia::cc_get_meta_api_version(),
+  fb_page_id = NULL,
+  fb_page_token = NULL
+)
+
+cc_api_get_fb_page_post_comments(
+  fb_post_id,
+  cache = TRUE,
+  cache_connection = NULL,
   update = TRUE,
   meta_api_version = cornucopia::cc_get_meta_api_version(),
   fb_page_id = NULL,
@@ -22,9 +34,13 @@ cc_api_get_fb_page_post_comments(
 
 - fb_post_id:
 
-  Instagram media identifier, must be a vector of length 1. A list of
-  identifiers for your account can be retrieved with
-  \`cc_get_fb_page_posts()\`.
+  Facebook post identifier, must be a vector of length 1. A list of
+  identifiers for a given Facebook page can be retrieved with
+  \[cc_get_fb_page_posts()\].
+
+- cache:
+
+  Defaults to \`TRUE\`.
 
 - metric:
 
@@ -35,6 +51,6 @@ cc_api_get_fb_page_post_comments(
   documentation for reference:
   <https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts>
 
-- cache:
+## Value
 
-  Defaults to \`TRUE\`.
+A data frame with comments for a given post.

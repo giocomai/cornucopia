@@ -73,6 +73,8 @@
   : Get information about your Facebook product catalogs
 - [`cc_get_fb_page_insights()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_insights.md)
   : Get Facebook page insights
+- [`cc_get_fb_page_post_comments()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_post_comments.md)
+  : Get Facebook page posts comments
 - [`cc_get_fb_page_post_insights()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_post_insights.md)
   : Get Facebook page posts insights
 - [`cc_get_fb_page_post_url()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_post_url.md)
