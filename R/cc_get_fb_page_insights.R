@@ -17,6 +17,7 @@
 #'
 #' @param metric Defaults to `page_media_view`.
 #' @inheritParams cc_set
+#' @inheritParams cc_get_fb_page_posts
 #'
 #' @return
 #' @export
@@ -30,6 +31,7 @@ cc_get_fb_page_insights <- function(
   end_date = NULL,
   meta_api_version = cornucopia::cc_get_meta_api_version(),
   cache = TRUE,
+  only_cached = FALSE,
   fb_page_id = NULL,
   fb_page_token = NULL
 ) {
@@ -114,6 +116,11 @@ cc_get_fb_page_insights <- function(
       ) |>
       dplyr::collect() |>
       tibble::as_tibble()
+
+    if (only_cached) {
+      DBI::dbDisconnect(db)
+      return(previous_fb_page_insights_df)
+    }
 
     if (nrow(previous_fb_page_insights_df) > 0) {
       dates_to_process_v <- all_dates_v[
