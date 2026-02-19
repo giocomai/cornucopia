@@ -1,32 +1,23 @@
-#' Get Facebook page insights
+#' Get Facebook page insights with breakdown
 #'
 #'
+#' Currently apparently only applies to Page media view.
 #' For reference, see the
-#' \href{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights}{official
+#' \href{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#page-media-view}{official
 #' documentation}.
 #'
-#' Find the whole list of available metrics in the
-#' \href{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#availmetrics}{dedicated
-#' section of the official documentation}.
-#'
-#' N.B. Even if not detailed in the documentation "page_impressions*" metrics
-#' have been deprecated on 15 November 2025. See
-#' \href{https://developers.facebook.com/docs/platforminsights/page/deprecated-metrics}{the
-#' official update}.
-#'
-#'
 #' @param metric Defaults to `page_media_view`.
+#' @param breakdowns Only one breakdown at a time, only the first one is processed. Only accepted values: `is_from_ads`, `is_from_followers`.
 #' @inheritParams cc_set
 #' @inheritParams cc_get_fb_page_posts
 #'
-#' @return
+#' @return A data frame with breakdowns.
 #' @export
 #'
 #' @examples
-cc_get_fb_page_insights <- function(
-  metric = c(
-    "page_media_view"
-  ),
+cc_get_fb_page_insights_breakdown <- function(
+  metric = "page_media_view",
+  breakdowns = c("is_from_followers", "is_from_ads"),
   start_date = NULL,
   end_date = NULL,
   meta_api_version = cornucopia::cc_get_meta_api_version(),
@@ -94,13 +85,13 @@ cc_get_fb_page_insights <- function(
       )
     )
 
-    current_table <- "fb_page_insights"
+    current_table <- "fb_page_insights_breakdown"
 
     if (!DBI::dbExistsTable(conn = db, name = current_table)) {
       DBI::dbWriteTable(
         conn = db,
         name = current_table,
-        value = tibble::as_tibble(cc_empty_fb_page_insights)
+        value = tibble::as_tibble(cc_empty_fb_page_insights_breakdown)
       )
     }
 
@@ -112,6 +103,7 @@ cc_get_fb_page_insights <- function(
     ) |>
       dplyr::filter(
         metric_name %in% active_metrics,
+        breakdown_name %in% breakdowns[1],
         date %in% all_dates_v
       ) |>
       dplyr::collect() |>
@@ -119,7 +111,14 @@ cc_get_fb_page_insights <- function(
 
     if (only_cached) {
       DBI::dbDisconnect(db)
-      return(previous_fb_page_insights_df)
+      return(
+        previous_fb_page_insights_df |>
+          dplyr::mutate(
+            date = as.Date(date),
+            breakdown_value = as.logical(breakdown_value),
+            metric_value = as.numeric(metric_value)
+          )
+      )
     }
 
     if (nrow(previous_fb_page_insights_df) > 0) {
@@ -131,6 +130,11 @@ cc_get_fb_page_insights <- function(
         DBI::dbDisconnect(db)
         return(
           previous_fb_page_insights_df |>
+            dplyr::mutate(
+              date = as.Date(date),
+              breakdown_value = as.logical(breakdown_value),
+              metric_value = as.numeric(metric_value)
+            ) |>
             dplyr::arrange(date, metric)
         )
       }
@@ -149,15 +153,14 @@ cc_get_fb_page_insights <- function(
       api_request <- httr2::request(base_url = base_url) |>
         httr2::req_url_path_append(fb_page_id) |>
         httr2::req_url_path_append("insights") |>
-        httr2::req_url_path_append(stringr::str_flatten(
-          string = metric,
-          collapse = ","
-        )) |>
-        httr2::req_url_path_append("day") |>
         httr2::req_url_query(
-          access_token = fb_page_token,
+          .multi = "comma",
+          metric = metric,
           since = current_date,
-          until = current_date
+          until = current_date,
+          period = "day",
+          breakdown = breakdowns[1],
+          access_token = fb_page_token
         )
 
       req <- api_request |>
@@ -180,52 +183,38 @@ cc_get_fb_page_insights <- function(
       current_date_df <- purrr::map(
         .x = page_insight_l[["data"]],
         .f = function(current_element_l) {
+          current_metric_name <- current_element_l |>
+            purrr::pluck("name")
+
+          if (length(current_metric_name) == 0) {
+            current_metric_name <- NA_character_
+          }
+
           purrr::map(
             .x = current_element_l[["values"]],
             .f = function(current_values_l) {
-              current_metric_value_names <- current_element_l |>
-                purrr::pluck("values", 1, "value") |>
-                names()
-
-              if (length(current_metric_value_names) == 0) {
-                current_metric_value_names <- NA_character_
-              }
-
-              current_metric_value <- current_element_l |>
-                purrr::pluck("values", 1, "value") |>
-                as.numeric()
-
-              if (length(current_metric_value) == 0) {
-                current_metric_value <- as.numeric(0)
-              }
-
-              current_title <- current_element_l |> purrr::pluck("title")
-
-              if (is.null(current_title)) {
-                current_title <- NA_character_
-              }
-
               tibble::tibble(
-                metric_title = current_title,
-                metric_name = current_element_l |> purrr::pluck("name"),
-                metric_value_name = current_metric_value_names,
-                metric_value = current_metric_value
+                metric_value = current_values_l[["value"]] |> as.numeric(),
+                breakdown_name = names(current_values_l[4]),
+                breakdown_value = current_values_l[[4]] |>
+                  as.numeric() |>
+                  as.logical()
               )
             }
           ) |>
             purrr::list_rbind() |>
             dplyr::mutate(
               date = as.character(current_date),
-              period = current_element_l[["period"]]
+              # period = current_element_l[["period"]],
+              metric_name = current_metric_name
             ) |>
-            dplyr::relocate(
+            dplyr::select(
               dplyr::all_of(c(
                 "date",
-                "metric_title",
                 "metric_name",
-                "metric_value_name",
-                "metric_value",
-                "period"
+                "breakdown_name",
+                "breakdown_value",
+                "metric_value"
               ))
             )
         }
@@ -259,5 +248,10 @@ cc_get_fb_page_insights <- function(
     output_df <- new_df
   }
 
-  output_df
+  output_df |>
+    dplyr::mutate(
+      date = as.Date(date),
+      breakdown_value = as.logical(breakdown_value),
+      metric_value = as.numeric(metric_value)
+    )
 }
