@@ -4,7 +4,7 @@
 \alias{cc_get_fb_page_post_url}
 \title{Extract urls included in posts shared on Facebook pages}
 \usage{
-cc_get_fb_page_post_url(posts_df)
+cc_get_fb_page_post_url(posts_df = NULL, ...)
 }
 \arguments{
 \item{posts_df}{A data frame created with [cc_get_fb_page_posts()].}
