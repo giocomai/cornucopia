@@ -1171,6 +1171,8 @@ I despise ad-tech, but I’ve got work to do.
   : Get information about your Facebook product catalogs
 - [`cc_get_fb_page_insights()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_insights.md)
   : Get Facebook page insights
+- [`cc_get_fb_page_insights_breakdown()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_insights_breakdown.md)
+  : Get Facebook page insights with breakdown
 - [`cc_get_fb_page_post_comment_url()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_post_comment_url.md)
   : Extract url posted in comments
 - [`cc_get_fb_page_post_comments()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_post_comments.md)
