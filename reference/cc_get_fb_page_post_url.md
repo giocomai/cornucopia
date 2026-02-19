@@ -6,7 +6,7 @@ message of the post.
 ## Usage
 
 ``` r
-cc_get_fb_page_post_url(posts_df)
+cc_get_fb_page_post_url(posts_df = NULL, ...)
 ```
 
 ## Arguments

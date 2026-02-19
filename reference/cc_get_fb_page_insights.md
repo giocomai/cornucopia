@@ -12,6 +12,7 @@ cc_get_fb_page_insights(
   end_date = NULL,
   meta_api_version = cornucopia::cc_get_meta_api_version(),
   cache = TRUE,
+  only_cached = FALSE,
   fb_page_id = NULL,
   fb_page_token = NULL
 )
@@ -35,6 +36,15 @@ cc_get_fb_page_insights(
 
   Defaults to the latest API at the time this package was last updated.
   Currently, this corresponds to api version 24.0.
+
+- cache:
+
+  Defaults to \`TRUE\`.
+
+- only_cached:
+
+  Defaults to \`FALSE\`. If \`TRUE\`, only data cached locally will be
+  retrieved.
 
 - fb_page_id:
 

@@ -73,12 +73,17 @@
   : Get information about your Facebook product catalogs
 - [`cc_get_fb_page_insights()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_insights.md)
   : Get Facebook page insights
+- [`cc_get_fb_page_post_comment_url()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_post_comment_url.md)
+  : Extract url posted in comments
 - [`cc_get_fb_page_post_comments()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_post_comments.md)
   : Get Facebook page posts comments
 - [`cc_get_fb_page_post_insights()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_post_insights.md)
   : Get Facebook page posts insights
 - [`cc_get_fb_page_post_url()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_post_url.md)
   : Extract urls included in posts shared on Facebook pages
+- [`cc_get_fb_page_post_url_combo()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_post_url_combo.md)
+  : Retrieve urls posted in a Facebook page, no matter if as attachment,
+  in the message of a post, or in a comment
 - [`cc_get_fb_page_posts()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_page_posts.md)
   : Get Facebook page post id and basic information that can be stored
   as strings

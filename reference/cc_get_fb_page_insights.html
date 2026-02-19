@@ -11,7 +11,7 @@ documentation."><meta property="og:image" content="https://giocomai.github.io/co
 
     <a class="navbar-brand me-2" href="../index.html">cornucopia</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9015</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9013</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,6 +49,7 @@ documentation</a>.</p>
 <span>  end_date <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  meta_api_version <span class="op">=</span> <span class="fu">cornucopia</span><span class="fu">::</span><span class="fu"><a href="cc_get_meta_api_version.html">cc_get_meta_api_version</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  only_cached <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  fb_page_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fb_page_token <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -73,6 +74,15 @@ documentation</a>.</p>
 <dt id="arg-meta-api-version">meta_api_version<a class="anchor" aria-label="anchor" href="#arg-meta-api-version"></a></dt>
 <dd><p>Defaults to the latest API at the time this package was
 last updated. Currently, this corresponds to api version 24.0.</p></dd>
+
+
+<dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
+<dd><p>Defaults to `TRUE`.</p></dd>
+
+
+<dt id="arg-only-cached">only_cached<a class="anchor" aria-label="anchor" href="#arg-only-cached"></a></dt>
+<dd><p>Defaults to `FALSE`. If `TRUE`, only data cached locally
+will be retrieved.</p></dd>
 
 
 <dt id="arg-fb-page-id">fb_page_id<a class="anchor" aria-label="anchor" href="#arg-fb-page-id"></a></dt>
