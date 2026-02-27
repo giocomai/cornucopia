@@ -19,7 +19,7 @@ cc_get_fb_ad_spend_totals_by_day_by_campaign(
 
 - ads_df:
 
-  A data frame, such as the one retrieved with \`cc_get_fb_ads()\`
+  A data frame, such as the one retrieved with \[cc_get_fb_ads()\].
 
 - start_date:
 

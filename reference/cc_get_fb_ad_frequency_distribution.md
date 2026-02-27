@@ -1,6 +1,7 @@
 # Get frequency distribution
 
-https://developers.facebook.com/docs/marketing-api/insights/breakdowns
+For details, see the [official documentation on Insights
+breakdowns](https://developers.facebook.com/docs/marketing-api/insights/breakdowns).
 
 ## Usage
 
@@ -25,8 +26,24 @@ cc_get_fb_ad_frequency_distribution(
 
 - ad_id:
 
-  Indentifier of a an ad_id, adset_id, or campaign_id.
+  Indentifier of a an \`ad_id\`, \`adset_id\`, or \`campaign_id\`.
 
-## Details
+- date_preset:
 
-Warning: custom time ranges not yet functional
+  Defaults to "maximum". Available values include "last_7d", "last_30d",
+  and similar, as described in the [official API
+  documentation](https://developers.facebook.com/docs/marketing-api/insights/breakdowns).
+  N.B. This is ignored if both \`start_date\` and \`end_date\` are
+  given.
+
+- start_date:
+
+  The beginning date for the period to be considered. Both
+  \`start_date\` and \`end_date\` must be given. If either is ignored,
+  \`preset\` takes precedence.
+
+- end_date:
+
+  The end date for the period to be considered. Both \`start_date\` and
+  \`end_date\` must be given. If either is ignored, \`preset\` takes
+  precedence.
