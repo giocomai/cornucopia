@@ -19,59 +19,66 @@
 #' \dontrun{
 #' cc_get_fb_ads()
 #' }
-cc_get_fb_ads <- function(start_date = NULL,
-                          end_date = NULL,
-                          only_cached = FALSE,
-                          fields = c(
-                            "campaign_name",
-                            "campaign_id",
-                            "adset_name",
-                            "adset_id",
-                            "ad_name",
-                            "ad_id",
-                            "objective",
-                            "account_currency",
-                            "spend",
-                            "actions",
-                            "action_values",
-                            "cost_per_action_type",
-                            "cost_per_unique_action_type",
-                            "conversions",
-                            "cost_per_conversion",
-                            "conversion_rate_ranking",
-                            "cpc",
-                            "cpm",
-                            "cpp",
-                            "ctr",
-                            "frequency",
-                            "reach"
-                          ),
-                          fb_ad_account_id = NULL) {
+cc_get_fb_ads <- function(
+  start_date = NULL,
+  end_date = NULL,
+  only_cached = FALSE,
+  fields = c(
+    "campaign_name",
+    "campaign_id",
+    "adset_name",
+    "adset_id",
+    "ad_name",
+    "ad_id",
+    "objective",
+    "account_currency",
+    "spend",
+    "actions",
+    "action_values",
+    "cost_per_action_type",
+    "cost_per_unique_action_type",
+    "conversions",
+    "cost_per_conversion",
+    "conversion_rate_ranking",
+    "cpc",
+    "cpm",
+    "cpp",
+    "ctr",
+    "frequency",
+    "reach"
+  ),
+  fb_ad_account_id = NULL
+) {
   dates_l <- cc_get_settings(
     start_date = start_date,
     end_date = end_date
   )
 
-  fb_ad_account_id <- cc_get_settings(fb_ad_account_id = fb_ad_account_id)[["fb_ad_account_id"]]
+  fb_ad_account_id <- cc_get_settings(fb_ad_account_id = fb_ad_account_id)[[
+    "fb_ad_account_id"
+  ]]
 
   cache_folder <- dplyr::if_else(
     fb_ad_account_id == "",
     true = "fb_ads_by_date_rds",
-    false = stringr::str_flatten(c("fb_ads_by_date_rds", "-", fb_ad_account_id), collapse = "")
+    false = stringr::str_flatten(
+      c("fb_ads_by_date_rds", "-", fb_ad_account_id),
+      collapse = ""
+    )
   )
 
   start_date <- dates_l$start_date
   end_date <- dates_l$end_date
 
-  dates <- as.Date(start_date:end_date,
-    origin = as.Date("1970-01-01")
-  )
+  dates <- as.Date(start_date:end_date, origin = as.Date("1970-01-01"))
 
   names(dates) <- dates
 
-  if (only_cached == TRUE) {
-    if (fs::file_exists(cache_folder) == FALSE) {
-      cli::cli_abort("No ads data previously stored for the selected ad account.")
+  if (only_cached) {
+    if (!fs::file_exists(cache_folder)) {
+      cli::cli_abort(
+        "No ads data previously stored for the selected ad account."
+      )
     }
     cached_v <- fs::dir_ls(
       path = cache_folder,

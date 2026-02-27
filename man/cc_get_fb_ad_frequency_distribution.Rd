@@ -20,11 +20,24 @@ cc_get_fb_ad_frequency_distribution(
 )
 }
 \arguments{
-\item{ad_id}{Indentifier of a an ad_id, adset_id, or campaign_id.}
+\item{ad_id}{Indentifier of a an `ad_id`, `adset_id`, or `campaign_id`.}
+
+\item{date_preset}{Defaults to "maximum". Available values include "last_7d",
+"last_30d", and similar, as described in the
+\href{https://developers.facebook.com/docs/marketing-api/insights/breakdowns}{official
+API documentation}. N.B. This is ignored if both `start_date` and
+`end_date` are given.}
+
+\item{start_date}{The beginning date for the period to be considered. Both
+`start_date` and `end_date` must be given. If either is ignored, `preset`
+takes precedence.}
+
+\item{end_date}{The end date for the period to be considered. Both
+`start_date` and `end_date` must be given. If either is ignored, `preset`
+takes precedence.}
 }
 \description{
-https://developers.facebook.com/docs/marketing-api/insights/breakdowns
-}
-\details{
-Warning: custom time ranges not yet functional
+For details, see the
+\href{https://developers.facebook.com/docs/marketing-api/insights/breakdowns}{official
+documentation on Insights breakdowns}.
 }

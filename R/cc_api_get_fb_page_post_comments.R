@@ -63,7 +63,7 @@ cc_api_get_fb_page_post_comments <- function(
     httr2::req_perform() |>
     httr2::resp_body_json()
 
-  if (is.null(response_l[["error"]][["message"]]) == FALSE) {
+  if (!is.null(response_l[["error"]][["message"]])) {
     cli::cli_abort(response_l[["error"]][["message"]])
   }
 

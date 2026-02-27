@@ -13,15 +13,17 @@ cc_get_fb_ad_spend_totals_by_day_by_campaign(
 )
 }
 \arguments{
-\item{ads_df}{A data frame, such as the one retrieved with `cc_get_fb_ads()`}
+\item{ads_df}{A data frame, such as the one retrieved with [cc_get_fb_ads()].}
 
 \item{start_date}{Defaults to 91 days before today}
 
 \item{end_date}{Defaults to yesterday.}
 
-\item{before}{Defaults to 3. Days to keep before the given day for calculating rolling averages.}
+\item{before}{Defaults to 3. Days to keep before the given day for
+calculating rolling averages.}
 
-\item{after}{Defaults to 3. Days to keep after the given day for calculating rolling averages.}
+\item{after}{Defaults to 3. Days to keep after the given day for calculating
+rolling averages.}
 }
 \description{
 Get total Facebook ad spending per day by campaign and as a rolling average

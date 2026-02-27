@@ -1,11 +1,22 @@
 #' Get frequency distribution
 #'
-#' https://developers.facebook.com/docs/marketing-api/insights/breakdowns
+#' For details, see the
+#' \href{https://developers.facebook.com/docs/marketing-api/insights/breakdowns}{official
+#' documentation on Insights breakdowns}.
 #'
-#' Warning: custom time ranges not yet functional
 #'
-#' @param ad_id Indentifier of a an ad_id, adset_id, or campaign_id.
-#'
+#' @param ad_id Indentifier of a an `ad_id`, `adset_id`, or `campaign_id`.
+#' @param date_preset Defaults to "maximum". Available values include "last_7d",
+#'   "last_30d", and similar, as described in the
+#'   \href{https://developers.facebook.com/docs/marketing-api/insights/breakdowns}{official
+#'   API documentation}. N.B. This is ignored if both `start_date` and
+#'   `end_date` are given.
+#' @param start_date The beginning date for the period to be considered. Both
+#'   `start_date` and `end_date` must be given. If either is ignored, `preset`
+#'   takes precedence.
+#' @param end_date The end date for the period to be considered. Both
+#'   `start_date` and `end_date` must be given. If either is ignored, `preset`
+#'   takes precedence.
 #' @return
 #' @export
 #'
@@ -44,22 +55,21 @@ cc_get_fb_ad_frequency_distribution <- function(
   ad_account_id = NULL,
   fb_user_token = NULL
 ) {
-  if (is.null(date_preset)) {
+  if (!is.null(start_date) & !is.null(end_date)) {
     dates_l <- cc_get_settings(
       start_date = start_date,
       end_date = end_date
     )
+    time_range <- cc_date_to_json(
+      start_date = dates_l$start_date,
+      end_date = dates_l$end_date
+    )
 
-    start_date <- dates_l$start_date
-    end_date <- dates_l$end_date
+    # dates <- as.Date(start_date:end_date, origin = as.Date("1970-01-01"))
 
-    dates <- as.Date(start_date:end_date, origin = as.Date("1970-01-01"))
-
-    names(dates) <- dates
-
-    date_preset <- dates
-
-    cc_date_to_json(start_date = dates)
+    # names(dates) <- dates
+    #
+    # date_preset <- dates
   }
 
   if (is.null(fb_user_token)) {
@@ -81,15 +91,27 @@ cc_get_fb_ad_frequency_distribution <- function(
     meta_api_version
   )
 
-  api_request <- httr2::request(base_url = base_url) |>
-    httr2::req_url_path_append(ad_id) |>
-    httr2::req_url_path_append("insights") |>
-    httr2::req_url_query(
-      fields = "reach",
-      breakdowns = "frequency_value",
-      access_token = fb_user_token,
-      date_preset = date_preset[[1]]
-    )
+  if (!is.null(start_date) & !is.null(end_date)) {
+    api_request <- httr2::request(base_url = base_url) |>
+      httr2::req_url_path_append(ad_id) |>
+      httr2::req_url_path_append("insights") |>
+      httr2::req_url_query(
+        fields = "reach",
+        breakdowns = "frequency_value",
+        time_range = time_range,
+        access_token = fb_user_token
+      )
+  } else {
+    api_request <- httr2::request(base_url = base_url) |>
+      httr2::req_url_path_append(ad_id) |>
+      httr2::req_url_path_append("insights") |>
+      httr2::req_url_query(
+        fields = "reach",
+        breakdowns = "frequency_value",
+        access_token = fb_user_token,
+        date_preset = date_preset[[1]]
+      )
+  }
 
   req <- httr2::req_perform(req = api_request)
 
@@ -130,7 +152,7 @@ cc_get_fb_ad_frequency_distribution <- function(
   ratio <- max(frequency_distribution_df$reach) /
     max(frequency_distribution_df$share)
 
-  ads_df <- cc_get_fb_ads()
+  ads_df <- cc_get_fb_ads(start_date = start_date, end_date = end_date)
 
   if (ad_id %in% ads_df$campaign_id) {
     title_string <- ads_df |>
@@ -165,13 +187,12 @@ cc_get_fb_ad_frequency_distribution <- function(
       title = title_string,
       subtitle = stringr::str_flatten(
         string = c(
-          "Between ",
           frequency_distribution_df |>
             dplyr::pull(date_start) |>
             unique() |>
             min() |>
             format.Date("%e %B %Y"),
-          " and ",
+          " – ",
           frequency_distribution_df |>
             dplyr::pull(date_stop) |>
             unique() |>

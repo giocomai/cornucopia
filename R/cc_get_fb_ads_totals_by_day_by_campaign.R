@@ -1,8 +1,10 @@
 #' Get total Facebook ad spending per day by campaign and as a rolling average
 #'
-#' @param ads_df A data frame, such as the one retrieved with `cc_get_fb_ads()`
-#' @param before Defaults to 3. Days to keep before the given day for calculating rolling averages.
-#' @param after Defaults to 3. Days to keep after the given day for calculating rolling averages.
+#' @param ads_df A data frame, such as the one retrieved with [cc_get_fb_ads()].
+#' @param before Defaults to 3. Days to keep before the given day for
+#'   calculating rolling averages.
+#' @param after Defaults to 3. Days to keep after the given day for calculating
+#'   rolling averages.
 #' @inheritParams cc_set
 #'
 #' @return
