@@ -44,8 +44,8 @@ cc_get_instagram_bd_user_media(
 - fields:
 
   Defaults to all fields publicly available through
-  \`business_discovery\`. See \[the
-  documentation\](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media)
+  \`business_discovery\`. See [the
+  documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media)
   for other fields that may be available.
 
 - max_pages:
@@ -65,9 +65,9 @@ cc_get_instagram_bd_user_media(
 - limit:
 
   Defaults to 80, meaning 80 three values determining rate limiting
-  reaches at least 80 returns what it has collected so far. Set to NULL
-  to ignore. For details, see \[the official
-  documentation\](https://developers.facebook.com/docs/graph-api/overview/rate-limiting/).
+  reaches at least 80 returns what it has collected so far. Set to
+  \`NULL\` to ignore. For details, see [the official
+  documentation](https://developers.facebook.com/docs/graph-api/overview/rate-limiting/).
 
 - cache:
 
@@ -80,11 +80,11 @@ post of the selected Instagram account.
 
 ## Details
 
-For details about rate limits, see \[this section of the
-documentation\](https://developers.facebook.com/docs/graph-api/overview/rate-limiting).
+For details about rate limits, see [this section of the
+documentation](https://developers.facebook.com/docs/graph-api/overview/rate-limiting).
 
-\[More details about Business Discovery and relevant
-permissions\](https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/business_discovery/).
+[More details about Business Discovery and relevant
+permissions](https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/business_discovery/).
 
 In brief, necessary:
 

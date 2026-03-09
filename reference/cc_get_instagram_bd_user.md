@@ -26,8 +26,8 @@ cc_get_instagram_bd_user(
 - fields:
 
   Defaults to all fields publicly available through
-  \`business_discovery\`. See \[the
-  documentation\](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media)
+  \`business_discovery\`. See [the
+  documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media)
   for other fields that may be available.
 
 ## Details
