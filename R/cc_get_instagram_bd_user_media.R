@@ -1,12 +1,16 @@
 #' Retrieve information about other users through `business_discovery`
 #'
-#' Consider that only information about posts of creative of business users may be available.
-#' Given restrictions on the rate limit, you are likely to hit rate limits quite soon.
-#' Wait one hour and try again. See `wait` and `limit` parameters for more options.
+#' Consider that only information about posts of creative of business users may
+#' be available. Given restrictions on the rate limit, you are likely to hit
+#' rate limits quite soon. Wait one hour and try again. See `wait` and `limit`
+#' parameters for more options.
 #'
-#' For details about rate limits, see [this section of the documentation](https://developers.facebook.com/docs/graph-api/overview/rate-limiting).
+#' For details about rate limits, see
+#' \href{https://developers.facebook.com/docs/graph-api/overview/rate-limiting}{this
+#' section of the documentation}.
 #'
-#' [More details about Business Discovery and relevant permissions](https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/business_discovery/).
+#' \href{https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/business_discovery/}{More
+#' details about Business Discovery and relevant permissions}.
 #'
 #' In brief, necessary:
 #'
@@ -14,7 +18,8 @@
 #' - `instagram_manage_insights`
 #' - `pages_read_engagement` or `pages_show_list`
 #'
-#' If the token is from a User whose Page role was granted via the Business Manager, one of the following permissions is also required:
+#' If the token is from a User whose Page role was granted via the Business
+#' Manager, one of the following permissions is also required:
 #'
 #' - `ads_management`
 #' - `pages_read_engagement`
@@ -22,9 +27,9 @@
 #'
 #' @param ig_username A user name of an Instagram user.
 #' @param fields Defaults to all fields publicly available through
-#'   `business_discovery`. See [the
-#'   documentation](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media)
-#'   for other fields that may be available.
+#'   `business_discovery`. See
+#'   \href{https://developers.facebook.com/docs/instagram-platform/reference/instagram-media}{the
+#'   documentation} for other fields that may be available.
 #' @param mode Defaults to "update", available options include "full" and
 #'   "only_cached". If set to "full", and some media have been previously
 #'   retrieved, it tries to continue from the previous request as long as all
@@ -40,8 +45,8 @@
 #'   more and no less).
 #' @param limit Defaults to 80, meaning 80%. It means that when either of the
 #'   three values determining rate limiting reaches at least 80%, the function
-#'   returns what it has collected so far. Set to NULL to ignore. For details,
-#'   see [the official documentation](https://developers.facebook.com/docs/graph-api/overview/rate-limiting/).
+#'   returns what it has collected so far. Set to `NULL` to ignore. For details,
+#'   see \href{https://developers.facebook.com/docs/graph-api/overview/rate-limiting/}{the official documentation}.
 #' @inheritParams cc_get_fb_page_posts
 #'
 #' @return A data frame with the selected fields as columns, and a row for each post of the selected Instagram account.
