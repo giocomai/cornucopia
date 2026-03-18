@@ -2,6 +2,7 @@
 #'
 #' @inheritParams cc_get_woocommerce_json
 #' @inheritParams cc_set
+#' @param metadata Defaults to `FALSE`. If `TRUE`, processed metadata. Set to `FALSE`, as not fit for generic use.
 #'
 #' @returns Returns main data retrieved from the API as a data frame.
 #' @export
@@ -15,6 +16,7 @@
 cc_get_woocommerce <- function(
   id = NULL,
   type = c("orders", "customers"),
+  metadata = FALSE,
   only_cached = FALSE,
   wait = 1,
   woocommerce_base_url = cornucopia::cc_get_woocommerce_base_url(),
@@ -74,7 +76,7 @@ cc_get_woocommerce <- function(
   files_to_extract_v <- previous_files_v[(previous_id %in% id)]
 
   orders_l <- purrr::map(
-    .progress = stringr::str_flatten(c("Exctracting ", type[[1]])),
+    .progress = stringr::str_flatten(c("Extracting ", type[[1]])),
     .x = files_to_extract_v,
     .f = \(current_file) {
       current_l <- readr::read_rds(current_file)
@@ -102,43 +104,74 @@ cc_get_woocommerce <- function(
           .cols = dplyr::everything()
         )
 
-      metadata_df <- purrr::map(
-        .x = current_l[["meta_data"]],
-        .f = \(x) {
-          if (
-            length(x) == 3 & !is.list(x[["value"]]) | length(x[["value"]]) == 1
-          ) {
-            temp_df <- x |>
-              as.data.frame() |>
-              dplyr::select(-id)
+      if (!metadata) {
+        metadata_df <- NULL
+      } else {
+        metadata_df <- purrr::map(
+          .x = current_l[["meta_data"]],
+          .f = \(x) {
+            if (
+              length(x) == 3 &
+                !is.list(x[["value"]]) |
+                length(x[["value"]]) == 1
+            ) {
+              ## temp
+              temp_df <- x |>
+                as.data.frame() |>
+                dplyr::select(-id)
 
-            names(temp_df)[[2]] <- "value"
+              names(temp_df)[[2]] <- "value"
 
-            current_metadata_output_df <- temp_df |>
-              tidyr::pivot_wider(names_from = key, values_from = value)
-          } else {
-            x_value <- x |>
-              purrr::pluck("value", .default = NA)
+              current_metadata_output_df <- temp_df |>
+                tidyr::pivot_wider(names_from = key, values_from = value)
 
-            if (sum(purrr::map_lgl(.x = x_value, .f = \(x) is.null(x)) > 0)) {
-              current_metadata_output_df <- x_value |>
-                purrr::map_dfr(.f = \(x) x)
+              ## tentative
+              # pre_df <- tibble::as_tibble(x)
+              #
+              # pre_base_df <- pre_df |>
+              #   dplyr::distinct(id, key)
+              #
+              # if (inherits(x = pre_df[["value"]], what = "list")) {
+              #   value_df <- pre_df[["value"]] |>
+              #     tibble::as_tibble()
+              # } else {
+              #   value_df <- pre_df |>
+              #     dplyr::select("value")
+              # }
+              #
+              # current_metadata_output_df <- pre_base_df |>
+              #   dplyr::bind_cols(value_df)
+
+              ## to drop
+              # dplyr::rename_with(
+              #     ~ paste0(pre_base_df[["key"]], "_", .x, recycle0 = TRUE),
+              #     .cols = dplyr::everything()
+              #   )
             } else {
-              current_metadata_output_df <- x_value |>
-                tibble::as_tibble()
+              x_value <- x |>
+                purrr::pluck("value", .default = NA)
 
-              if (nrow(current_metadata_output_df) > 1) {
+              if (sum(purrr::map_lgl(.x = x_value, .f = \(x) is.null(x)) > 0)) {
                 current_metadata_output_df <- x_value |>
-                  as.data.frame() |>
+                  purrr::map_dfr(.f = \(x) x)
+              } else {
+                current_metadata_output_df <- x_value |>
                   tibble::as_tibble()
+
+                if (nrow(current_metadata_output_df) > 1) {
+                  current_metadata_output_df <- x_value |>
+                    as.data.frame() |>
+                    tibble::as_tibble()
+                }
               }
             }
-          }
 
-          current_metadata_output_df
-        }
-      ) |>
-        purrr::list_cbind()
+            current_metadata_output_df
+          }
+        ) |>
+
+          purrr::list_cbind()
+      }
 
       base_df |>
         dplyr::bind_cols(
