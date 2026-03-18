@@ -34,8 +34,10 @@ cc_get_woocommerce <- function(
   previous_files_v <- fs::dir_ls(path = cache_folder)
   id <- as.character(id)
 
-  if (type[[1]] != "orders") {
-    cli::cli_abort("Only {.var orders} supported at this time")
+  if (!(type[[1]] %in% c("orders", "customers"))) {
+    cli::cli_abort(
+      "Only {.var orders} and {.var customers} supported at this time."
+    )
   }
 
   if (length(previous_files_v) == 0) {
@@ -72,32 +74,36 @@ cc_get_woocommerce <- function(
   files_to_extract_v <- previous_files_v[(previous_id %in% id)]
 
   orders_l <- purrr::map(
-    .progress = TRUE,
+    .progress = stringr::str_flatten(c("Exctracting ", type[[1]])),
     .x = files_to_extract_v,
     .f = \(current_file) {
-      order_l <- readr::read_rds(current_file)
+      current_l <- readr::read_rds(current_file)
 
-      if (isFALSE(order_l)) {
+      if (isFALSE(current_l)) {
         return(NULL)
-      } else if (!is.null(order_l[["code"]])) {
+      } else if (!is.null(current_l[["code"]])) {
         return(NULL)
       }
 
-      base_df <- order_l[
+      base_df <- current_l[
         purrr::map_chr(
-          .x = order_l,
+          .x = current_l,
           .f = \(x) class(x)
         ) %in%
           c("character", "integer", "logical")
       ] |>
         tibble::as_tibble()
 
-      billing_df <- order_l |>
+      billing_df <- current_l |>
         purrr::pluck("billing") |>
-        tibble::as_tibble()
+        tibble::as_tibble() |>
+        dplyr::rename_with(
+          ~ paste0("billing_", .x, recycle0 = TRUE),
+          .cols = dplyr::everything()
+        )
 
       metadata_df <- purrr::map(
-        .x = order_l[["meta_data"]],
+        .x = current_l[["meta_data"]],
         .f = \(x) {
           if (
             length(x) == 3 & !is.list(x[["value"]]) | length(x[["value"]]) == 1
