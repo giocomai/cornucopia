@@ -47,7 +47,7 @@ cc_get_woocommerce_json <- function(
   }
 
   purrr::walk(
-    .progress = TRUE,
+    .progress = stringr::str_flatten(c("Retrieving ", type[[1]])),
     .x = as.character(id_to_process),
     .f = \(id) {
       current_file <- fs::path(cache_folder, fs::path_ext_set(id, "rds"))
