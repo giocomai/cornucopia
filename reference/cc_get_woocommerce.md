@@ -8,6 +8,7 @@ Retrieve and extract in a data frame either orders or client items
 cc_get_woocommerce(
   id = NULL,
   type = c("orders", "customers"),
+  metadata = FALSE,
   only_cached = FALSE,
   wait = 1,
   woocommerce_base_url = cornucopia::cc_get_woocommerce_base_url(),
@@ -28,6 +29,11 @@ cc_get_woocommerce(
 - type:
 
   Defaults to "orders". Expected to be either "order" or "client".
+
+- metadata:
+
+  Defaults to \`FALSE\`. If \`TRUE\`, processed metadata. Set to
+  \`FALSE\`, as not fit for generic use.
 
 - wait:
 

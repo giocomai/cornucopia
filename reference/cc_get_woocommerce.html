@@ -40,6 +40,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cc_get_woocommerce</span><span class="op">(</span></span>
 <span>  id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"orders"</span>, <span class="st">"customers"</span><span class="op">)</span>,</span>
+<span>  metadata <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  only_cached <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  wait <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  woocommerce_base_url <span class="op">=</span> <span class="fu">cornucopia</span><span class="fu">::</span><span class="fu"><a href="cc_get_woocommerce_base_url.html">cc_get_woocommerce_base_url</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -61,6 +62,10 @@ in `type`. Coerced to a character vector.</p></dd>
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
 <dd><p>Defaults to "orders". Expected to be either "order" or "client".</p></dd>
+
+
+<dt id="arg-metadata">metadata<a class="anchor" aria-label="anchor" href="#arg-metadata"></a></dt>
+<dd><p>Defaults to `FALSE`. If `TRUE`, processed metadata. Set to `FALSE`, as not fit for generic use.</p></dd>
 
 
 <dt id="arg-wait">wait<a class="anchor" aria-label="anchor" href="#arg-wait"></a></dt>
