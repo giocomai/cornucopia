@@ -14,7 +14,7 @@
 #' }
 cc_get_woocommerce <- function(
   id = NULL,
-  type = c("orders", "clients"),
+  type = c("orders", "customers"),
   only_cached = FALSE,
   wait = 1,
   woocommerce_base_url = cornucopia::cc_get_woocommerce_base_url(),
@@ -30,6 +30,7 @@ cc_get_woocommerce <- function(
   ]]
 ) {
   cache_folder <- fs::path(woocommerce_cache_folder, type[[1]])
+  fs::dir_create(cache_folder)
   previous_files_v <- fs::dir_ls(path = cache_folder)
   id <- as.character(id)
 

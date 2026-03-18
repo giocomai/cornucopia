@@ -6,7 +6,7 @@
 \usage{
 cc_get_woocommerce(
   id = NULL,
-  type = c("orders", "clients"),
+  type = c("orders", "customers"),
   only_cached = FALSE,
   wait = 1,
   woocommerce_base_url = cornucopia::cc_get_woocommerce_base_url(),
