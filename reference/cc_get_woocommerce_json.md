@@ -7,7 +7,7 @@ Retrieve and store locally either orders or client items
 ``` r
 cc_get_woocommerce_json(
   id = NULL,
-  type = c("orders", "clients"),
+  type = c("orders", "customers"),
   wait = 1,
   woocommerce_base_url = cornucopia::cc_get_woocommerce_base_url(),
   woocommerce_api_version = cornucopia::cc_get_woocommerce_api_version(),
