@@ -172,6 +172,7 @@ cc_get_instagram_bd_user_media <- function(
             return(previous_ig_bd_media_df)
           }
         } else {
+          previous_ig_bd_media_df <- NULL
           # no need to create empty table
         }
       }
