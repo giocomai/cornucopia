@@ -33,5 +33,3 @@ cc_api_get_fb_video_insights(
   metrics will be chosen based on the media type. See the official
   documentation for reference:
   <https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts>
-
-- fb_page_token:

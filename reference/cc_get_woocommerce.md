@@ -9,6 +9,7 @@ cc_get_woocommerce(
   id = NULL,
   type = c("orders", "customers"),
   metadata = FALSE,
+  selected_metadata = NULL,
   only_cached = FALSE,
   wait = 1,
   woocommerce_base_url = cornucopia::cc_get_woocommerce_base_url(),
@@ -34,6 +35,11 @@ cc_get_woocommerce(
 
   Defaults to \`FALSE\`. If \`TRUE\`, processed metadata. Set to
   \`FALSE\`, as not fit for generic use.
+
+- selected_metadata:
+
+  Defaults to \`NULL\`. A character vector with the name of the metadata
+  fields to keep, e.g. \`c("\_wwpp_order_type")\`.
 
 - wait:
 

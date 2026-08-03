@@ -57,6 +57,7 @@ warranty.
 You can install the development version of cornucopia with:
 
 ``` r
+
 remotes::install_github("giocomai/cornucopia")
 ```
 
@@ -72,6 +73,7 @@ parameters to individual functions, without using
 at all.
 
 ``` r
+
 library("cornucopia")
 dates_l <- cc_set(
   start_date = "2023-01-01",
@@ -151,6 +153,7 @@ explorer](https://developers.facebook.com/tools/explorer/)), the first
 step is then to retrieve one’s own Facebook user id:
 
 ``` r
+
 library("cornucopia")
 cc_set(fb_user_token = "actual_token_here")
 
@@ -162,6 +165,7 @@ Facebook user (including the relevant Facebook page token if you add
 “access_tokens” to the fields):
 
 ``` r
+
 cc_set(fb_user_id = "actual_user_id_as_retrieved_with_cc_get_fb_user")
 
 cc_get_fb_managed_pages()
@@ -215,6 +219,7 @@ and get the token for all of your pages, or if you know what you’re
 looking for, you can get the token for a specific page as follows:
 
 ``` r
+
 cc_get_fb_managed_pages()
 
 fb_page_token <- cc_get_fb_page_token(
@@ -237,6 +242,7 @@ you can retrieve from your [app
 page](https://developers.facebook.com/apps/) page.
 
 ``` r
+
 cc_get_fb_long_user_token(
   fb_user_token = "your_short_term_token_here",
   fb_app_id = "your_fb_app_id_here",
@@ -251,6 +257,7 @@ access (you can select just a few or include all from the web interface
 when you create the short-lived access token).
 
 ``` r
+
 cc_get_fb_long_page_token(
   fb_user_id = "your_fb_user_id_here",
   fb_user_token = "your_long_term_token_here"
@@ -297,6 +304,7 @@ command to input it interactively and store it in your operating
 system’s keyring.
 
 ``` r
+
 library("cornucopia")
 
 library("keyring")
@@ -313,6 +321,7 @@ command, I can retrieve and store the relevant id without even seeing it
 in the console.
 
 ``` r
+
 keyring::key_set_with_value(
   service = "fb_user_id",
   password = cc_get_fb_user(
@@ -328,12 +337,14 @@ as follows.
 First, get the exact name or id of your Facebook page with:
 
 ``` r
+
 cc_get_fb_managed_pages()
 ```
 
 And store the relevant page id with:
 
 ``` r
+
 keyring::key_set(
   service = "fb_page_id",
   username = "My example page"
@@ -343,6 +354,7 @@ keyring::key_set(
 Then retrieve and store the Facebook page token in a single command:
 
 ``` r
+
 keyring::key_set_with_value(
   service = "fb_page_token",
   username = "My example page", # use your page name, if you manage more than one page
@@ -362,6 +374,7 @@ include at the beginning of your scripts something like this, without
 worring that your tokens will be shared involuntarily:
 
 ``` r
+
 cc_set(
   fb_user_id = keyring::key_get(service = "fb_user_id"),
   fb_user_token = keyring::key_get(service = "fb_user_token"),
@@ -387,6 +400,7 @@ long-term tokens as well as relevant identifiers for your Facebook pages
 and Instagram accounts:
 
 ``` r
+
 library("cornucopia")
 library("keyring")
 
@@ -597,6 +611,7 @@ Now that you have these tokens, you probably want to set them and let
 them be used throughout the current session:
 
 ``` r
+
 cc_set(
   fb_page_token = fb_page_token,
   fb_page_id = fb_page_id
@@ -615,6 +630,7 @@ page, so treat it with due caution and make sure it remains private)
 Then, you probably want to get a list of all posts from your page.
 
 ``` r
+
 posts_df <- cc_get_fb_page_posts()
 ```
 
@@ -625,6 +641,7 @@ to wait and just need a few posts, then you can retrieve only the most
 recent posts with something like:
 
 ``` r
+
 posts_df <- cc_get_fb_page_posts(
   max_pages = 10,
   cache = FALSE
@@ -650,16 +667,19 @@ most common next step is probably to get some more information about
 these posts with:
 
 ``` r
+
 cc_get_fb_page_post_insights()
 ```
 
 \[to do\]
 
 ``` r
+
 cc_get_fb_page_insights()
 ```
 
 ``` r
+
 cc_get_fb_page_video()
 
 cc_get_fb_video_insights()
@@ -673,6 +693,7 @@ sponsored campaigns and store them locally (long terms, all API calls
 will be done directly by `cornucopia` for consistency).
 
 ``` r
+
 token <- "looooooooooong_string"
 
 account <- "00000000000000000"
@@ -697,6 +718,7 @@ you can proceed with your analysis with the data you have until you’ll
 be able to download more data.
 
 ``` r
+
 ads_df <- cc_get_fb_ads(only_cached = TRUE)
 ```
 
@@ -738,6 +760,7 @@ You can get even more details: for example, do you want to know how many
 of those viewing your video ads had the sound on:
 
 ``` r
+
 cc_get_fb_ad_actions_by_day(
   ad_id = example_id,
   type = "actions",
@@ -776,6 +799,7 @@ official
 guide](https://developers.facebook.com/docs/instagram-api/getting-started/).
 
 ``` r
+
 cc_set(
   ig_user_id = "00000000000000000", # probably about 17 digits, not the legacy Instagram id
   fb_user_token = "loooong_string"
@@ -785,12 +809,14 @@ cc_set(
 And you can get some basic information about your profile:
 
 ``` r
+
 cc_get_instagram_user()
 ```
 
 Or just some specific fields:
 
 ``` r
+
 cc_get_instagram_user(fields = c("username", "followers_count"))
 ```
 
@@ -799,6 +825,7 @@ need to know their `ig_media_id`. You can get this id for all of your
 posts with the following command:
 
 ``` r
+
 cc_get_instagram_media_id()
 ```
 
@@ -811,6 +838,7 @@ You can then pass the resulting `ig_media_id` to
 to get more information about a given Instagram post.
 
 ``` r
+
 cc_get_instagram_media()
 ```
 
@@ -838,6 +866,7 @@ For example, to retrieve some information about the Instagram account of
 the United Nation, you would run:
 
 ``` r
+
 cc_get_instagram_bd_user(ig_username = "unitednations")
 ```
 
@@ -845,6 +874,7 @@ To retrieve information about individual posts, you would proceed as
 follows:
 
 ``` r
+
 cc_get_instagram_bd_user_media(ig_username = "unitednations", max_pages = 1)
 ```
 
@@ -887,6 +917,7 @@ and ad are however included in the returned data frame along with the
 form responses).
 
 ``` r
+
 cc_get_fb_leads(form_id = "insert_form_id_here")
 ```
 
@@ -911,6 +942,7 @@ can be installed with
 `remotes::install_github("giocomai/nomnomlgraph")`.
 
 ``` r
+
 
 #' Show ad campaign structure in a nomnmonl graph
 #'
@@ -1008,6 +1040,7 @@ Throw all of them in a folder, that we’ll call “LinkedIn_stats”.
 You can then retrieve some basic information about these files using:
 
 ``` r
+
 cc_get_linkedin_stats_files(path = "LinkedIn_stats")
 ```
 
@@ -1027,6 +1060,7 @@ the data preferring the most recently downloaded data over older files
 statistics associated with a given post).
 
 ``` r
+
 followers_df <- cc_get_linkedin_stats_followers(
   path = "LinkedIn_stats",
   page = "example-page"
@@ -1044,6 +1078,7 @@ automatically to the same Google Sheet, updating the dataset if one was
 previously uploaded.
 
 ``` r
+
 cc_drive_upload_linkedin_stats_followers(
   path = "LinkedIn_stats",
   page_name = "example-page"
@@ -1070,6 +1105,7 @@ If you are interested in the ratio (possibly, calculated as a rolling
 average), consider something such as the following.
 
 ``` r
+
 cc_set(
   ga_email = "example@example.com",
   ga_property_id = 123456789

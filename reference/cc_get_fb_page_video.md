@@ -13,7 +13,3 @@ cc_get_fb_page_video(
   fb_page_token = NULL
 )
 ```
-
-## Arguments
-
-- fb_page_token:
