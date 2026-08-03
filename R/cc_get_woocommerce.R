@@ -2,7 +2,10 @@
 #'
 #' @inheritParams cc_get_woocommerce_json
 #' @inheritParams cc_set
-#' @param metadata Defaults to `FALSE`. If `TRUE`, processed metadata. Set to `FALSE`, as not fit for generic use.
+#' @param metadata Defaults to `FALSE`. If `TRUE`, processed metadata. Set to
+#'   `FALSE`, as not fit for generic use.
+#' @param selected_metadata Defaults to `NULL`. A character vector with the name
+#'   of the metadata fields to keep, e.g. `c("_wwpp_order_type")`.
 #'
 #' @returns Returns main data retrieved from the API as a data frame.
 #' @export
@@ -17,6 +20,7 @@ cc_get_woocommerce <- function(
   id = NULL,
   type = c("orders", "customers"),
   metadata = FALSE,
+  selected_metadata = NULL,
   only_cached = FALSE,
   wait = 1,
   woocommerce_base_url = cornucopia::cc_get_woocommerce_base_url(),
@@ -155,6 +159,9 @@ cc_get_woocommerce <- function(
                 current_metadata_output_df <- x_value |>
                   purrr::map_dfr(.f = \(x) x)
               } else {
+                if (is.null(names(x_value))) {
+                  return(NULL)
+                }
                 current_metadata_output_df <- x_value |>
                   tibble::as_tibble()
 
@@ -166,6 +173,10 @@ cc_get_woocommerce <- function(
               }
             }
 
+            if (!is.null(selected_metadata)) {
+              current_metadata_output_df <- current_metadata_output_df |>
+                dplyr::select(dplyr::any_of(selected_metadata))
+            }
             current_metadata_output_df
           }
         ) |>

@@ -12,9 +12,6 @@ cc_get_fb_page_video(
   fb_page_token = NULL
 )
 }
-\arguments{
-\item{fb_page_token}{}
-}
 \description{
 See: https://developers.facebook.com/docs/video-api/guides/get-videos/
 }

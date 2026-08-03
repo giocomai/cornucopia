@@ -8,6 +8,7 @@ cc_get_woocommerce(
   id = NULL,
   type = c("orders", "customers"),
   metadata = FALSE,
+  selected_metadata = NULL,
   only_cached = FALSE,
   wait = 1,
   woocommerce_base_url = cornucopia::cc_get_woocommerce_base_url(),
@@ -23,7 +24,11 @@ in `type`. Coerced to a character vector.}
 
 \item{type}{Defaults to "orders". Expected to be either "order" or "client".}
 
-\item{metadata}{Defaults to `FALSE`. If `TRUE`, processed metadata. Set to `FALSE`, as not fit for generic use.}
+\item{metadata}{Defaults to `FALSE`. If `TRUE`, processed metadata. Set to
+`FALSE`, as not fit for generic use.}
+
+\item{selected_metadata}{Defaults to `NULL`. A character vector with the name
+of the metadata fields to keep, e.g. `c("_wwpp_order_type")`.}
 
 \item{wait}{Defaults to 1. Seconds to wait between calls to the API}
 }

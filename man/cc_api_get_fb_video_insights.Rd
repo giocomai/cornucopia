@@ -24,8 +24,6 @@ A list of identifiers for your account can be retrieved with
 type, different media types are effectively available. Requesting the wrong
 metrics will cause an error. Defaults to NULL. If left to NULL, metrics will be chosen based on the media type. See the official documentation for reference:
 \url{ https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts}}
-
-\item{fb_page_token}{}
 }
 \description{
 See the official documentation for reference:

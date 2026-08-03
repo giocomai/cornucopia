@@ -14,9 +14,6 @@ cc_get_fb_video_insights(
   fb_page_token = NULL
 )
 }
-\arguments{
-\item{fb_page_token}{}
-}
 \description{
 For reference, see: https://developers.facebook.com/docs/graph-api/reference/video/video_insights/
 defaults to Lifetime period for each video
