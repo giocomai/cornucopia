@@ -56,9 +56,6 @@ cc_get_woocommerce_json_by_pagination <- function(
   resp <- req |>
     httr2::req_perform()
 
-  resp |>
-    httr2::resp_headers()
-
   max_pages_to_retrieve <- min(
     pages,
     resp |>
@@ -88,7 +85,7 @@ cc_get_woocommerce_json_by_pagination <- function(
     return(invisible(NULL))
   }
 
-  for (current_page_id in as.character(pages_to_process)) {
+  for (current_page_id in as.character(pages_to_process_v)) {
     req <- httr2::request(woocommerce_base_url) |>
       httr2::req_url_path_append(woocommerce_api_version) |>
       httr2::req_url_path_append(type[[1]]) |>
