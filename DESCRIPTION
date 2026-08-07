@@ -53,4 +53,4 @@ VignetteBuilder: knitr
 Depends: 
     R (>= 3.5)
 URL: https://giocomai.github.io/cornucopia/
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0
