@@ -1267,13 +1267,13 @@ I despise ad-tech, but I’ve got work to do.
   : Retrieve version of Meta API.
 - [`cc_get_settings()`](https://giocomai.github.io/cornucopia/reference/cc_get_settings.md)
   : Retrieve settings for the session.
-- [`cc_get_woocommerce()`](https://giocomai.github.io/cornucopia/reference/cc_get_woocommerce.md)
-  : Retrieve and extract in a data frame either orders or client items
 - [`cc_get_woocommerce_api_version()`](https://giocomai.github.io/cornucopia/reference/cc_get_woocommerce_api_version.md)
   : Retrieve version of Woocommerce API.
 - [`cc_get_woocommerce_base_url()`](https://giocomai.github.io/cornucopia/reference/cc_get_woocommerce_base_url.md)
   : Retrieve base url of Woocommerce API.
-- [`cc_get_woocommerce_json()`](https://giocomai.github.io/cornucopia/reference/cc_get_woocommerce_json.md)
+- [`cc_get_woocommerce_by_id()`](https://giocomai.github.io/cornucopia/reference/cc_get_woocommerce_by_id.md)
+  : Retrieve and extract in a data frame either orders or client items
+- [`cc_get_woocommerce_by_id_json()`](https://giocomai.github.io/cornucopia/reference/cc_get_woocommerce_by_id_json.md)
   : Retrieve and store locally either orders or client items
 - [`cc_get_woocommerce_json_by_pagination()`](https://giocomai.github.io/cornucopia/reference/cc_get_woocommerce_json_by_pagination.md)
   : Retrieve and store locally either orders or client items

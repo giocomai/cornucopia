@@ -5,10 +5,11 @@ Retrieve and store locally either orders or client items
 ## Usage
 
 ``` r
-cc_get_woocommerce_json_by_pagination(
-  pages = NULL,
+cc_get_woocommerce_by_id_json(
+  id = NULL,
   type = c("orders", "customers"),
   wait = 1,
+  overwrite = FALSE,
   woocommerce_base_url = cornucopia::cc_get_woocommerce_base_url(),
   woocommerce_api_version = cornucopia::cc_get_woocommerce_api_version(),
   woocommerce_username = cornucopia::cc_get_settings()[["woocommerce_username"]],
@@ -19,10 +20,10 @@ cc_get_woocommerce_json_by_pagination(
 
 ## Arguments
 
-- pages:
+- id:
 
-  Defaults to \`NULL\`, or all available pages. If given, it downloads
-  at most the given number of pages.
+  An identifier of either order or client, according to what is set in
+  \`type\`. Coerced to a character vector.
 
 - type:
 
@@ -32,6 +33,12 @@ cc_get_woocommerce_json_by_pagination(
 
   Defaults to 1. Seconds to wait between calls to the API.
 
+- overwrite:
+
+  Defaults to \`FALSE\`. If \`TRUE\`, it re-downloads data for the
+  requested id. If \`FALSE\`, it downloads items only if they have not
+  been previously cached.
+
 ## Value
 
 Nothing, only caches locally data.
@@ -40,7 +47,8 @@ Nothing, only caches locally data.
 
 ``` r
 if (FALSE) { # \dontrun{
-cc_get_woocommerce_json_by_pagination(
+cc_get_woocommerce_by_id_json(
+  id = c(100:110),
   type = "orders")
 } # }
 ```
