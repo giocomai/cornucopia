@@ -11,8 +11,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' cc_get_woocommerce_json(
-#'   id = c(100:110),
+#' cc_get_woocommerce_json_by_pagination(
 #'   type = "orders")
 #' }
 cc_get_woocommerce_json_by_pagination <- function(
@@ -68,6 +67,8 @@ cc_get_woocommerce_json_by_pagination <- function(
   resp_l <- resp |>
     httr2::resp_body_json()
 
+  max_id_retrieved <- resp_l[[1]]$id
+
   new_id_v <- purrr::map_chr(
     .x = resp_l,
     .f = \(current_item) {
@@ -82,7 +83,7 @@ cc_get_woocommerce_json_by_pagination <- function(
     cli::cli_alert_success(
       text = "Retrieval completed: no new items found after retrieving 1 page."
     )
-    return(invisible(NULL))
+    return(invisible(list(max_id = max_id_retrieved)))
   }
 
   for (current_page_id in as.character(pages_to_process_v)) {
@@ -128,9 +129,11 @@ cc_get_woocommerce_json_by_pagination <- function(
       cli::cli_alert_success(
         text = "Retrieval completed: no new items found after retrieving {current_page_id} pages."
       )
-      return(invisible(NULL))
+      return(invisible(list(max_id = max_id_retrieved)))
     }
 
     Sys.sleep(wait)
   }
+
+  invisible(list(max_id = max_id_retrieved))
 }

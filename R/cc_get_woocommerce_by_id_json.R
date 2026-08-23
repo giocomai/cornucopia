@@ -3,7 +3,10 @@
 #' @param id An identifier of either order or client, according to what is set
 #'   in `type`. Coerced to a character vector.
 #' @param type Defaults to "orders". Expected to be either "order" or "client".
-#' @param wait Defaults to 1. Seconds to wait between calls to the API
+#' @param wait Defaults to 1. Seconds to wait between calls to the API.
+#' @param overwrite Defaults to `FALSE`. If `TRUE`, it re-downloads data for the
+#'   requested id. If `FALSE`, it downloads items only if they have not been
+#'   previously cached.
 #' @inheritParams cc_set
 #'
 #' @returns Nothing, only caches locally data.
@@ -11,14 +14,15 @@
 #'
 #' @examples
 #' \dontrun{
-#' cc_get_woocommerce_json(
+#' cc_get_woocommerce_by_id_json(
 #'   id = c(100:110),
 #'   type = "orders")
 #' }
-cc_get_woocommerce_json <- function(
+cc_get_woocommerce_by_id_json <- function(
   id = NULL,
   type = c("orders", "customers"),
   wait = 1,
+  overwrite = FALSE,
   woocommerce_base_url = cornucopia::cc_get_woocommerce_base_url(),
   woocommerce_api_version = cornucopia::cc_get_woocommerce_api_version(),
   woocommerce_username = cornucopia::cc_get_settings()[[

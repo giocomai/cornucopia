@@ -1,6 +1,6 @@
 #' Retrieve and extract in a data frame either orders or client items
 #'
-#' @inheritParams cc_get_woocommerce_json
+#' @inheritParams cc_get_woocommerce_by_id_json
 #' @inheritParams cc_set
 #' @param metadata Defaults to `FALSE`. If `TRUE`, processed metadata. Set to
 #'   `FALSE`, as not fit for generic use.
@@ -12,11 +12,11 @@
 #'
 #' @examples
 #' \dontrun{
-#' cc_get_woocommerce(
+#' cc_get_woocommerce_by_id(
 #'   id = c(100:110),
 #'   type = "orders")
 #' }
-cc_get_woocommerce <- function(
+cc_get_woocommerce_by_id <- function(
   id = NULL,
   type = c("orders", "customers"),
   metadata = FALSE,
@@ -58,7 +58,7 @@ cc_get_woocommerce <- function(
   }
 
   if (length(id_to_download) > 0 & !only_cached) {
-    cc_get_woocommerce_json(
+    cc_get_woocommerce_by_id_json(
       id = id_to_download,
       type = type,
       wait = wait,

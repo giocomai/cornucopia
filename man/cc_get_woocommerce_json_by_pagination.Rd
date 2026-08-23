@@ -31,8 +31,7 @@ Retrieve and store locally either orders or client items
 }
 \examples{
 \dontrun{
-cc_get_woocommerce_json(
-  id = c(100:110),
+cc_get_woocommerce_json_by_pagination(
   type = "orders")
 }
 }
