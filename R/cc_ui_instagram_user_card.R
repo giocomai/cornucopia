@@ -3,7 +3,7 @@
 #'
 #' @inheritParams cc_get_instagram_user
 #'
-#' @return
+#' @return A `bslib` card, to be used in Shiny apps.
 #' @export
 #' @examples
 #' \dontrun{
@@ -11,9 +11,11 @@
 #'   cc_ui_instagram_user_card()
 #' }
 #' }
-cc_ui_instagram_user_card <- function(ig_user_df = NULL,
-                                      ig_user_id = NULL,
-                                      fb_user_token = NULL) {
+cc_ui_instagram_user_card <- function(
+  ig_user_df = NULL,
+  ig_user_id = NULL,
+  fb_user_token = NULL
+) {
   if (is.null(ig_user_df)) {
     ig_user_df <- cc_get_instagram_user(
       ig_user_id = ig_user_id,
@@ -27,7 +29,8 @@ cc_ui_instagram_user_card <- function(ig_user_df = NULL,
       htmltools::p(
         ig_user_df[["name"]],
         htmltools::br(),
-        htmltools::a(stringr::str_c("@", ig_user_df[["username"]]),
+        htmltools::a(
+          stringr::str_c("@", ig_user_df[["username"]]),
           href = stringr::str_c(
             "https://www.instagram.com/",
             ig_user_df[["username"]]

@@ -18,6 +18,9 @@ be confused with legacy Instagram account id.}
 \item{fb_user_token}{Facebook user token different from page token. Can be
 retrieved with [cc_get_fb_user_token()] or [cc_get_fb_long_user_token()].}
 }
+\value{
+A `bslib` card, to be used in Shiny apps.
+}
 \description{
 Create a card to be used in dashboard or shiny app with basic information
 about the Instagram account
