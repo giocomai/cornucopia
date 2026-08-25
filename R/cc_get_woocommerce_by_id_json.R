@@ -36,7 +36,14 @@ cc_get_woocommerce_by_id_json <- function(
   ]]
 ) {
   cache_folder <- fs::path(woocommerce_cache_folder, type[[1]])
-  previous_files_v <- fs::dir_ls(path = cache_folder)
+  fs::dir_create(cache_folder)
+
+  if (overwrite) {
+    previous_files_v <- character()
+  } else {
+    previous_files_v <- fs::dir_ls(path = cache_folder)
+  }
+
   id <- as.character(id)
 
   if (length(previous_files_v) == 0) {

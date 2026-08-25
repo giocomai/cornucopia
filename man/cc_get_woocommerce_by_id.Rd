@@ -10,6 +10,7 @@ cc_get_woocommerce_by_id(
   metadata = FALSE,
   selected_metadata = NULL,
   only_cached = FALSE,
+  overwrite = FALSE,
   wait = 1,
   woocommerce_base_url = cornucopia::cc_get_woocommerce_base_url(),
   woocommerce_api_version = cornucopia::cc_get_woocommerce_api_version(),
@@ -29,6 +30,10 @@ in `type`. Coerced to a character vector.}
 
 \item{selected_metadata}{Defaults to `NULL`. A character vector with the name
 of the metadata fields to keep, e.g. `c("_wwpp_order_type")`.}
+
+\item{overwrite}{Defaults to `FALSE`. If `TRUE`, it re-downloads data for the
+requested id. If `FALSE`, it downloads items only if they have not been
+previously cached.}
 
 \item{wait}{Defaults to 1. Seconds to wait between calls to the API.}
 }

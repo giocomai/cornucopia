@@ -22,6 +22,7 @@ cc_get_woocommerce_by_id <- function(
   metadata = FALSE,
   selected_metadata = NULL,
   only_cached = FALSE,
+  overwrite = FALSE,
   wait = 1,
   woocommerce_base_url = cornucopia::cc_get_woocommerce_base_url(),
   woocommerce_api_version = cornucopia::cc_get_woocommerce_api_version(),
@@ -37,7 +38,13 @@ cc_get_woocommerce_by_id <- function(
 ) {
   cache_folder <- fs::path(woocommerce_cache_folder, type[[1]])
   fs::dir_create(cache_folder)
-  previous_files_v <- fs::dir_ls(path = cache_folder)
+
+  if (overwrite) {
+    previous_files_v <- character()
+  } else {
+    previous_files_v <- fs::dir_ls(path = cache_folder)
+  }
+
   id <- as.character(id)
 
   if (!(type[[1]] %in% c("orders", "customers"))) {
@@ -62,6 +69,7 @@ cc_get_woocommerce_by_id <- function(
       id = id_to_download,
       type = type,
       wait = wait,
+      overwrite = overwrite,
       woocommerce_base_url = woocommerce_base_url,
       woocommerce_api_version = woocommerce_api_version,
       woocommerce_username = woocommerce_username,
