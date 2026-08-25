@@ -25,6 +25,10 @@ cc_ui_instagram_user_card(
   Facebook user token different from page token. Can be retrieved with
   \[cc_get_fb_user_token()\] or \[cc_get_fb_long_user_token()\].
 
+## Value
+
+A \`bslib\` card, to be used in Shiny apps.
+
 ## Examples
 
 ``` r

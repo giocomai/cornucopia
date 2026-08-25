@@ -43,6 +43,7 @@
 <span>  metadata <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  selected_metadata <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  only_cached <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  wait <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  woocommerce_base_url <span class="op">=</span> <span class="fu">cornucopia</span><span class="fu">::</span><span class="fu"><a href="cc_get_woocommerce_base_url.html">cc_get_woocommerce_base_url</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  woocommerce_api_version <span class="op">=</span> <span class="fu">cornucopia</span><span class="fu">::</span><span class="fu"><a href="cc_get_woocommerce_api_version.html">cc_get_woocommerce_api_version</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -73,6 +74,12 @@ in `type`. Coerced to a character vector.</p></dd>
 <dt id="arg-selected-metadata">selected_metadata<a class="anchor" aria-label="anchor" href="#arg-selected-metadata"></a></dt>
 <dd><p>Defaults to `NULL`. A character vector with the name
 of the metadata fields to keep, e.g. `c("_wwpp_order_type")`.</p></dd>
+
+
+<dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
+<dd><p>Defaults to `FALSE`. If `TRUE`, it re-downloads data for the
+requested id. If `FALSE`, it downloads items only if they have not been
+previously cached.</p></dd>
 
 
 <dt id="arg-wait">wait<a class="anchor" aria-label="anchor" href="#arg-wait"></a></dt>
