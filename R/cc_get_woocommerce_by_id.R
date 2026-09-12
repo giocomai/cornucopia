@@ -21,6 +21,7 @@ cc_get_woocommerce_by_id <- function(
   type = c("orders", "customers"),
   metadata = FALSE,
   selected_metadata = NULL,
+  cache = TRUE,
   only_cached = FALSE,
   overwrite = FALSE,
   wait = 1,
@@ -36,16 +37,65 @@ cc_get_woocommerce_by_id <- function(
     "woocommerce_cache_folder"
   ]]
 ) {
+  id <- as.character(id)
   cache_folder <- fs::path(woocommerce_cache_folder, type[[1]])
   fs::dir_create(cache_folder)
+
+  selected_metadata_hash <- rlang::hash(selected_metadata)
+
+  if (cache) {
+    if (!requireNamespace("duckdb", quietly = TRUE)) {
+      cli::cli_abort(
+        c(
+          x = "Package {.pkg duckdb} needs to be installed when {.var cache} is set to `TRUE`.",
+          i = "Please install {.pkg duckdb} or set {.var cache} to `FALSE`."
+        )
+      )
+    }
+
+    fs::dir_create(path = fs::path(cache_folder, "duckdb"))
+    current_database_file <- fs::path_ext_set(
+      path = fs::path(cache_folder, "duckdb", selected_metadata_hash),
+      ext = "duckdb"
+    )
+
+    db <- DBI::dbConnect(
+      drv = duckdb::duckdb(),
+      current_database_file
+    )
+
+    current_table <- type[[1]]
+
+    exists_table <- DBI::dbExistsTable(conn = db, name = current_table)
+
+    if (!exists_table) {
+      previous_data_df <- NULL
+    } else {
+      previous_data_df <- DBI::dbReadTable(
+        conn = db,
+        name = current_table
+      ) |>
+        dplyr::filter(as.character(.data[["id"]]) %in% as.character(id)) |>
+        dplyr::collect() |>
+        tibble::as_tibble()
+    }
+
+    non_cached_id <- id[!(id %in% previous_data_df[["id"]])]
+
+    if (length(non_cached_id) == 0) {
+      return(previous_data_df)
+    }
+  }
 
   if (overwrite) {
     previous_files_v <- character()
   } else {
-    previous_files_v <- fs::dir_ls(path = cache_folder)
+    previous_files_v <- fs::dir_ls(
+      path = cache_folder,
+      type = "file",
+      recurse = FALSE
+    )
   }
-
-  id <- as.character(id)
 
   if (!(type[[1]] %in% c("orders", "customers"))) {
     cli::cli_abort(
@@ -54,14 +104,21 @@ cc_get_woocommerce_by_id <- function(
   }
 
   if (length(previous_files_v) == 0) {
-    id_to_download <- id
+    if (cache) {
+      id_to_download <- non_cached_id
+    } else {
+      id_to_download <- id
+    }
   } else {
     previous_id <- previous_files_v |>
       fs::path_file() |>
       fs::path_ext_remove() |>
       as.character()
-
-    id_to_download <- id[!(id %in% previous_id)]
+    if (cache) {
+      id_to_download <- non_cached_id[!(non_cached_id %in% previous_id)]
+    } else {
+      id_to_download <- id[!(id %in% previous_id)]
+    }
   }
 
   if (length(id_to_download) > 0 & !only_cached) {
@@ -77,7 +134,11 @@ cc_get_woocommerce_by_id <- function(
       woocommerce_cache_folder = woocommerce_cache_folder
     )
 
-    previous_files_v <- fs::dir_ls(path = cache_folder)
+    previous_files_v <- fs::dir_ls(
+      path = cache_folder,
+      type = "file",
+      recurse = FALSE
+    )
   }
 
   previous_id <- previous_files_v |>
@@ -85,7 +146,11 @@ cc_get_woocommerce_by_id <- function(
     fs::path_ext_remove() |>
     as.character()
 
-  files_to_extract_v <- previous_files_v[(previous_id %in% id)]
+  if (cache) {
+    files_to_extract_v <- previous_files_v[(previous_id %in% non_cached_id)]
+  } else {
+    files_to_extract_v <- previous_files_v[(previous_id %in% id)]
+  }
 
   orders_l <- purrr::map(
     .progress = stringr::str_flatten(c("Extracting ", type[[1]])),
@@ -205,5 +270,37 @@ cc_get_woocommerce_by_id <- function(
   orders_df <- orders_l |>
     purrr::list_rbind()
 
-  orders_df
+  if (cache & (nrow(orders_df) > 1)) {
+    status_final_v <- c(
+      "completed",
+      "trash",
+      "cancelled",
+      "failed",
+      "refunded"
+    )
+    orders_to_cache_df <- orders_df |>
+      dplyr::filter(.data[["status"]] %in% status_final_v) |>
+      dplyr::filter(id == as.character(.data[["id"]]))
+
+    if (exists_table) {
+      DBI::dbAppendTable(
+        conn = db,
+        name = current_table,
+        value = orders_to_cache_df
+      )
+    } else {
+      DBI::dbWriteTable(
+        conn = db,
+        name = current_table,
+        value = orders_to_cache_df
+      )
+    }
+  }
+
+  if (cache) {
+    dplyr::bind_rows(previous_data_df, orders_df) |>
+      dplyr::arrange(.data[["id"]])
+  } else {
+    orders_df
+  }
 }
