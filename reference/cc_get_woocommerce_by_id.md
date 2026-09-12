@@ -10,6 +10,7 @@ cc_get_woocommerce_by_id(
   type = c("orders", "customers"),
   metadata = FALSE,
   selected_metadata = NULL,
+  cache = TRUE,
   only_cached = FALSE,
   overwrite = FALSE,
   wait = 1,
