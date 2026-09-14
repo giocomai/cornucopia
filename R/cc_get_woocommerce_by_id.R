@@ -64,6 +64,8 @@ cc_get_woocommerce_by_id <- function(
       current_database_file
     )
 
+    on.exit(DBI::dbDisconnect(db), add = TRUE)
+
     current_table <- type[[1]]
 
     exists_table <- DBI::dbExistsTable(conn = db, name = current_table)
