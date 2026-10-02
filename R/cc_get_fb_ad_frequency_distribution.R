@@ -17,6 +17,8 @@
 #' @param end_date The end date for the period to be considered. Both
 #'   `start_date` and `end_date` must be given. If either is ignored, `preset`
 #'   takes precedence.
+#' @param output Output format, defaults to `tibble`. Valid values include
+#'   `list` and `barchart`, which outputs a `ggplot2` object.
 #' @return
 #' @export
 #'
@@ -64,12 +66,6 @@ cc_get_fb_ad_frequency_distribution <- function(
       start_date = dates_l$start_date,
       end_date = dates_l$end_date
     )
-
-    # dates <- as.Date(start_date:end_date, origin = as.Date("1970-01-01"))
-
-    # names(dates) <- dates
-    #
-    # date_preset <- dates
   }
 
   if (is.null(fb_user_token)) {
@@ -197,7 +193,13 @@ cc_get_fb_ad_frequency_distribution <- function(
             dplyr::pull(date_stop) |>
             unique() |>
             max() |>
-            format.Date("%e %B %Y")
+            format.Date("%e %B %Y"),
+          " – ",
+          "Total reach: ",
+          scales::number(sum(
+            frequency_distribution_df[["reach"]],
+            na.rm = TRUE
+          ))
         )
       )
     )

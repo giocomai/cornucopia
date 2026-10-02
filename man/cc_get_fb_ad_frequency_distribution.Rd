@@ -28,6 +28,9 @@ cc_get_fb_ad_frequency_distribution(
 API documentation}. N.B. This is ignored if both `start_date` and
 `end_date` are given.}
 
+\item{output}{Output format, defaults to `tibble`. Valid values include
+`list` and `barchart`, which outputs a `ggplot2` object.}
+
 \item{start_date}{The beginning date for the period to be considered. Both
 `start_date` and `end_date` must be given. If either is ignored, `preset`
 takes precedence.}
