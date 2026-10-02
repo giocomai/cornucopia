@@ -6,6 +6,9 @@
 #'   `FALSE`, as not fit for generic use.
 #' @param selected_metadata Defaults to `NULL`. A character vector with the name
 #'   of the metadata fields to keep, e.g. `c("_wwpp_order_type")`.
+#' @param status_final Order status to be considered final. Only when an order
+#'   has reached its final status it will be cached. Ignored when type is not
+#'   "orders".
 #'
 #' @returns Returns main data retrieved from the API as a data frame.
 #' @export
@@ -25,6 +28,13 @@ cc_get_woocommerce_by_id <- function(
   only_cached = FALSE,
   overwrite = FALSE,
   wait = 1,
+  status_final = c(
+    "completed",
+    "trash",
+    "cancelled",
+    "failed",
+    "refunded"
+  ),
   woocommerce_base_url = cornucopia::cc_get_woocommerce_base_url(),
   woocommerce_api_version = cornucopia::cc_get_woocommerce_api_version(),
   woocommerce_username = cornucopia::cc_get_settings()[[
@@ -79,7 +89,13 @@ cc_get_woocommerce_by_id <- function(
       ) |>
         dplyr::filter(as.character(.data[["id"]]) %in% as.character(id)) |>
         dplyr::collect() |>
-        tibble::as_tibble()
+        tibble::as_tibble() |>
+        dplyr::rename_with(
+          .fn = \(x) {
+            stringr::str_replace(string = x, pattern = "X_", replacement = "_")
+          },
+          .cols = dplyr::starts_with(match = "X_")
+        )
     }
 
     non_cached_id <- id[!(id %in% previous_data_df[["id"]])]
@@ -273,16 +289,14 @@ cc_get_woocommerce_by_id <- function(
     purrr::list_rbind()
 
   if (cache & (nrow(orders_df) > 1)) {
-    status_final_v <- c(
-      "completed",
-      "trash",
-      "cancelled",
-      "failed",
-      "refunded"
-    )
-    orders_to_cache_df <- orders_df |>
-      dplyr::filter(.data[["status"]] %in% status_final_v) |>
-      dplyr::filter(id == as.character(.data[["id"]]))
+    if (type[[1]] == "orders") {
+      orders_to_cache_df <- orders_df |>
+        dplyr::filter(.data[["status"]] %in% status_final) |>
+        dplyr::filter(id == as.character(.data[["id"]]))
+    } else {
+      orders_to_cache_df <- orders_df |>
+        dplyr::filter(id == as.character(.data[["id"]]))
+    }
 
     if (exists_table) {
       DBI::dbAppendTable(
