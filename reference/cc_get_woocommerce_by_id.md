@@ -14,6 +14,7 @@ cc_get_woocommerce_by_id(
   only_cached = FALSE,
   overwrite = FALSE,
   wait = 1,
+  status_final = c("completed", "trash", "cancelled", "failed", "refunded"),
   woocommerce_base_url = cornucopia::cc_get_woocommerce_base_url(),
   woocommerce_api_version = cornucopia::cc_get_woocommerce_api_version(),
   woocommerce_username = cornucopia::cc_get_settings()[["woocommerce_username"]],
@@ -52,6 +53,11 @@ cc_get_woocommerce_by_id(
 - wait:
 
   Defaults to 1. Seconds to wait between calls to the API.
+
+- status_final:
+
+  Order status to be considered final. Only when an order has reached
+  its final status it will be cached. Ignored when type is not "orders".
 
 ## Value
 

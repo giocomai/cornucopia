@@ -8,13 +8,13 @@
 ## Citation
 
 Comai G (2026). *cornucopia: A cornucopia is like a funnel that keeps on
-giving*. R package version 0.0.1.9018,
+giving*. R package version 0.0.1.9020,
 <https://giocomai.github.io/cornucopia/>.
 
     @Manual{,
       title = {cornucopia: A cornucopia is like a funnel that keeps on giving},
       author = {Giorgio Comai},
       year = {2026},
-      note = {R package version 0.0.1.9018},
+      note = {R package version 0.0.1.9020},
       url = {https://giocomai.github.io/cornucopia/},
     }

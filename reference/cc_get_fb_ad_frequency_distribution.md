@@ -36,6 +36,11 @@ cc_get_fb_ad_frequency_distribution(
   N.B. This is ignored if both \`start_date\` and \`end_date\` are
   given.
 
+- output:
+
+  Output format, defaults to \`tibble\`. Valid values include \`list\`
+  and \`barchart\`, which outputs a \`ggplot2\` object.
+
 - start_date:
 
   The beginning date for the period to be considered. Both
