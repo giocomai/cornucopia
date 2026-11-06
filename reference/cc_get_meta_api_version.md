@@ -24,7 +24,7 @@ of length 1.
 
 ``` r
 cc_get_meta_api_version()
-#> [1] "v24.0"
+#> [1] "v27.0"
 
 cc_get_meta_api_version("23.0")
 #> [1] "23.0"

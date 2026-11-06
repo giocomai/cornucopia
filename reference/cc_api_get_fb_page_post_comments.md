@@ -1,7 +1,7 @@
 # Get information about a comments from the API. Mostly used internally.
 
 See the official documentation for reference:
-<https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts>
+[https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts](NA)
 
 For reference, see the [official
 documentation](https://developers.facebook.com/docs/graph-api/reference/page-post/comments).
@@ -49,7 +49,7 @@ cc_api_get_fb_page_post_comments(
   metrics will cause an error. Defaults to NULL. If left to NULL,
   metrics will be chosen based on the media type. See the official
   documentation for reference:
-  <https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts>
+  [https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts](NA)
 
 ## Value
 

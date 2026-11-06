@@ -1,7 +1,7 @@
 # Get information about a single media directly from the API. Mostly used internally.
 
 See the official documentation for reference:
-<https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts>
+[https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts](NA)
 
 ## Usage
 
@@ -32,9 +32,7 @@ cc_api_get_fb_page_post_insights(
   different media types are effectively available. Requesting the wrong
   metrics will cause an error. Defaults to \`NULL\`. If left to
   \`NULL\`, metrics will be chosen based on the media type. See [the
-  official
-  documentation](https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts)
-  for reference.
+  official documentation](NA) for reference.
 
 - cache:
 

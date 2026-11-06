@@ -32,4 +32,4 @@ cc_api_get_fb_video_insights(
   metrics will cause an error. Defaults to NULL. If left to NULL,
   metrics will be chosen based on the media type. See the official
   documentation for reference:
-  <https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts>
+  [https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts](NA)

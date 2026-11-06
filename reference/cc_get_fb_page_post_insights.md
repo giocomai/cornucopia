@@ -32,9 +32,7 @@ cc_get_fb_page_post_insights(
   different media types are effectively available. Requesting the wrong
   metrics will cause an error. Defaults to \`NULL\`. If left to
   \`NULL\`, metrics will be chosen based on the media type. See [the
-  official
-  documentation](https://developers.facebook.com/docs/graph-api/reference/insights/#page-posts)
-  for reference.
+  official documentation](NA) for reference.
 
 - cache:
 

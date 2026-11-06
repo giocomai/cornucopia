@@ -2,7 +2,7 @@
 
 Currently apparently only applies to Page media view. For reference, see
 the [official
-documentation](https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#page-media-view).
+documentation](https://developers.facebook.com/docs/graph-api/reference/v27.0/insights#page-media-view).
 
 ## Usage
 

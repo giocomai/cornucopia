@@ -39,6 +39,8 @@
   : Run the Shiny Application
 - [`cc_get_fb_ad_actions_by_day()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_actions_by_day.md)
   : Takes all action results for all days when an ad is active
+- [`cc_get_fb_ad_attribution()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_attribution.md)
+  : Get ad attribution
 - [`cc_get_fb_ad_campaigns()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_campaigns.md)
   : Get all campaigns for the current ad account / legacy
 - [`cc_get_fb_ad_creatives_id()`](https://giocomai.github.io/cornucopia/reference/cc_get_fb_ad_creatives_id.md)

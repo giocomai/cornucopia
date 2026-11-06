@@ -1,7 +1,7 @@
 # Get Facebook page post id and basic information that can be stored as strings
 
 Find out what each of the fields effectively means in the [official
-documentation](https://developers.facebook.com/docs/graph-api/reference/v24.0/page/feed).
+documentation](https://developers.facebook.com/docs/graph-api/reference/v27.0/page/feed).
 
 ## Usage
 
@@ -31,7 +31,7 @@ cc_get_fb_page_posts(
   Lists of fields which return data consistently, see
   \`cc_fb_page_post_fields\[\["fields"\]\]\` for a full list and the
   [official documentation for more
-  details](https://developers.facebook.com/docs/graph-api/reference/v24.0/page/feed).
+  details](https://developers.facebook.com/docs/graph-api/reference/v27.0/page/feed).
 
   Expect caching to work consistently only if you leave this value
   unchanged. Consider disabling caching if you customise this parameter.

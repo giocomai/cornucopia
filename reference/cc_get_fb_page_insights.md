@@ -1,7 +1,7 @@
 # Get Facebook page insights
 
 For reference, see the [official
-documentation](https://developers.facebook.com/docs/graph-api/reference/v24.0/insights).
+documentation](https://developers.facebook.com/docs/graph-api/reference/v27.0/insights).
 
 ## Usage
 
@@ -60,7 +60,7 @@ cc_get_fb_page_insights(
 
 Find the whole list of available metrics in the [dedicated section of
 the official
-documentation](https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#availmetrics).
+documentation](https://developers.facebook.com/docs/graph-api/reference/v27.0/insights#availmetrics).
 
 N.B. Even if not detailed in the documentation "page_impressions\*"
 metrics have been deprecated on 15 November 2025. See [the official

@@ -37,7 +37,7 @@ nested data frames.
 See also \`cc_get_fb_ads_by_date()\` for customisation of fields.
 
 For valid fields, see:
-<https://developers.facebook.com/docs/marketing-api/reference/adgroup/insights/>
+<https://developers.secure.facebook.com/docs/graph-api/reference/adgroup/>
 
 ## Examples
 
