@@ -5,7 +5,7 @@
 #'
 #' See also `cc_get_fb_ads_by_date()` for customisation of fields.
 #'
-#' For valid fields, see: \url{https://developers.facebook.com/docs/marketing-api/reference/adgroup/insights/}
+#' For valid fields, see: \url{https://developers.secure.facebook.com/docs/graph-api/reference/adgroup/}
 #'
 #' @param only_cached Defaults to FALSE. If TRUE, only pre-cached files within
 #'   the given date range are loaded; no new calls to the API are made and

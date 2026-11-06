@@ -28,7 +28,7 @@
 #' }
 #'
 cc_set <- function(
-  meta_api_version = "v24.0",
+  meta_api_version = "v27.0",
   start_date = NULL,
   end_date = NULL,
   fb_user_token = NULL,
@@ -246,7 +246,7 @@ cc_get_settings <- function(
   if (is.null(meta_api_version)) {
     meta_api_version <- Sys.getenv(
       "cornucopia_meta_api_version",
-      unset = "v24.0"
+      unset = "v27.0"
     )
   }
 

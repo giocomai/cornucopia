@@ -5,7 +5,7 @@
 \title{Set settings and token for the session}
 \usage{
 cc_set(
-  meta_api_version = "v24.0",
+  meta_api_version = "v27.0",
   start_date = NULL,
   end_date = NULL,
   fb_user_token = NULL,

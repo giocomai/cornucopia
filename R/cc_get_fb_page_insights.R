@@ -2,11 +2,11 @@
 #'
 #'
 #' For reference, see the
-#' \href{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights}{official
+#' \href{https://developers.facebook.com/docs/graph-api/reference/v27.0/insights}{official
 #' documentation}.
 #'
 #' Find the whole list of available metrics in the
-#' \href{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#availmetrics}{dedicated
+#' \href{https://developers.facebook.com/docs/graph-api/reference/v27.0/insights#availmetrics}{dedicated
 #' section of the official documentation}.
 #'
 #' N.B. Even if not detailed in the documentation "page_impressions*" metrics

@@ -1,7 +1,7 @@
 #' Get Facebook page post id and basic information that can be stored as strings
 #'
 #' Find out what each of the fields effectively means in the
-#' \href{https://developers.facebook.com/docs/graph-api/reference/v24.0/page/feed}{official
+#' \href{https://developers.facebook.com/docs/graph-api/reference/v27.0/page/feed}{official
 #' documentation}.
 #'
 #' As some fields return objects that can be read as lists, rather than simple
@@ -15,7 +15,7 @@
 #'   will be retrieved.
 #' @param fields Lists of fields which return data consistently, see
 #'   `cc_fb_page_post_fields[["fields"]]` for a full list and the
-#'   \href{https://developers.facebook.com/docs/graph-api/reference/v24.0/page/feed}{official
+#'   \href{https://developers.facebook.com/docs/graph-api/reference/v27.0/page/feed}{official
 #'   documentation for more details}.
 #'
 #'   Expect caching to work consistently only if you leave this value unchanged.

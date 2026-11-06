@@ -3,7 +3,7 @@
 #'
 #' Currently apparently only applies to Page media view.
 #' For reference, see the
-#' \href{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#page-media-view}{official
+#' \href{https://developers.facebook.com/docs/graph-api/reference/v27.0/insights#page-media-view}{official
 #' documentation}.
 #'
 #' @param metric Defaults to `page_media_view`.

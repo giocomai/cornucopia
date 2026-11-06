@@ -32,7 +32,7 @@ directory.
 \details{
 See also `cc_get_fb_ads_by_date()` for customisation of fields.
 
-For valid fields, see: \url{https://developers.facebook.com/docs/marketing-api/reference/adgroup/insights/}
+For valid fields, see: \url{https://developers.secure.facebook.com/docs/graph-api/reference/adgroup/}
 }
 \examples{
 \dontrun{

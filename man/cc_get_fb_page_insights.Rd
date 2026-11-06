@@ -39,12 +39,12 @@ be retrieved with [cc_get_fb_page_token()] or
 }
 \description{
 For reference, see the
-\href{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights}{official
+\href{https://developers.facebook.com/docs/graph-api/reference/v27.0/insights}{official
 documentation}.
 }
 \details{
 Find the whole list of available metrics in the
-\href{https://developers.facebook.com/docs/graph-api/reference/v24.0/insights#availmetrics}{dedicated
+\href{https://developers.facebook.com/docs/graph-api/reference/v27.0/insights#availmetrics}{dedicated
 section of the official documentation}.
 
 N.B. Even if not detailed in the documentation "page_impressions*" metrics
